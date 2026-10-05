@@ -16,8 +16,14 @@ export default async function Page() {
   await dbConnect();
   const me = await User.findById(s.sub).lean() as unknown as { firstName: string; lastName: string } | null;
   return (
-    <AppShell title="My Day" userName={me ? `${me.firstName} ${me.lastName}` : "Staff"} role={s.role} nav={STAFF_NAV}>
-      <StaffHome />
+    <AppShell
+      title="My Day"
+      subtitle="Your attendance at a glance"
+      userName={me ? `${me.firstName} ${me.lastName}` : "Staff"}
+      role={s.role}
+      nav={STAFF_NAV}
+    >
+      <StaffHome firstName={me?.firstName} />
     </AppShell>
   );
 }

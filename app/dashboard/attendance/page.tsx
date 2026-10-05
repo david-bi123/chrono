@@ -5,7 +5,14 @@ import AttendancePage from "./att-inner";
 export default async function Page() {
   const ctx = await orgAdminContext();
   return (
-    <AppShell title="Attendance" userName={ctx.userName} orgName={ctx.orgName} role="ORGANIZATION_ADMIN" nav={ORG_NAV}>
+    <AppShell
+      title="Attendance"
+      subtitle="Track and manage your team's attendance"
+      userName={ctx.userName}
+      orgName={ctx.orgName}
+      role="ORGANIZATION_ADMIN"
+      nav={ORG_NAV}
+    >
       <AttendancePage />
     </AppShell>
   );

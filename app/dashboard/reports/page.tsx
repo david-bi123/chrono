@@ -5,7 +5,14 @@ import ReportsPage from "./rep-inner";
 export default async function Page() {
   const ctx = await orgAdminContext();
   return (
-    <AppShell title="Reports" userName={ctx.userName} orgName={ctx.orgName} role="ORGANIZATION_ADMIN" nav={ORG_NAV}>
+    <AppShell
+      title="Reports"
+      subtitle="Attendance analytics and exports"
+      userName={ctx.userName}
+      orgName={ctx.orgName}
+      role="ORGANIZATION_ADMIN"
+      nav={ORG_NAV}
+    >
       <ReportsPage />
     </AppShell>
   );

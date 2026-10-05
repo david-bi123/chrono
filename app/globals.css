@@ -2,144 +2,252 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: 0 0% 98.5%;
-  --foreground: 222 47% 11%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --primary: 222 47% 11%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 220 14% 96%;
-  --secondary-foreground: 222 47% 11%;
-  --muted: 220 14% 96%;
-  --muted-foreground: 215 16% 42%;
-  --accent: 220 14% 96%;
-  --accent-foreground: 222 47% 11%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 220 13% 90%;
-  --input: 220 13% 88%;
-  --ring: 222 47% 11%;
-  --radius: 0.875rem;
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 220 20% 97%;
+    --foreground: 222 45% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 45% 8%;
+
+    --secondary: 220 16% 96%;
+    --secondary-foreground: 222 30% 14%;
+
+    --muted: 220 16% 96%;
+    --muted-foreground: 218 11% 44%;
+
+    --accent: 220 16% 96%;
+    --accent-foreground: 222 30% 14%;
+
+    /* Brand — Chrono blue: precision, signal, trust */
+    --primary: 217 84% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 16% 91%;
+    --input: 220 14% 87%;
+    --ring: 217 84% 50%;
+
+    --radius: 0.625rem;
+
+    --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.07);
+    --shadow-md: 0 4px 8px -4px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+    --shadow-lg: 0 16px 32px -12px rgba(16, 24, 40, 0.18), 0 4px 12px -6px rgba(16, 24, 40, 0.08);
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "cv11", "ss01", "tnum";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
 }
 
-* {
-  border-color: hsl(var(--border));
+@layer components {
+  /* ---------- Data table ---------- */
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13.5px;
+  }
+  .data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: hsl(var(--muted-foreground));
+    padding: 10px 14px;
+    border-bottom: 1px solid hsl(var(--border));
+    white-space: nowrap;
+  }
+  .data-table tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid hsl(var(--background));
+    vertical-align: middle;
+  }
+  .data-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .data-table tbody tr {
+    transition: background-color 0.15s ease;
+  }
+  .data-table tbody tr:hover {
+    background: hsl(220 20% 98%);
+  }
+
+  /* ---------- Skeleton ---------- */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #eceff4;
+    border-radius: 0.5rem;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+    animation: shimmer 1.6s infinite;
+  }
 }
 
-html {
-  text-size-adjust: 100%;
+@layer utilities {
+  /* Staggered page entrance */
+  .stagger > * {
+    animation: fade-up 0.4s cubic-bezier(0.21, 0.9, 0.35, 1) both;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0.01s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.09s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.13s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.17s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.21s; }
+  .stagger > *:nth-child(n + 7) { animation-delay: 0.25s; }
+
+  .animate-fade-up {
+    animation: fade-up 0.35s cubic-bezier(0.21, 0.9, 0.35, 1) both;
+  }
+  .animate-overlay-in {
+    animation: fade-in 0.18s ease-out both;
+  }
+  .animate-content-in {
+    animation: pop 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.05) both;
+  }
+  .animate-pop {
+    animation: pop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+  .check-pop {
+    animation: pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
-body {
-  background: #f6f7f9;
-  color: hsl(var(--foreground));
-  font-feature-settings: "cv11", "ss01", "tnum";
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-::selection {
-  background: #0b0f19;
-  color: #fff;
-}
-
-/* Refined focus */
-:focus-visible {
-  outline: 2px solid #0b0f19;
-  outline-offset: 2px;
-  border-radius: 6px;
-}
-
-/* Scrollbars */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
-}
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-*::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 8px;
-}
-
-/* Skeleton shimmer */
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background: #e9edf2;
-  border-radius: 0.6rem;
-}
-.skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-  animation: shimmer 1.6s infinite;
-}
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
-/* Tables */
-.data-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 13.5px;
-}
-.data-table thead th {
-  text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #64748b;
-  padding: 10px 12px;
-  border-bottom: 1px solid #e9edf2;
-  white-space: nowrap;
-}
-.data-table tbody td {
-  padding: 12px;
-  border-bottom: 1px solid #f1f4f8;
-  vertical-align: middle;
-}
-.data-table tbody tr:last-child td {
-  border-bottom: 0;
-}
-.data-table tbody tr {
-  transition: background 0.15s ease;
-}
-.data-table tbody tr:hover {
-  background: #f8fafc;
-}
-
-/* Stagger children on page load */
-.stagger > * {
-  animation: fade-up 0.5s cubic-bezier(0.21, 0.9, 0.35, 1) both;
-}
-.stagger > *:nth-child(2) { animation-delay: 0.05s; }
-.stagger > *:nth-child(3) { animation-delay: 0.1s; }
-.stagger > *:nth-child(4) { animation-delay: 0.15s; }
-.stagger > *:nth-child(5) { animation-delay: 0.2s; }
-.stagger > *:nth-child(6) { animation-delay: 0.25s; }
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Success check pop */
-.check-pop {
-  animation: pop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
-}
 @keyframes pop {
-  from { transform: scale(0.8); opacity: 0; }
+  from { transform: scale(0.85); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes draw-check {
+  from { stroke-dashoffset: 32; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Print (QR sheet) ---------- */
+.chrono-print-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+}
+
+@page {
+  margin: 12mm;
+}
+
 @media print {
-  aside, header { display: none !important; }
+  body {
+    background: #fff !important;
+  }
+  body.chrono-printing > *:not(.chrono-print-portal) {
+    display: none !important;
+  }
+  .chrono-print-portal {
+    position: static !important;
+    overflow: visible !important;
+    background: #fff !important;
+    inset: auto !important;
+  }
+  .no-print,
+  aside,
+  header,
+  nav {
+    display: none !important;
+  }
+  .print-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
 }

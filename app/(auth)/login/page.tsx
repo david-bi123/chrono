@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Input, Label, FieldError } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ShieldCheck, QrCode, BarChart3 } from "lucide-react";
+import { AuthShell } from "@/components/auth/auth-shell";
+import { CheckCircle2, X } from "lucide-react";
 
 export default function LoginPage() {
   return (
@@ -19,10 +19,19 @@ function LoginInner() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get("next") || "";
+  const invited = search.get("invited");
+  const reset = search.get("reset");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [banner, setBanner] = useState(
+    invited
+      ? "Your account is set up — sign in with your new password."
+      : reset
+        ? "Password updated — sign in with your new password."
+        : ""
+  );
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,70 +58,74 @@ function LoginInner() {
   }
 
   return (
-    <div className="grid min-h-screen bg-white lg:grid-cols-2">
-      {/* Brand panel */}
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-neutral-950 p-10 text-white lg:flex">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(500px_300px_at_20%_0%,rgba(255,255,255,0.09),transparent)]" />
-        <div className="relative flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[17px] text-neutral-900">◷</div>
-          <span className="text-[16px] font-bold tracking-tight">ChronoSwift</span>
+    <AuthShell
+      title="Welcome back"
+      subtitle="Sign in to your Chrono workspace."
+      footer={
+        <>
+          Need an account? Your administrator invites you by email.{" "}
+          <Link href="/" className="font-medium text-brand-600 hover:underline">
+            Learn more
+          </Link>
+        </>
+      }
+    >
+      {banner && (
+        <div
+          role="status"
+          className="mt-5 flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-[13.5px] text-emerald-800"
+        >
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+          <div className="flex-1 leading-snug">{banner}</div>
+          <button onClick={() => setBanner("")} aria-label="Dismiss" className="text-emerald-500 hover:text-emerald-700">
+            <X className="h-4 w-4" />
+          </button>
         </div>
-        <div className="relative">
-          <h2 className="max-w-md text-balance text-3xl font-bold leading-tight tracking-tight">
-            Attendance management, without the paperwork.
-          </h2>
-          <ul className="mt-8 space-y-4">
-            {[
-              [QrCode, "Scan a QR, tap Clock In — done in seconds"],
-              [BarChart3, "Live dashboards, late detection and CSV reports"],
-              [ShieldCheck, "Isolated tenants, hashed tokens, full audit trail"],
-            ].map(([Icon, t]) => {
-              const I = Icon as typeof QrCode;
-              return (
-                <li key={t as string} className="flex items-center gap-3 text-[14px] text-neutral-300">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10"><I className="h-[18px] w-[18px]" /></span>
-                  {t as string}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <p className="relative text-xs text-neutral-500">Smart attendance. Simple management.</p>
-      </div>
+      )}
 
-      {/* Form */}
-      <div className="flex items-center justify-center bg-[#F6F7F9] px-4 py-10 sm:px-8">
-        <Card className="w-full max-w-[400px] p-2">
-          <CardContent className="p-6 sm:p-8">
-            <div className="flex items-center gap-2 lg:hidden">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white">◷</div>
-              <span className="font-bold">ChronoSwift</span>
-            </div>
-            <h1 className="mt-4 text-xl font-bold tracking-tight lg:mt-0">Welcome back</h1>
-            <p className="mt-1 text-[13.5px] text-neutral-500">Sign in to your workspace.</p>
-            <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
-              <div>
-                <Label htmlFor="email">Work email</Label>
-                <Input id="email" type="email" autoComplete="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              </div>
-              <div>
-                <div className="mb-1.5 flex items-center justify-between">
-                  <label htmlFor="password" className="text-[13px] font-semibold text-neutral-700">Password</label>
-                  <Link href="/forgot-password" className="text-[13px] font-medium text-neutral-500 hover:text-neutral-900">Forgot?</Link>
-                </div>
-                <Input id="password" type="password" autoComplete="current-password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              </div>
-              <FieldError message={error} />
-              <Button className="w-full" size="lg" loading={loading} type="submit">
-                {loading ? "Signing in…" : "Sign in"}
-              </Button>
-            </form>
-            <div className="mt-6 border-t border-neutral-100 pt-4 text-center text-[13px] text-neutral-500">
-              <Link href="/" className="font-medium hover:text-neutral-900">← Back home</Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+      <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
+        <div>
+          <Label htmlFor="email">Work email</Label>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@company.com"
+            className="h-10"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
+        </div>
+        <div>
+          <div className="mb-1.5 flex items-center justify-between">
+            <Label htmlFor="password" className="mb-0">
+              Password
+            </Label>
+            <Link
+              href="/forgot-password"
+              className="text-[13px] font-medium text-neutral-500 transition hover:text-neutral-900"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <Input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="••••••••"
+            className="h-10"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <FieldError message={error} />
+        <Button className="w-full" size="lg" loading={loading} type="submit">
+          {loading ? "Signing in…" : "Sign in"}
+        </Button>
+      </form>
+    </AuthShell>
   );
 }

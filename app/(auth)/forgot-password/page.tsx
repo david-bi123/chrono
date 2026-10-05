@@ -1,10 +1,11 @@
 "use client";
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { Input, Label, FieldError } from "@/components/ui/input";
+import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AuthShell } from "@/components/auth/auth-shell";
 import { SpamNotice } from "@/components/ui/spam-notice";
+import { CheckCircle2, ArrowLeft } from "lucide-react";
 
 export default function ForgotPage() {
   return (
@@ -32,29 +33,64 @@ function ForgotInner() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Forgot password</CardTitle>
-          <CardDescription>We&apos;ll email you a reset link if the account exists.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {done ? (
-            <div className="space-y-3 text-sm text-neutral-600">
-              <p>
-                If an account exists for <strong>{email}</strong>, a reset link is on its way (valid 60 minutes).
-              </p>
-              <SpamNotice email={email} />
-              <div><Link href="/login" className="font-medium text-neutral-900 underline">Back to sign in</Link></div>
-            </div>
-          ) : (
-            <form onSubmit={submit} className="space-y-4">
-              <div><Label htmlFor="email">Email</Label><Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-              <Button className="w-full" disabled={loading}>{loading ? "Sending…" : "Send reset link"}</Button>
-            </form>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    <AuthShell
+      title={done ? "Check your inbox" : "Reset your password"}
+      subtitle={
+        done
+          ? "If an account exists for that address, a reset link is on its way."
+          : "We'll email you a secure link that's valid for 60 minutes."
+      }
+      footer={
+        <Link href="/login" className="inline-flex items-center gap-1.5 font-medium text-neutral-700 hover:text-neutral-900">
+          <ArrowLeft className="h-3.5 w-3.5" /> Back to sign in
+        </Link>
+      }
+    >
+      {done ? (
+        <div className="mt-6 space-y-4">
+          <div
+            role="status"
+            className="flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-[13.5px] leading-snug text-emerald-800"
+          >
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              We sent a reset link to <span className="font-semibold">{email}</span> if it&apos;s registered. It
+              expires in 60 minutes.
+            </span>
+          </div>
+          <SpamNotice email={email} />
+          <Button
+            variant="secondary"
+            className="w-full"
+            onClick={() => {
+              setDone(false);
+              setEmail("");
+            }}
+          >
+            Use a different email
+          </Button>
+        </div>
+      ) : (
+        <form onSubmit={submit} className="mt-6 space-y-4">
+          <div>
+            <Label htmlFor="email">Work email</Label>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@company.com"
+              className="h-10"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+            />
+          </div>
+          <Button className="w-full" size="lg" loading={loading} type="submit">
+            {loading ? "Sending…" : "Send reset link"}
+          </Button>
+        </form>
+      )}
+    </AuthShell>
   );
 }

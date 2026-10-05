@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 import {
   QrCode,
   Users,
@@ -51,7 +52,7 @@ const faqs = [
   },
   {
     q: "Why did my invitation land in Spam?",
-    a: "New senders often do, especially when sent from a Gmail address through an email service. Every screen that sends mail in ChronoSwift tells the recipient to check Spam and Promotions. Using your own domain as the sender (with SPF/DKIM records) fixes this permanently.",
+    a: "New senders often do, especially when sent from a Gmail address through an email service. Every screen that sends mail in Chrono tells the recipient to check Spam and Promotions. Using your own domain as the sender (with SPF/DKIM records) fixes this permanently.",
   },
   {
     q: "What timezone is attendance recorded in?",
@@ -106,8 +107,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-40 border-b border-neutral-200/70 bg-white/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-[17px] text-white">◷</div>
-            <span className="text-[16px] font-bold tracking-tight">ChronoSwift</span>
+            <Logo size="md" />
           </div>
           <nav className="hidden items-center gap-7 text-[13.5px] font-medium text-neutral-500 lg:flex">
             <a href="#features" className="transition hover:text-neutral-900">Features</a>
@@ -192,7 +192,7 @@ export default function LandingPage() {
         {/* Features */}
         <section id="features" className="scroll-mt-20 border-t border-neutral-200/70 bg-[#F8FAFC]">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-400">Features</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Features</p>
             <h2 className="mt-2 max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">Everything you need to run attendance</h2>
             <p className="mt-2 text-[15px] text-neutral-500">Built for organization admins, effortless for staff.</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -212,7 +212,7 @@ export default function LandingPage() {
         {/* Roles */}
         <section id="roles" className="scroll-mt-20 border-t border-neutral-200/70">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-400">Roles</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Roles</p>
             <h2 className="mt-2 max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">One platform, three workspaces</h2>
             <p className="mt-2 max-w-xl text-[15px] text-neutral-500">Everyone sees exactly what their role allows — enforced on the server, not just hidden in the UI.</p>
             <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -237,7 +237,7 @@ export default function LandingPage() {
         {/* How */}
         <section id="how" className="scroll-mt-20 border-t border-neutral-200/70 bg-[#F8FAFC]">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-400">How it works</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">How it works</p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Live in three steps</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {[
@@ -288,7 +288,7 @@ export default function LandingPage() {
         {/* FAQ */}
         <section id="faq" className="scroll-mt-20">
           <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
-            <p className="text-center text-xs font-bold uppercase tracking-[0.12em] text-neutral-400">FAQ</p>
+            <p className="text-center text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">FAQ</p>
             <h2 className="mt-2 text-center text-2xl font-bold tracking-tight sm:text-3xl">Honest answers</h2>
             <div className="mt-8 space-y-3">
               {faqs.map((f) => (
@@ -321,11 +321,10 @@ export default function LandingPage() {
       <footer className="border-t border-neutral-200/70">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-[13px] text-neutral-500 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-900 text-[13px] text-white">◷</span>
-            <span className="font-bold text-neutral-900">ChronoSwift</span>
+            <Logo size="sm" />
             <span className="hidden sm:inline">· Smart attendance. Simple management.</span>
           </div>
-          <div>© {new Date().getFullYear()} ChronoSwift. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Chrono. All rights reserved.</div>
         </div>
       </footer>
     </div>

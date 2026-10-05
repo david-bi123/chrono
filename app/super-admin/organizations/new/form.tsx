@@ -2,21 +2,29 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Input, Label, FieldError } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input, Field } from "@/components/ui/input";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SpamNotice } from "@/components/ui/spam-notice";
+import { CheckCircle2, ArrowLeft, Building2, Mail } from "lucide-react";
 
 export default function NewOrgForm() {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: "", email: "", phone: "", address: "", industry: "",
-    adminFirstName: "", adminLastName: "", adminEmail: "",
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    industry: "",
+    adminFirstName: "",
+    adminLastName: "",
+    adminEmail: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [createdEmail, setCreatedEmail] = useState("");
-  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const [created, setCreated] = useState<{ email: string; name: string } | null>(null);
+  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,44 +38,127 @@ export default function NewOrgForm() {
       });
       const d = await res.json();
       if (!res.ok) {
-        setError(d.error || "Failed to create");
+        setError(d.error || "Failed to create organization");
         return;
       }
-      setCreatedEmail(form.adminEmail);
+      setCreated({ email: form.adminEmail, name: form.name });
     } catch {
-      setError("Network error");
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
-  if (createdEmail) {
+  if (created) {
     return (
       <Card className="max-w-2xl">
-        <CardHeader><CardTitle>Organization created</CardTitle><CardDescription>Admin invitation sent.</CardDescription></CardHeader>
-        <CardContent className="space-y-3">
-          <SpamNotice email={createdEmail} />
-          <p className="text-sm text-neutral-500">The setup link expires in 72 hours and is single-use.</p>
-          <Link href="/super-admin/organizations" className="inline-block rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white">Back to organizations</Link>
+        <CardContent className="py-8">
+          <div className="flex flex-col items-center text-center">
+            <div className="check-pop flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+              <CheckCircle2 className="h-7 w-7 text-emerald-600" />
+            </div>
+            <h2 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-neutral-900">Organization created</h2>
+            <p className="mt-1.5 max-w-md text-[14px] leading-relaxed text-neutral-500">
+              <span className="font-semibold text-neutral-800">{created.name}</span> is ready. An invitation to set up
+              the administrator account was sent to <span className="font-medium text-neutral-800">{created.email}</span>
+              .
+            </p>
+            <div className="mt-5 w-full max-w-md text-left">
+              <SpamNotice email={created.email} />
+            </div>
+            <p className="mt-4 text-[12.5px] text-neutral-500">
+              The setup link expires in 72 hours and can only be used once.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-2.5">
+              <ButtonLink href="/super-admin/organizations" variant="secondary">
+                <ArrowLeft className="h-4 w-4" /> Back to organizations
+              </ButtonLink>
+              <Button
+                onClick={() => {
+                  setCreated(null);
+                  setForm({
+                    name: "",
+                    email: "",
+                    phone: "",
+                    address: "",
+                    industry: "",
+                    adminFirstName: "",
+                    adminLastName: "",
+                    adminEmail: "",
+                  });
+                }}
+              >
+                <Building2 className="h-4 w-4" /> Create another
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="max-w-2xl">
-      <CardHeader><CardTitle>Create organization</CardTitle><CardDescription>Provisions tenant + admin invitation email (72h, single-use).</CardDescription></CardHeader>
+    <Card className="max-w-3xl">
+      <CardHeader>
+        <CardTitle>Organization details</CardTitle>
+        <CardDescription>Everything here can be edited later by the administrator.</CardDescription>
+      </CardHeader>
       <CardContent>
-        <form onSubmit={submit} className="grid gap-4 md:grid-cols-2">
-          <div><Label>Organization name *</Label><Input value={form.name} onChange={set("name")} required /></div>
-          <div><Label>Organization email *</Label><Input type="email" value={form.email} onChange={set("email")} required /></div>
-          <div><Label>Phone</Label><Input value={form.phone} onChange={set("phone")} /></div>
-          <div><Label>Industry</Label><Input value={form.industry} onChange={set("industry")} placeholder="e.g. Technology" /></div>
-          <div className="md:col-span-2"><Label>Address</Label><Input value={form.address} onChange={set("address")} /></div>
-          <div><Label>Admin first name *</Label><Input value={form.adminFirstName} onChange={set("adminFirstName")} required /></div>
-          <div><Label>Admin last name *</Label><Input value={form.adminLastName} onChange={set("adminLastName")} required /></div>
-          <div className="md:col-span-2"><Label>Admin email *</Label><Input type="email" value={form.adminEmail} onChange={set("adminEmail")} required /></div>
-          <div className="md:col-span-2"><FieldError message={error} /><Button disabled={loading} className="w-full md:w-auto">{loading ? "Creating…" : "Create organization"}</Button></div>
+        <form onSubmit={submit} className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Organization name" htmlFor="o-name" required className="md:col-span-2">
+              <Input id="o-name" required minLength={2} value={form.name} onChange={set("name")} placeholder="Acme Technologies" />
+            </Field>
+            <Field label="Organization email" htmlFor="o-email" required>
+              <Input id="o-email" type="email" required value={form.email} onChange={set("email")} placeholder="hello@company.com" />
+            </Field>
+            <Field label="Phone" htmlFor="o-phone">
+              <Input id="o-phone" type="tel" value={form.phone} onChange={set("phone")} placeholder="+233 …" />
+            </Field>
+            <Field label="Industry" htmlFor="o-industry">
+              <Input id="o-industry" value={form.industry} onChange={set("industry")} placeholder="e.g. Technology" />
+            </Field>
+            <Field label="Address" htmlFor="o-address">
+              <Input id="o-address" value={form.address} onChange={set("address")} placeholder="City, Country" />
+            </Field>
+          </div>
+
+          <div className="border-t border-neutral-100 pt-5">
+            <div className="flex items-center gap-2 text-[13px] font-semibold text-neutral-900">
+              <Mail className="h-4 w-4 text-neutral-500" /> Administrator
+            </div>
+            <p className="mt-1 text-[13px] text-neutral-500">
+              They&apos;ll receive a secure setup link and choose their own password.
+            </p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <Field label="First name" htmlFor="a-first" required>
+                <Input id="a-first" required value={form.adminFirstName} onChange={set("adminFirstName")} />
+              </Field>
+              <Field label="Last name" htmlFor="a-last" required>
+                <Input id="a-last" required value={form.adminLastName} onChange={set("adminLastName")} />
+              </Field>
+              <Field label="Work email" htmlFor="a-email" required className="md:col-span-2">
+                <Input id="a-email" type="email" required value={form.adminEmail} onChange={set("adminEmail")} />
+              </Field>
+            </div>
+          </div>
+
+          {error && (
+            <p className="text-[13px] font-medium text-red-600" role="alert">
+              {error}
+            </p>
+          )}
+
+          <div className="flex flex-wrap gap-2.5">
+            <Button type="submit" loading={loading}>
+              <Building2 className="h-4 w-4" /> {loading ? "Creating…" : "Create organization"}
+            </Button>
+            <Link href="/super-admin/organizations">
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>
