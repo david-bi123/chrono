@@ -25,7 +25,7 @@ interface SendArgs {
 export async function sendEmail(args: SendArgs): Promise<{ ok: boolean; skipped?: boolean }> {
   const mj = getClient();
   const fromEmail = process.env.MAIL_FROM_EMAIL;
-  const fromName = process.env.MAIL_FROM_NAME || "Chrono";
+  const fromName = process.env.MAIL_FROM_NAME || "ChronoSwift";
   if (!mj || !fromEmail) {
     console.log(`[email:dev] to=${args.to} subject=${args.subject}\n${args.text}`);
     return { ok: true, skipped: true };
@@ -46,11 +46,11 @@ export async function sendEmail(args: SendArgs): Promise<{ ok: boolean; skipped?
         HTMLPart: args.html,
         Headers: {
           "List-Unsubscribe": `<mailto:${fromEmail}?subject=unsubscribe>`,
-          "X-Mailer": "Chrono via Mailjet",
+          "X-Mailer": "ChronoSwift via Mailjet",
         },
         TrackOpens: "disabled",
         TrackClicks: "disabled",
-        CustomCampaign: "chrono-transactional",
+        CustomCampaign: "chronoswift-transactional",
       },
     ],
   });
@@ -80,7 +80,7 @@ function shell(
     `<tr><td style="background-color:#0B0F19;padding:22px 28px;border-radius:14px 14px 0 0;">` +
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>` +
     `<td align="left" style="font-family:Arial,Helvetica,sans-serif;">` +
-    `<div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#FFFFFF;letter-spacing:-0.5px;line-height:28px;"><span style="display:inline-block;background-color:#FFFFFF;color:#0B0F19;width:28px;height:28px;line-height:28px;text-align:center;border-radius:8px;font-size:16px;vertical-align:middle;">&#9719;</span>&nbsp; Chrono</div>` +
+    `<div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#FFFFFF;letter-spacing:-0.5px;line-height:28px;"><span style="display:inline-block;background-color:#FFFFFF;color:#0B0F19;width:28px;height:28px;line-height:28px;text-align:center;border-radius:8px;font-size:16px;vertical-align:middle;">&#9719;</span>&nbsp; ChronoSwift</div>` +
     `<div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9AA4B2;margin-top:6px;line-height:16px;">Smart attendance. Simple management.</div>` +
     `</td></tr></table></td></tr>` +
     // Card
@@ -96,7 +96,7 @@ function shell(
       ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;"><tr><td style="background-color:#F8FAFC;border:1px solid #E9EDF2;border-radius:8px;padding:12px 14px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#64748B;line-height:18px;">${footer}</td></tr></table>`
       : "") +
     `</td></tr>` +
-    `<tr><td align="center" style="padding:18px 8px 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#9AA4B2;line-height:16px;">&copy; ${year} Chrono &middot; Please do not share secure links &middot; This is an automated message</td></tr>` +
+    `<tr><td align="center" style="padding:18px 8px 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#9AA4B2;line-height:16px;">&copy; ${year} ChronoSwift &middot; Please do not share secure links &middot; This is an automated message</td></tr>` +
     `</table>` +
     `<!--[if mso]></td></tr></table><![endif]-->` +
     `</td></tr></table></body></html>`;
@@ -105,23 +105,23 @@ function shell(
 export async function sendOrgAdminInvitation(opts: {
   to: string; orgName: string; adminName: string; link: string; expiresNote: string;
 }) {
-  const subject = `You're invited to administer ${opts.orgName} on Chrono`;
+  const subject = `You're invited to administer ${opts.orgName} on ChronoSwift`;
   const body =
     `<p style="margin:0 0 12px;">Hi ${esc(opts.adminName)},</p>` +
-    `<p style="margin:0 0 12px;">Your organization <strong>${esc(opts.orgName)}</strong> was created on <strong>Chrono</strong>. You are the organization administrator.</p>` +
+    `<p style="margin:0 0 12px;">Your organization <strong>${esc(opts.orgName)}</strong> was created on <strong>ChronoSwift</strong>. You are the organization administrator.</p>` +
     `<p style="margin:0;">Click the button below to create your password and open your dashboard:</p>`;
   const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; This link is single-use. No password is included in this email — you will create it yourself on the secure setup page.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
   const html = shell("Set up your admin account", opts.orgName, body, { label: "Create password &rarr;", href: opts.link }, footer, subject);
-  return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.adminName},\n\nYour organization ${opts.orgName} was created on Chrono.\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
+  return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.adminName},\n\nYour organization ${opts.orgName} was created on ChronoSwift.\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
 }
 
 export async function sendStaffInvitation(opts: {
   to: string; orgName: string; staffName: string; link: string; expiresNote: string;
 }) {
-  const subject = `You're invited to join ${opts.orgName} on Chrono`;
+  const subject = `You're invited to join ${opts.orgName} on ChronoSwift`;
   const body =
     `<p style="margin:0 0 12px;">Hi ${esc(opts.staffName)},</p>` +
-    `<p style="margin:0 0 12px;">Welcome to <strong>${esc(opts.orgName)}</strong>! Your team uses <strong>Chrono</strong> to record attendance — just scan the office QR code and tap Clock In.</p>` +
+    `<p style="margin:0 0 12px;">Welcome to <strong>${esc(opts.orgName)}</strong>! Your team uses <strong>ChronoSwift</strong> to record attendance — just scan the office QR code and tap Clock In.</p>` +
     `<p style="margin:0;">Click the button below to create your password and complete your profile:</p>`;
   const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; If you didn't expect this invitation, you can safely ignore this email.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
   const html = shell("Complete your account setup", opts.orgName, body, { label: "Complete Account Setup &rarr;", href: opts.link }, footer, subject);
@@ -129,21 +129,21 @@ export async function sendStaffInvitation(opts: {
 }
 
 export async function sendPasswordReset(opts: { to: string; name: string; link: string }) {
-  const subject = "Reset your Chrono password";
+  const subject = "Reset your ChronoSwift password";
   const body =
     `<p style="margin:0 0 12px;">Hi ${esc(opts.name)},</p>` +
     `<p style="margin:0;">We received a request to reset your password. Click below — the link expires in 60 minutes:</p>`;
   const footer = `&#128274; If you didn't request this, you can safely ignore this email.<br><br>&#128229; Can&apos;t find it? Check Spam/Promotions.`;
-  const html = shell("Reset your password", "Chrono", body, { label: "Reset password &rarr;", href: opts.link }, footer, subject);
+  const html = shell("Reset your password", "ChronoSwift", body, { label: "Reset password &rarr;", href: opts.link }, footer, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.name},\n\nReset your password here (expires in 60 minutes): ${opts.link}` });
 }
 
 export async function sendWelcome(opts: { to: string; name: string; orgName: string }) {
-  const subject = `Welcome to ${opts.orgName} on Chrono`;
+  const subject = `Welcome to ${opts.orgName} on ChronoSwift`;
   const body =
     `<p style="margin:0 0 12px;">Hi ${esc(opts.name)},</p>` +
     `<p style="margin:0;">Your account is active. You can now sign in and record attendance by scanning your organization's QR code at the entrance.</p>`;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
-  const html = shell("Welcome aboard", opts.orgName, body, { label: "Sign in to Chrono &rarr;", href: `${appUrl}/login` }, undefined, subject);
+  const appUrl = process.env.APP_URL || "";
+  const html = shell("Welcome aboard", opts.orgName, body, { label: "Sign in to ChronoSwift &rarr;", href: `${appUrl}/login` }, undefined, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.name},\n\nYour account at ${opts.orgName} is active. Sign in: ${appUrl}/login` });
 }

@@ -8,7 +8,7 @@ import { generateRawToken, hashToken } from "@/lib/auth/tokens";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
 
 function appUrl() {
-  return (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/$/, "");
+  return (process.env.APP_URL || "").replace(/\/$/, "");
 }
 
 export async function GET() {

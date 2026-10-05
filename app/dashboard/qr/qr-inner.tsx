@@ -66,7 +66,7 @@ export default function QrPage() {
             <div className="text-sm">
               <div className="break-all rounded bg-neutral-50 p-2 font-mono text-xs">{created.url}</div>
               <div className="mt-3 flex gap-2">
-                <a href={created.qrDataUrl} download="chrono-qr.png" className="rounded-lg bg-neutral-900 px-4 py-2 text-white">Download PNG</a>
+                <a href={created.qrDataUrl} download="chronoswift-qr.png" className="rounded-lg bg-neutral-900 px-4 py-2 text-white">Download PNG</a>
                 <button onClick={() => window.print()} className="rounded-lg border px-4 py-2">Print</button>
               </div>
             </div>

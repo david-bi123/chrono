@@ -1,8 +1,8 @@
 {
-  "name": "chrono",
+  "name": "chronoswift",
   "version": "1.0.0",
   "private": true,
-  "description": "Chrono — Smart attendance. Simple management. Multi-tenant staff attendance SaaS.",
+  "description": "ChronoSwift — Smart attendance. Simple management. Multi-tenant staff attendance SaaS.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

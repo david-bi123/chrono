@@ -66,7 +66,7 @@ function AcceptInner() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white">◷</div>
-            <CardTitle className="text-base">Chrono</CardTitle>
+            <CardTitle className="text-base">ChronoSwift</CardTitle>
           </div>
           <CardDescription>{info ? `Join ${info.orgName} as ${info.email}` : "Accept invitation"}</CardDescription>
         </CardHeader>

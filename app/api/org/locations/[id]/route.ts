@@ -30,7 +30,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   loc.tokenHash = hashToken(raw);
   loc.status = "ACTIVE";
   await loc.save();
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/$/, "");
+  const appUrl = (process.env.APP_URL || "").replace(/\/$/, "");
   const scanUrl = `${appUrl}/attendance/scan/${raw}`;
   const qrDataUrl = await QRCode.toDataURL(scanUrl, { margin: 1, width: 512 });
   await writeAudit({

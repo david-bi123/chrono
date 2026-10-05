@@ -102,7 +102,7 @@ export function AppShell({
         <div className="flex items-center gap-3 border-b border-neutral-100 px-5 py-4">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-[16px] text-white">◷</div>
           <div className="min-w-0">
-            <div className="text-[15px] font-bold leading-none tracking-tight">Chrono</div>
+            <div className="text-[15px] font-bold leading-none tracking-tight">ChronoSwift</div>
             {orgName && <div className="mt-1 max-w-[160px] truncate text-[11.5px] font-medium text-neutral-500">{orgName}</div>}
           </div>
         </div>
@@ -134,7 +134,7 @@ export function AppShell({
             <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white">◷</div>
-                <span className="font-bold">Chrono</span>
+                <span className="font-bold">ChronoSwift</span>
               </div>
               <button onClick={() => setOpen(false)} className="rounded-lg p-2 hover:bg-neutral-100" aria-label="Close menu">
                 <X className="h-5 w-5" />

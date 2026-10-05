@@ -36,7 +36,7 @@ export async function GET(req: Request) {
     });
     const csv = [header, ...lines].join("\n");
     return new NextResponse(csv, {
-      headers: { "Content-Type": "text/csv", "Content-Disposition": `attachment; filename="chrono-report.csv"` },
+      headers: { "Content-Type": "text/csv", "Content-Disposition": `attachment; filename="chronoswift-report.csv"` },
     });
   }
 

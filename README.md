@@ -1,4 +1,4 @@
-# Chrono — Smart attendance. Simple management.
+# ChronoSwift — Smart attendance. Simple management.
 
 Multi-tenant staff attendance SaaS: Super Admin → Organizations → Org Admins → Staff. QR clock-in/out with server-side timestamps, tenant isolation, audit logs, Mailjet emails, CSV reports.
 
@@ -6,7 +6,7 @@ Multi-tenant staff attendance SaaS: Super Admin → Organizations → Org Admins
 Next.js 14 (App Router), TypeScript, MongoDB Atlas (Mongoose), Tailwind, Zod, bcryptjs, jose (JWT sessions in HTTP-only cookies), node-mailjet, qrcode. Deployable to Vercel.
 
 ## Quick start
-1. `cp .env.example .env.local` and fill `MONGODB_URI`, `AUTH_SECRET` (≥32 chars), `NEXT_PUBLIC_APP_URL`.
+1. `cp .env.example .env.local` and fill `MONGODB_URI`, `AUTH_SECRET` (≥32 chars), `APP_URL`.
 2. `npm install`
 3. `npm run seed` (dev only — creates superadmin@chrono.local / ChangeMe123!, Acme org, admin@acme.local / Admin123!, 5 staff / Staff123!).
 4. `npm run dev` → http://localhost:3000
@@ -36,7 +36,7 @@ See `.env.example`. Mailjet optional in dev (emails log to console when unconfig
 `npm test` (vitest): attendance rules, token hashing. Manual checklist in spec §31: duplicate clock-in/out, wrong-org QR, revoked QR, disabled staff, timezone, exports.
 
 ## Deploy (Vercel)
-Set env vars in Vercel dashboard, `NEXT_PUBLIC_APP_URL=https://<your-app>.vercel.app`, deploy. Ensure MongoDB Atlas IP allowlist + `MONGODB_URI`.
+Set env vars in Vercel dashboard, `APP_URL=https://<your-app>.vercel.app`, deploy. Ensure MongoDB Atlas IP allowlist + `MONGODB_URI`.
 
 ## Security notes
 Change seed passwords; rotate `AUTH_SECRET` safely (invalidates sessions); keep Mailjet/Mongo secrets server-only; QR proves scan of code, not physical presence (geofencing is a future opt-in).

@@ -55,7 +55,7 @@ function LoginInner() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(500px_300px_at_20%_0%,rgba(255,255,255,0.09),transparent)]" />
         <div className="relative flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[17px] text-neutral-900">◷</div>
-          <span className="text-[16px] font-bold tracking-tight">Chrono</span>
+          <span className="text-[16px] font-bold tracking-tight">ChronoSwift</span>
         </div>
         <div className="relative">
           <h2 className="max-w-md text-balance text-3xl font-bold leading-tight tracking-tight">
@@ -86,7 +86,7 @@ function LoginInner() {
           <CardContent className="p-6 sm:p-8">
             <div className="flex items-center gap-2 lg:hidden">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white">◷</div>
-              <span className="font-bold">Chrono</span>
+              <span className="font-bold">ChronoSwift</span>
             </div>
             <h1 className="mt-4 text-xl font-bold tracking-tight lg:mt-0">Welcome back</h1>
             <p className="mt-1 text-[13.5px] text-neutral-500">Sign in to your workspace.</p>

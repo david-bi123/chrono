@@ -21,7 +21,7 @@ loadEnvFile();
 
 async function main() {
   const to = process.argv[2] || "samueldagbo50@gmail.com";
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const appUrl = (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
   const res = await sendStaffInvitation({
     to,
     orgName: "Acme Technologies",

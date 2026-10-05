@@ -121,7 +121,7 @@ async function main() {
       status: "ACTIVE",
       createdBy: admin._id,
     });
-    console.log(`Demo QR scan URL: ${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/attendance/scan/${raw}`);
+    console.log(`Demo QR scan URL: ${process.env.APP_URL || "http://localhost:3000"}/attendance/scan/${raw}`);
   }
 
   // Attendance for last 5 weekdays

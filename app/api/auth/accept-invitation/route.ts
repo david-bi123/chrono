@@ -27,7 +27,7 @@ export async function GET(req: Request) {
   return NextResponse.json({
     email: (inv as { email: string }).email,
     type: (inv as { type: string }).type,
-    orgName: (org as { name?: string } | null)?.name || "Chrono",
+    orgName: (org as { name?: string } | null)?.name || "ChronoSwift",
   });
 }
 
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
   inv.usedAt = new Date();
   await inv.save();
   const org = inv.organizationId ? await Organization.findById(inv.organizationId).lean() : null;
-  const orgName = (org as { name?: string } | null)?.name || "Chrono";
+  const orgName = (org as { name?: string } | null)?.name || "ChronoSwift";
   await sendWelcome({ to: user.email, name: user.firstName, orgName }).catch(() => {});
   await writeAudit({
     organizationId: inv.organizationId ? String(inv.organizationId) : null,

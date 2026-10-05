@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     type: "STAFF",
     expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000),
   });
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = process.env.APP_URL || "";
   await sendStaffInvitation({
     to: email,
     orgName: org.name,

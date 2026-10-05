@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     type: "PASSWORD_RESET",
     expiresAt: new Date(Date.now() + 60 * 60 * 1000),
   });
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = process.env.APP_URL || "";
   await sendPasswordReset({
     to: email,
     name: `${user.firstName}`,

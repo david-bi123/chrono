@@ -30,10 +30,10 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000),
   });
   const org = await Organization.findById(s.orgId);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = process.env.APP_URL || "";
   await sendStaffInvitation({
     to: staff.email,
-    orgName: org?.name || "Chrono",
+    orgName: org?.name || "ChronoSwift",
     staffName: `${staff.firstName} ${staff.lastName}`,
     link: `${appUrl}/accept-invitation?token=${raw}`,
     expiresNote: "This invitation expires in 72 hours and can only be used once.",
