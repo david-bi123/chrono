@@ -59,7 +59,7 @@ export default function SuperAdminHome() {
     <div className="space-y-6">
       <PageHeader
         title="Platform overview"
-        description="Everything provisioned on Chrono, at a glance."
+        description="Everything provisioned on ChronoSwift, at a glance."
         actions={
           <Link href="/super-admin/organizations/new">
             <Button>

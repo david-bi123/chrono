@@ -24,7 +24,7 @@ export default async function Page() {
       <div className="space-y-5">
         <PageHeader
           title="Platform activity"
-          description="Cross-tenant actions recorded across Chrono, with actor context and IP address."
+          description="Cross-tenant actions recorded across ChronoSwift, with actor context and IP address."
         />
         <AuditFeed title="Activity feed" description="The most recent platform events, newest first." />
       </div>

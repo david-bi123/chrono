@@ -2,7 +2,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Input, Label, FieldError } from "@/components/ui/input";
+import { Label, FieldError, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Sparkles } from "lucide-react";
@@ -69,7 +69,7 @@ function ResetInner() {
   return (
     <AuthShell
       title="Create a new password"
-      subtitle="Choose a strong password for your Chrono account."
+      subtitle="Choose a strong password for your ChronoSwift account."
       footer={
         <Link href="/login" className="inline-flex items-center gap-1.5 font-medium text-neutral-700 hover:text-neutral-900">
           Back to sign in
@@ -79,9 +79,8 @@ function ResetInner() {
       <form onSubmit={submit} className="mt-6 space-y-4">
         <div>
           <Label htmlFor="pw">New password</Label>
-          <Input
+          <PasswordInput
             id="pw"
-            type="password"
             autoComplete="new-password"
             className="h-10"
             value={password}

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { UserRound, ShieldCheck, Save } from "lucide-react";
-import { Input, Field } from "@/components/ui/input";
+import { Input, Field, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
@@ -198,9 +198,8 @@ export default function ProfilePage() {
           <CardContent>
             <form onSubmit={changePw} className="grid gap-4">
               <Field label="Current password" htmlFor="pw-current" required>
-                <Input
+                <PasswordInput
                   id="pw-current"
-                  type="password"
                   autoComplete="current-password"
                   required
                   value={pw.current}
@@ -208,9 +207,8 @@ export default function ProfilePage() {
                 />
               </Field>
               <Field label="New password" htmlFor="pw-new" required>
-                <Input
+                <PasswordInput
                   id="pw-new"
-                  type="password"
                   autoComplete="new-password"
                   required
                   value={pw.next}
@@ -218,9 +216,8 @@ export default function ProfilePage() {
                 />
               </Field>
               <Field label="Confirm new password" htmlFor="pw-confirm" required error={pwError}>
-                <Input
+                <PasswordInput
                   id="pw-confirm"
-                  type="password"
                   autoComplete="new-password"
                   required
                   value={pw.confirm}

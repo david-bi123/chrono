@@ -43,7 +43,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        /* Chrono brand blue — precision & signal */
+        /* ChronoSwift brand blue — precision & signal */
         brand: {
           50: "#EEF3FF",
           100: "#DCE6FF",

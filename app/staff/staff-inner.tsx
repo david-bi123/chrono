@@ -1,10 +1,12 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, Clock3, QrCode, TrendingUp, AlarmClock, Hourglass } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CalendarDays, Clock3, QrCode, TrendingUp, AlarmClock, Hourglass, ScanLine, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input, Label, FieldError, Hint } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatSkeleton } from "@/components/ui/stat-card";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/states";
@@ -126,7 +128,7 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
                   You haven&apos;t clocked in yet today.
                 </div>
                 <p className="mt-1 max-w-lg text-[13.5px] leading-relaxed text-neutral-500">
-                  Scan the Chrono QR code posted at your entrance with your phone camera, then tap{" "}
+                  Scan the ChronoSwift QR code posted at your entrance with your phone camera, then tap{" "}
                   <strong className="font-semibold text-neutral-700">Clock In</strong>.
                 </p>
               </div>
@@ -146,6 +148,9 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
           )}
         </CardContent>
       </Card>
+
+      {/* How to record attendance */}
+      <ScanCard state={!t?.clockIn ? "in" : t?.clockOut ? "done" : "out"} />
 
       {/* Last 30 days */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -213,6 +218,102 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function ScanCard({ state }: { state: "in" | "out" | "done" }) {
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+
+  const copy =
+    state === "in"
+      ? {
+          title: "Scan to clock in",
+          desc: "Open the ChronoSwift QR code posted at your entrance, then tap Clock In. Your time is stamped by the server.",
+          cta: "Clock In",
+        }
+      : state === "out"
+        ? {
+            title: "Scan to clock out",
+            desc: "Scan the same QR code when you leave and tap Clock Out to record your hours.",
+            cta: "Clock Out",
+          }
+        : {
+            title: "You're clocked out for today",
+            desc: "Scan the QR code again tomorrow morning to clock in. Your next shift will show up here.",
+            cta: "Clock In",
+          };
+
+  const steps = [
+    `Find the printed ChronoSwift QR code at your entrance.`,
+    "Point your phone camera at it and open the link.",
+    `Tap ${copy.cta} — attendance is recorded instantly.`,
+  ];
+
+  function open(e: React.FormEvent) {
+    e.preventDefault();
+    const raw = value.trim();
+    const match = raw.match(/\/attendance\/scan\/([^/?#\s]+)/);
+    const token = match ? match[1] : raw;
+    if (!/^[A-Za-z0-9_-]{8,}$/.test(token)) {
+      setError("That doesn't look like a clock-in link. Paste the full URL you scanned.");
+      return;
+    }
+    setError("");
+    router.push(`/attendance/scan/${encodeURIComponent(token)}`);
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+            {state === "done" ? <CheckCircle2 className="h-4 w-4" /> : <ScanLine className="h-4 w-4" />}
+          </span>
+          {copy.title}
+        </CardTitle>
+        <CardDescription>{copy.desc}</CardDescription>
+      </CardHeader>
+
+      <CardContent className="grid gap-5 md:grid-cols-2">
+        <ol className="space-y-3">
+          {steps.map((s, i) => (
+            <li key={s} className="flex items-start gap-3 text-[13.5px] leading-relaxed text-neutral-600">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold text-white tabular">
+                {i + 1}
+              </span>
+              {s}
+            </li>
+          ))}
+        </ol>
+
+        <form onSubmit={open} className="rounded-xl border border-neutral-200 bg-neutral-50/70 p-4">
+          <Label htmlFor="scan-link">Have the QR link?</Label>
+          <div className="mt-1 flex gap-2">
+            <Input
+              id="scan-link"
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+                if (error) setError("");
+              }}
+              placeholder="…/attendance/scan/chr_…"
+              aria-describedby="scan-link-hint"
+            />
+            <Button type="submit" className="shrink-0">
+              Open <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <Hint>
+            <span id="scan-link-hint">
+              Paste the URL from the code your administrator shared — this opens the same clock-in screen.
+            </span>
+          </Hint>
+          <FieldError message={error} />
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 

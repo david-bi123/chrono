@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const inputBase =
@@ -45,6 +45,28 @@ export const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttrib
     );
   }
 );
+
+export function PasswordInput({ className, ...props }: InputProps) {
+  const [visible, setVisible] = React.useState(false);
+  return (
+    <div className="relative">
+      <input
+        type={visible ? "text" : "password"}
+        className={cn(inputBase, "h-9 pr-11", className)}
+        {...props}
+      />
+      <button
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+        aria-label={visible ? "Hide password" : "Show password"}
+        aria-pressed={visible}
+        className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-neutral-500 transition-colors hover:text-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600/40"
+      >
+        {visible ? <EyeOff className="h-4 w-4" aria-hidden /> : <Eye className="h-4 w-4" aria-hidden />}
+      </button>
+    </div>
+  );
+}
 
 export function Label({ className, required, ...props }: React.LabelHTMLAttributes<HTMLLabelElement> & { required?: boolean }) {
   return (

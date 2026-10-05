@@ -2,7 +2,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Input, Label, FieldError } from "@/components/ui/input";
+import { Label, FieldError, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Spinner } from "@/components/ui/states";
@@ -128,9 +128,8 @@ function AcceptInner() {
       <form onSubmit={submit} className="mt-6 space-y-4">
         <div>
           <Label htmlFor="pw">Create password</Label>
-          <Input
+          <PasswordInput
             id="pw"
-            type="password"
             autoComplete="new-password"
             placeholder="Min 8 chars, upper + lower + number"
             className="h-10"

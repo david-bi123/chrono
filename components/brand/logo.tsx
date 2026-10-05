@@ -8,7 +8,7 @@ const BG: Record<Tone, string> = {
   light: "text-white",
 };
 
-/** Chrono mark — a clock face, signalling time + precision. */
+/** ChronoSwift mark — a clock face, signalling time + precision. */
 export function LogoMark({
   className,
   tone = "ink",
@@ -26,7 +26,7 @@ export function LogoMark({
       viewBox="0 0 32 32"
       className={cn(square && "rounded-[9px]", BG[tone], className)}
       role="img"
-      aria-label="Chrono"
+      aria-label="ChronoSwift"
     >
       {square && <rect width="32" height="32" rx="9" fill="currentColor" />}
       <circle cx="16" cy="16" r="8.25" fill="none" stroke={square ? stroke : "currentColor"} strokeWidth="1.9" />
@@ -67,7 +67,7 @@ export function Logo({
             tone === "light" ? "text-white" : "text-neutral-900"
           )}
         >
-          Chrono
+          ChronoSwift
         </span>
       )}
     </span>

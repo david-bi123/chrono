@@ -34,7 +34,7 @@ export function AuthShell({
             Attendance management, without the paperwork.
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-neutral-400">
-            Chrono records when your team arrives and leaves — server-side, tamper-proof, and ready for payroll.
+            ChronoSwift records when your team arrives and leaves — server-side, tamper-proof, and ready for payroll.
           </p>
           <ul className="mt-8 space-y-4">
             {POINTS.map((p) => (

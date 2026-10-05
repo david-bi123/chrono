@@ -6,11 +6,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "Chrono — Smart attendance. Simple management.", template: "%s · Chrono" },
+  title: { default: "ChronoSwift — Smart attendance. Simple management.", template: "%s · ChronoSwift" },
   description: "Track when your team arrives, leaves, and works — all from one simple platform.",
   metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
   openGraph: {
-    title: "Chrono — Smart attendance. Simple management.",
+    title: "ChronoSwift — Smart attendance. Simple management.",
     description: "QR attendance, staff management, and reports for modern organizations.",
     type: "website",
   },

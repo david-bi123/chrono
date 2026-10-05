@@ -2,7 +2,7 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Input, Label, FieldError } from "@/components/ui/input";
+import { Input, Label, FieldError, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { CheckCircle2, X } from "lucide-react";
@@ -60,7 +60,7 @@ function LoginInner() {
   return (
     <AuthShell
       title="Welcome back"
-      subtitle="Sign in to your Chrono workspace."
+      subtitle="Sign in to your ChronoSwift workspace."
       footer={
         <>
           Need an account? Your administrator invites you by email.{" "}
@@ -110,9 +110,8 @@ function LoginInner() {
               Forgot password?
             </Link>
           </div>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             autoComplete="current-password"
             placeholder="••••••••"
             className="h-10"

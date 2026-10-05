@@ -300,7 +300,7 @@ export function AppShell({
             <div className="hidden min-w-0 items-center gap-2 text-[13px] md:flex">
               <span className="flex items-center gap-1.5 font-medium text-neutral-500">
                 <LogoMark className="h-4 w-4" />
-                Chrono
+                ChronoSwift
               </span>
               <span className="text-neutral-300" aria-hidden>
                 /
@@ -320,7 +320,7 @@ export function AppShell({
 
             {/* Mobile brand */}
             <div className="flex items-center gap-2 md:hidden">
-              <span className="text-[15px] font-semibold tracking-tight">Chrono</span>
+              <span className="text-[15px] font-semibold tracking-tight">ChronoSwift</span>
             </div>
 
             <div className="ml-auto flex items-center gap-2.5">

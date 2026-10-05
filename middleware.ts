@@ -8,9 +8,18 @@ function isPublic(path: string): boolean {
   if (PUBLIC.some((p) => path === p || path.startsWith(p + "/"))) return true;
   if (path.startsWith("/attendance/scan/")) return true; // page handles auth itself
   if (path.startsWith("/api/auth/")) return true;
+  // QR scan flow must work while logged out: the page shows a sign-in prompt,
+  // and both endpoints enforce their own auth (scan GET is session-optional,
+  // clock POST returns JSON 401 when unauthenticated). A middleware redirect
+  // here would turn into HTML that breaks fetch().json() callers.
+  if (path.startsWith("/api/attendance/scan/")) return true;
+  if (path === "/api/attendance/clock") return true;
   if (path === "/unauthorized") return true;
   return false;
 }
+
+// Exported for unit tests.
+export { isPublic };
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

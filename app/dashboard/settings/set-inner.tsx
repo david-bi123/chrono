@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Building2, Clock3, ShieldCheck, Check } from "lucide-react";
-import { Input, Select, Textarea, Field, Label } from "@/components/ui/input";
+import { Input, Select, Textarea, Field, Label, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
@@ -411,9 +411,8 @@ function SecuritySection() {
       <CardContent>
         <form onSubmit={submit} className="grid max-w-lg gap-4">
           <Field label="Current password" htmlFor="p-current" required>
-            <Input
+            <PasswordInput
               id="p-current"
-              type="password"
               autoComplete="current-password"
               required
               value={pw.current}
@@ -421,9 +420,8 @@ function SecuritySection() {
             />
           </Field>
           <Field label="New password" htmlFor="p-new" required>
-            <Input
+            <PasswordInput
               id="p-new"
-              type="password"
               autoComplete="new-password"
               required
               value={pw.next}
@@ -431,9 +429,8 @@ function SecuritySection() {
             />
           </Field>
           <Field label="Confirm new password" htmlFor="p-confirm" required error={error}>
-            <Input
+            <PasswordInput
               id="p-confirm"
-              type="password"
               autoComplete="new-password"
               required
               value={pw.confirm}

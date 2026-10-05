@@ -12,6 +12,7 @@ import {
   Copy,
   ShieldAlert,
   CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
 import { Input, Field } from "@/components/ui/input";
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -131,7 +132,7 @@ export default function QrPage({ orgName }: { orgName: string }) {
           <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
           <p>
             <span className="font-semibold">Codes are shown once.</span> Download or print a location&apos;s QR code
-            straight after creating or regenerating it — Chrono only stores a secure hash, so it can&apos;t re-show an
+            straight after creating or regenerating it — ChronoSwift only stores a secure hash, so it can&apos;t re-show an
             existing code. Regenerating invalidates old prints immediately.
           </p>
         </div>
@@ -291,6 +292,9 @@ function QrPanel({
 }) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  // The QR embeds this URL verbatim. If APP_URL wasn't configured server-side
+  // the link is relative and no phone will be able to open it — say so loudly.
+  const absolute = location.url.startsWith("http://") || location.url.startsWith("https://");
 
   function doPrint() {
     document.body.classList.add("chrono-printing");
@@ -331,10 +335,23 @@ function QrPanel({
         </div>
 
         {/* The printable sheet */}
+        {!absolute && (
+          <div
+            role="alert"
+            className="no-print mx-auto flex w-full max-w-[520px] items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-[13px] leading-relaxed text-amber-800"
+          >
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              This link is relative because <code className="font-mono font-semibold">APP_URL</code> isn&apos;t set on
+              the server — phones scanning this QR won&apos;t reach it. Set the public address, restart, then
+              regenerate the code.
+            </span>
+          </div>
+        )}
         <div className="print-sheet mx-auto w-full max-w-[520px] rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-lift sm:p-10">
           <div className="flex flex-col items-center">
             <LogoMark className="h-11 w-11" />
-            <div className="mt-3 text-[17px] font-semibold tracking-[-0.02em]">Chrono</div>
+            <div className="mt-3 text-[17px] font-semibold tracking-[-0.02em]">ChronoSwift</div>
             <div className="mt-0.5 text-[13px] text-neutral-500">{orgName}</div>
           </div>
 
@@ -364,7 +381,7 @@ function QrPanel({
         <div className="no-print flex flex-wrap items-center justify-center gap-2.5">
           <ButtonLink
             href={location.qrDataUrl}
-            download={`chrono-${location.name.toLowerCase().replace(/\s+/g, "-")}.png`}
+            download={`chronoswift-${location.name.toLowerCase().replace(/\s+/g, "-")}.png`}
             variant="secondary"
           >
             <Download className="h-4 w-4" /> Download PNG

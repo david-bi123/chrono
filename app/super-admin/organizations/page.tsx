@@ -15,7 +15,7 @@ export default async function Page() {
   return (
     <AppShell
       title="Organizations"
-      subtitle="Tenants on the Chrono platform"
+      subtitle="Tenants on the ChronoSwift platform"
       userName={me ? `${me.firstName} ${me.lastName}` : "Super Admin"}
       role="SUPER_ADMIN"
       nav={SUPER_ADMIN_NAV}

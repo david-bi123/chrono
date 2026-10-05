@@ -36,7 +36,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
         if (!r.ok) setError(d.error || "This QR code isn't valid.");
         else setInfo(d);
       })
-      .catch(() => setError("We couldn't reach Chrono. Check your connection and try again."));
+      .catch(() => setError("We couldn't reach ChronoSwift. Check your connection and try again."));
   }, [params.token]);
 
   async function clock(mode: "in" | "out") {
@@ -292,7 +292,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
       <div className="flex w-full max-w-md items-center justify-center gap-2.5">
         <LogoMark className="h-8 w-8" />
-        <span className={cn("text-[17px] font-semibold tracking-[-0.02em] text-neutral-900")}>Chrono</span>
+        <span className={cn("text-[17px] font-semibold tracking-[-0.02em] text-neutral-900")}>ChronoSwift</span>
       </div>
       <div className="mt-8 flex w-full flex-col items-center">{children}</div>
     </div>

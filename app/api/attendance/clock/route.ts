@@ -73,7 +73,19 @@ export async function POST(req: Request) {
           status,
           source: "QR",
         });
-    await rec.save();
+    try {
+      await rec.save();
+    } catch (e: unknown) {
+      // Concurrent double-submit: the unique (org, staff, date) index rejected
+      // the second write. Return the winning record instead of a 500.
+      if ((e as { code?: number })?.code === 11000) {
+        const dup = await Attendance.findOne({ organizationId: s.orgId, staffId: s.sub, date: dateKey });
+        if (dup?.clockIn) {
+          return NextResponse.json({ error: "You're already clocked in", attendance: serialize(dup) }, { status: 409 });
+        }
+      }
+      throw e;
+    }
     await writeAudit({
       organizationId: String(s.orgId), actorId: s.sub, action: "CLOCK_IN",
       targetType: "Attendance", targetId: String(rec._id),

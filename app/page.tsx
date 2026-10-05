@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     q: "Why did my invitation land in Spam?",
-    a: "New senders often do, especially when sent from a Gmail address through an email service. Every screen that sends mail in Chrono tells the recipient to check Spam and Promotions. Using your own domain as the sender (with SPF/DKIM records) fixes this permanently.",
+    a: "New senders often do, especially when sent from a Gmail address through an email service. Every screen that sends mail in ChronoSwift tells the recipient to check Spam and Promotions. Using your own domain as the sender (with SPF/DKIM records) fixes this permanently.",
   },
   {
     q: "What timezone is attendance recorded in?",
@@ -324,7 +324,7 @@ export default function LandingPage() {
             <Logo size="sm" />
             <span className="hidden sm:inline">· Smart attendance. Simple management.</span>
           </div>
-          <div>© {new Date().getFullYear()} Chrono. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} ChronoSwift. All rights reserved.</div>
         </div>
       </footer>
     </div>
