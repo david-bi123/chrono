@@ -17,8 +17,9 @@ import { Avatar } from "@/components/ui/avatar";
 import { StatusBadge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/stat-card";
 import { EmptyState, ErrorState, KpiSkeleton, Skeleton } from "@/components/ui/states";
-import { ConfirmDialog } from "@/components/ui/dialog";
+import { ConfirmDialog, Modal } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/toast";
+import { SetupLinkPanel } from "@/components/ui/spam-notice";
 import { formatMinutes } from "@/lib/utils";
 
 type Person = {
@@ -64,6 +65,7 @@ export default function StaffProfile({ id }: { id: string }) {
     next: "DISABLED",
   });
   const [busy, setBusy] = useState(false);
+  const [resendResult, setResendResult] = useState<{ email: string; link: string } | null>(null);
 
   const load = useCallback(() => {
     setError("");
@@ -169,12 +171,23 @@ export default function StaffProfile({ id }: { id: string }) {
               <Button
                 variant="secondary"
                 onClick={async () => {
-                  const r = await fetch(`/api/org/staff/${id}/resend`, { method: "POST" });
-                  toast(
-                    r.ok
-                      ? { title: "Invitation resent", description: `Sent to ${p.email}.`, variant: "success" }
-                      : { title: "Unable to resend invitation", variant: "error" }
-                  );
+                  try {
+                    const r = await fetch(`/api/org/staff/${id}/resend`, { method: "POST" });
+                    const d = await r.json().catch(() => ({}));
+                    if (!r.ok) throw new Error(d.error || "resend failed");
+                    if (d.emailSent === false && d.setupLink) {
+                      setResendResult({ email: p.email, link: d.setupLink });
+                      toast({
+                        title: "Invitation recreated",
+                        description: "Email delivery failed — share the setup link manually.",
+                        variant: "warning",
+                      });
+                    } else {
+                      toast({ title: "Invitation resent", description: `Sent to ${p.email}.`, variant: "success" });
+                    }
+                  } catch {
+                    toast({ title: "Unable to resend invitation", variant: "error" });
+                  }
                 }}
               >
                 <Mail className="h-4 w-4" /> Resend invite
@@ -330,6 +343,17 @@ export default function StaffProfile({ id }: { id: string }) {
         </Card>
       )}
 
+      <Modal
+        open={!!resendResult}
+        onOpenChange={(o) => {
+          if (!o) setResendResult(null);
+        }}
+        title="Share the setup link"
+        size="sm"
+        footer={<Button onClick={() => setResendResult(null)}>Done</Button>}
+      >
+        {resendResult && <SetupLinkPanel link={resendResult.link} email={resendResult.email} />}
+      </Modal>
       <ConfirmDialog
         open={confirm.open}
         onOpenChange={(o) => setConfirm({ ...confirm, open: o })}

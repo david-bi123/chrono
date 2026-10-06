@@ -58,43 +58,74 @@ export async function POST(req: Request) {
   if (await User.findOne({ organizationId: s.orgId, employeeId: parsed.data.employeeId })) {
     return NextResponse.json({ error: "Employee ID already in use" }, { status: 409 });
   }
-  const staff = await User.create({
-    organizationId: s.orgId,
-    role: "STAFF",
-    firstName: parsed.data.firstName,
-    lastName: parsed.data.lastName,
-    email,
-    employeeId: parsed.data.employeeId,
-    department: parsed.data.department || undefined,
-    position: parsed.data.position || undefined,
-    phone: parsed.data.phone || undefined,
-    status: "PENDING",
-  });
+  // The staff record and its invitation must succeed together. On any failure
+  // we remove the partial record so a retry starts clean instead of hitting
+  // "Email already in use" with no way to recover the stranded account.
   const raw = generateRawToken();
-  await Invitation.create({
-    organizationId: s.orgId,
-    email,
-    userId: staff._id,
-    tokenHash: hashToken(raw),
-    type: "STAFF",
-    expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000),
-  });
+  let staffId: string | null = null;
+  try {
+    const staff = await User.create({
+      organizationId: s.orgId,
+      role: "STAFF",
+      firstName: parsed.data.firstName,
+      lastName: parsed.data.lastName,
+      email,
+      employeeId: parsed.data.employeeId,
+      department: parsed.data.department || undefined,
+      position: parsed.data.position || undefined,
+      phone: parsed.data.phone || undefined,
+      status: "PENDING",
+    });
+    staffId = String(staff._id);
+    await Invitation.create({
+      organizationId: s.orgId,
+      email,
+      userId: staff._id,
+      tokenHash: hashToken(raw),
+      type: "STAFF",
+      expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000),
+    });
+  } catch (e) {
+    if (staffId) await User.deleteOne({ _id: staffId }).catch(() => {});
+    if ((e as { code?: number })?.code === 11000) {
+      return NextResponse.json({ error: "Email already in use" }, { status: 409 });
+    }
+    console.error("invite staff failed", e);
+    return NextResponse.json({ error: "Couldn't send the invitation. Please try again." }, { status: 500 });
+  }
+
+  const staff = await User.findById(staffId).lean() as unknown as { firstName: string; lastName: string } | null;
   const appUrl = process.env.APP_URL || "";
-  await sendStaffInvitation({
-    to: email,
-    orgName: org.name,
-    staffName: `${staff.firstName} ${staff.lastName}`,
-    link: `${appUrl}/accept-invitation?token=${raw}`,
-    expiresNote: "This invitation expires in 72 hours and can only be used once.",
-  });
+  const setupLink = `${appUrl}/accept-invitation?token=${raw}`;
+
+  // Email delivery must never fail the request: the account already exists.
+  // When delivery fails (or email isn't configured) the setup link is handed
+  // back so it can be shared manually instead of stranding the new employee.
+  let emailSent = false;
+  try {
+    const sent = await sendStaffInvitation({
+      to: email,
+      orgName: org.name,
+      staffName: `${staff?.firstName || parsed.data.firstName} ${staff?.lastName || parsed.data.lastName}`,
+      link: setupLink,
+      expiresNote: "This invitation expires in 72 hours and can only be used once.",
+    });
+    emailSent = !sent.skipped;
+  } catch (e) {
+    console.error("staff invitation email failed", e);
+    emailSent = false;
+  }
   await writeAudit({
     organizationId: s.orgId,
     actorId: s.sub,
     action: "STAFF_INVITED",
     targetType: "User",
-    targetId: String(staff._id),
-    metadata: { email },
+    targetId: String(staffId),
+    metadata: { email, emailSent },
     ...auditContextFrom(req),
   });
-  return NextResponse.json({ ok: true, id: String(staff._id) }, { status: 201 });
+  return NextResponse.json(
+    { ok: true, id: String(staffId), emailSent, setupLink: emailSent ? undefined : setupLink },
+    { status: 201 }
+  );
 }

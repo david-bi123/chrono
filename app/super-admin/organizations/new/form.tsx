@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Input, Field } from "@/components/ui/input";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { SpamNotice } from "@/components/ui/spam-notice";
+import { SpamNotice, SetupLinkPanel } from "@/components/ui/spam-notice";
 import { CheckCircle2, ArrowLeft, Building2, Mail } from "lucide-react";
 
 export default function NewOrgForm() {
@@ -22,7 +22,12 @@ export default function NewOrgForm() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [created, setCreated] = useState<{ email: string; name: string } | null>(null);
+  const [created, setCreated] = useState<{
+    email: string;
+    name: string;
+    emailSent: boolean;
+    setupLink?: string;
+  } | null>(null);
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -41,7 +46,12 @@ export default function NewOrgForm() {
         setError(d.error || "Failed to create organization");
         return;
       }
-      setCreated({ email: form.adminEmail, name: form.name });
+      setCreated({
+        email: form.adminEmail,
+        name: form.name,
+        emailSent: d.emailSent !== false,
+        setupLink: d.setupLink,
+      });
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -59,12 +69,26 @@ export default function NewOrgForm() {
             </div>
             <h2 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-neutral-900">Organization created</h2>
             <p className="mt-1.5 max-w-md text-[14px] leading-relaxed text-neutral-500">
-              <span className="font-semibold text-neutral-800">{created.name}</span> is ready. An invitation to set up
-              the administrator account was sent to <span className="font-medium text-neutral-800">{created.email}</span>
-              .
+              <span className="font-semibold text-neutral-800">{created.name}</span> is ready.{" "}
+              {created.emailSent ? (
+                <>
+                  An invitation to set up the administrator account was sent to{" "}
+                  <span className="font-medium text-neutral-800">{created.email}</span>.
+                </>
+              ) : (
+                <>
+                  The administrator account for{" "}
+                  <span className="font-medium text-neutral-800">{created.email}</span> is ready — share the setup
+                  link below manually.
+                </>
+              )}
             </p>
             <div className="mt-5 w-full max-w-md text-left">
-              <SpamNotice email={created.email} />
+              {created.emailSent || !created.setupLink ? (
+                <SpamNotice email={created.email} />
+              ) : (
+                <SetupLinkPanel link={created.setupLink} email={created.email} />
+              )}
             </div>
             <p className="mt-4 text-[12.5px] text-neutral-500">
               The setup link expires in 72 hours and can only be used once.

@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown";
 import { useToast } from "@/components/ui/toast";
-import { SpamNotice } from "@/components/ui/spam-notice";
+import { SpamNotice, SetupLinkPanel } from "@/components/ui/spam-notice";
 
 interface Staff {
   _id: string;
@@ -63,6 +63,8 @@ export default function StaffPage() {
   const [sending, setSending] = useState(false);
   const [sentTo, setSentTo] = useState("");
   const [sentName, setSentName] = useState("");
+  const [sentLink, setSentLink] = useState<string | null>(null);
+  const [resendResult, setResendResult] = useState<{ email: string; link: string } | null>(null);
 
   const [confirm, setConfirm] = useState<{ open: boolean; staff?: Staff; next: "ACTIVE" | "DISABLED" }>({
     open: false,
@@ -113,11 +115,21 @@ export default function StaffPage() {
         setFormError(d.error || "We couldn't send the invitation. Please try again.");
         return;
       }
+      const emailSent = d.emailSent !== false;
       setSentTo(form.email);
       setSentName(form.firstName);
+      setSentLink(emailSent ? null : d.setupLink || null);
       setForm(EMPTY_FORM);
       setInviteOpen(false);
-      toast({ title: "Invitation sent", description: `${form.firstName} has been invited.`, variant: "success" });
+      toast(
+        emailSent
+          ? { title: "Invitation sent", description: `${form.firstName} has been invited.`, variant: "success" }
+          : {
+              title: "Invitation created",
+              description: "Email delivery failed — share the setup link manually.",
+              variant: "warning",
+            }
+      );
       load({ search, dept, status });
     } catch {
       setFormError("Network error. Please try again.");
@@ -157,8 +169,18 @@ export default function StaffPage() {
   async function resend(s: Staff) {
     try {
       const r = await fetch(`/api/org/staff/${s._id}/resend`, { method: "POST" });
-      if (!r.ok) throw new Error();
-      toast({ title: "Invitation resent", description: `A new link was sent to ${s.email}.`, variant: "success" });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "resend failed");
+      if (d.emailSent === false && d.setupLink) {
+        setResendResult({ email: s.email, link: d.setupLink });
+        toast({
+          title: "Invitation recreated",
+          description: "Email delivery failed — share the setup link manually.",
+          variant: "warning",
+        });
+      } else {
+        toast({ title: "Invitation resent", description: `A new link was sent to ${s.email}.`, variant: "success" });
+      }
     } catch {
       toast({ title: "Unable to resend invitation", description: "Please try again shortly.", variant: "error" });
     }
@@ -498,9 +520,12 @@ export default function StaffPage() {
       <Modal
         open={!!sentTo}
         onOpenChange={(o) => {
-          if (!o) setSentTo("");
+          if (!o) {
+            setSentTo("");
+            setSentLink(null);
+          }
         }}
-        title="Invitation sent"
+        title={sentLink ? "Invitation created" : "Invitation sent"}
         size="sm"
         footer={
           <>
@@ -508,6 +533,7 @@ export default function StaffPage() {
               variant="secondary"
               onClick={() => {
                 setSentTo("");
+                setSentLink(null);
                 setInviteOpen(true);
               }}
             >
@@ -516,6 +542,7 @@ export default function StaffPage() {
             <Button
               onClick={() => {
                 setSentTo("");
+                setSentLink(null);
                 router.push("/dashboard/staff");
               }}
             >
@@ -529,8 +556,23 @@ export default function StaffPage() {
             <span className="font-semibold text-neutral-900">{sentName}</span> has been invited to join your
             organization. The invitation expires in 72 hours and can only be used once.
           </p>
-          <SpamNotice email={sentTo} />
+          {sentLink ? <SetupLinkPanel link={sentLink} email={sentTo} /> : <SpamNotice email={sentTo} />}
         </div>
+      </Modal>
+
+      {/* Manual setup link when a resend email couldn't be delivered */}
+      <Modal
+        open={!!resendResult}
+        onOpenChange={(o) => {
+          if (!o) setResendResult(null);
+        }}
+        title="Share the setup link"
+        size="sm"
+        footer={
+          <Button onClick={() => setResendResult(null)}>Done</Button>
+        }
+      >
+        {resendResult && <SetupLinkPanel link={resendResult.link} email={resendResult.email} />}
       </Modal>
 
       <ConfirmDialog

@@ -44,9 +44,11 @@ export async function sendEmail(args: SendArgs): Promise<{ ok: boolean; skipped?
         Subject: args.subject,
         TextPart: args.text,
         HTMLPart: args.html,
+        // NOTE: Mailjet rejects `X-Mailer` inside the generic Headers collection
+        // (400 "Header cannot be customized...") which silently broke every
+        // transactional email. Only List-Unsubscribe is allowed here.
         Headers: {
           "List-Unsubscribe": `<mailto:${fromEmail}?subject=unsubscribe>`,
-          "X-Mailer": "ChronoSwift via Mailjet",
         },
         TrackOpens: "disabled",
         TrackClicks: "disabled",

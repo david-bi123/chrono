@@ -1,14 +1,15 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Building2, Ban, RotateCcw, SearchX } from "lucide-react";
+import { Plus, Building2, Ban, RotateCcw, SearchX, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { PageHeader, FilterBar, SearchInput } from "@/components/ui/page-header";
 import { DataTable, TablePagination, type Column } from "@/components/ui/data-table";
 import { EmptyState, ErrorState } from "@/components/ui/states";
-import { ConfirmDialog } from "@/components/ui/dialog";
+import { ConfirmDialog, Modal } from "@/components/ui/dialog";
+import { SetupLinkPanel } from "@/components/ui/spam-notice";
 import { useToast } from "@/components/ui/toast";
 
 interface Org {
@@ -17,6 +18,7 @@ interface Org {
   email: string;
   status: string;
   staffCount: number;
+  pendingAdminEmail: string | null;
   createdAt?: string;
 }
 
@@ -35,6 +37,37 @@ export default function OrgsPage() {
     next: "SUSPENDED",
   });
   const [busy, setBusy] = useState(false);
+
+  // Fresh setup link for an org whose admin never completed onboarding.
+  const [resend, setResend] = useState<{ open: boolean; org?: Org }>({ open: false });
+  const [resendBusy, setResendBusy] = useState(false);
+  const [resendResult, setResendResult] = useState<{ email: string; link: string } | null>(null);
+
+  async function runResend() {
+    if (!resend.org) return;
+    setResendBusy(true);
+    try {
+      const r = await fetch(`/api/super-admin/organizations/${resend.org._id}/resend`, { method: "POST" });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "resend failed");
+      setResend({ open: false });
+      if (d.emailSent === false && d.setupLink) {
+        setResendResult({ email: d.email || resend.org.name, link: d.setupLink });
+        toast({
+          title: "New setup link created",
+          description: "Email delivery failed — share the link manually.",
+          variant: "warning",
+        });
+      } else {
+        toast({ title: "Setup link sent", description: `A fresh link was sent to ${d.email}.`, variant: "success" });
+      }
+      load(search, page);
+    } catch {
+      toast({ title: "Unable to resend setup link", description: "Please try again shortly.", variant: "error" });
+    } finally {
+      setResendBusy(false);
+    }
+  }
 
   const load = useCallback(async (q: string, p: number) => {
     setLoading(true);
@@ -124,24 +157,30 @@ export default function OrgsPage() {
       header: "",
       align: "right",
       render: (o) => (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={(e) => {
-            e.stopPropagation();
-            setConfirm({ open: true, org: o, next: o.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE" });
-          }}
-        >
-          {o.status === "ACTIVE" ? (
-            <>
-              <Ban className="h-3.5 w-3.5" /> Suspend
-            </>
-          ) : (
-            <>
-              <RotateCcw className="h-3.5 w-3.5" /> Activate
-            </>
+        <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
+          {o.pendingAdminEmail && (
+            <Button size="sm" variant="outline" title={`Send a new setup link to ${o.pendingAdminEmail}`} onClick={() => setResend({ open: true, org: o })}>
+              <Mail className="h-3.5 w-3.5" /> Resend invite
+            </Button>
           )}
-        </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setConfirm({ open: true, org: o, next: o.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE" });
+            }}
+          >
+            {o.status === "ACTIVE" ? (
+              <>
+                <Ban className="h-3.5 w-3.5" /> Suspend
+              </>
+            ) : (
+              <>
+                <RotateCcw className="h-3.5 w-3.5" /> Activate
+              </>
+            )}
+          </Button>
+        </div>
       ),
     },
   ];
@@ -228,7 +267,12 @@ export default function OrgsPage() {
                         </div>
                         <StatusBadge value={o.status} size="sm" />
                       </div>
-                      <div className="mt-3 flex justify-end">
+                      <div className="mt-3 flex justify-end gap-2">
+                        {o.pendingAdminEmail && (
+                          <Button size="sm" variant="outline" onClick={() => setResend({ open: true, org: o })}>
+                            <Mail className="h-3.5 w-3.5" /> Resend invite
+                          </Button>
+                        )}
                         <Button
                           size="sm"
                           variant="outline"
@@ -265,6 +309,43 @@ export default function OrgsPage() {
         confirmLabel={confirm.next === "SUSPENDED" ? "Suspend" : "Activate"}
         onConfirm={run}
       />
+
+      {/* Fresh setup link for a pending administrator */}
+      <Modal
+        open={resend.open}
+        onOpenChange={(o) => setResend({ ...resend, open: o })}
+        title="Send a new setup link?"
+        size="sm"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setResend({ open: false })} disabled={resendBusy}>
+              Cancel
+            </Button>
+            <Button onClick={runResend} loading={resendBusy}>
+              <Mail className="h-4 w-4" /> {resendBusy ? "Sending…" : "Send new link"}
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[14px] leading-relaxed text-neutral-600">
+          {resend.org
+            ? `A fresh 72-hour setup link will be created for ${resend.org.pendingAdminEmail || resend.org.name}. Any previous unused links stop working immediately.`
+            : ""}
+        </p>
+      </Modal>
+
+      {/* Manual setup link when email couldn't be delivered */}
+      <Modal
+        open={!!resendResult}
+        onOpenChange={(o) => {
+          if (!o) setResendResult(null);
+        }}
+        title="Share the setup link"
+        size="sm"
+        footer={<Button onClick={() => setResendResult(null)}>Done</Button>}
+      >
+        {resendResult && <SetupLinkPanel link={resendResult.link} email={resendResult.email} />}
+      </Modal>
     </div>
   );
 }
