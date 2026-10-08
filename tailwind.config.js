@@ -92,8 +92,10 @@ module.exports = {
           to: { opacity: "1", transform: "translateX(0)" },
         },
         pop: {
-          "0%": { transform: "scale(0.92)", opacity: "0" },
-          "100%": { transform: "scale(1)", opacity: "1" },
+          // Keep in sync with globals.css: independent `scale` property so
+          // the animation composes with translate utilities (see note there).
+          "0%": { scale: "0.92", opacity: "0" },
+          "100%": { scale: "1", opacity: "1" },
         },
         "overlay-in": {
           from: { opacity: "0" },

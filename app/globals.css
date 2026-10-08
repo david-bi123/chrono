@@ -188,8 +188,14 @@
 }
 
 @keyframes pop {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  /* NOTE: animates the independent `scale` property (not `transform`) so it
+     composes with translate utilities instead of overriding them. A previous
+     `transform: scale()` version permanently cancelled
+     `-translate-x/y-1/2` centering (fill mode `both`), which pushed every
+     modal into the bottom-right corner — and fought Radix popper placement
+     on dropdowns for the same reason. */
+  from { scale: 0.85; opacity: 0; }
+  to { scale: 1; opacity: 1; }
 }
 
 @keyframes slide-in-right {
