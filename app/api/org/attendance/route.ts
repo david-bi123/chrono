@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db/mongoose";
 import { Attendance } from "@/models/Attendance";
+// Required for .populate("staffId") / .populate("locationId"): route bundles
+// only include imported modules, and populate looks the ref'd models up on
+// the connection. Without these the endpoint 500s with MissingSchemaError.
+import "@/models/User";
+import "@/models/AttendanceLocation";
 import { getSession } from "@/lib/auth/session";
 
 export async function GET(req: Request) {
