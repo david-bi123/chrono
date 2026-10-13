@@ -6,14 +6,19 @@ import { AppShell } from "@/components/dashboard/shell";
 import { STAFF_NAV } from "@/lib/dashboard-helpers";
 import ClockPage from "./clock-inner";
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: { token?: string };
+}) {
   const s = await getSession();
   if (!s) redirect("/login");
   await dbConnect();
   const me = await User.findById(s.sub).lean() as unknown as { firstName: string; lastName: string } | null;
+  const token = typeof searchParams?.token === "string" ? searchParams.token : undefined;
   return (
     <AppShell title="Clock In" userName={me ? `${me.firstName} ${me.lastName}` : "Staff"} role={s.role} nav={STAFF_NAV}>
-      <ClockPage />
+      <ClockPage token={token} />
     </AppShell>
   );
 }

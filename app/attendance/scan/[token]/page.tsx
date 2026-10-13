@@ -1,11 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { StatusBadge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 import { LogoMark } from "@/components/brand/logo";
-import { CheckCircle2, LogIn, MapPin, AlertTriangle, ArrowRight, Clock3 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { LogIn, MapPin, AlertTriangle, ArrowRight } from "lucide-react";
 
 interface ScanInfo {
   orgName: string;
@@ -20,15 +18,19 @@ interface ScanInfo {
   error?: string;
 }
 
-const timeOf = (iso?: string) =>
-  iso ? new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
-
+/**
+ * QR entry point. This screen only handles pre-dashboard states:
+ * loading, invalid codes, sign-in prompts and wrong-organization accounts.
+ * Anyone cleared to clock in is handed straight to the dashboard clock
+ * page (/staff/clock?token=…) — the canonical, navigable experience.
+ * Printed QR codes keep working unchanged; no reprints needed.
+ */
 export default function ScanPage({ params }: { params: { token: string } }) {
+  const router = useRouter();
   const [info, setInfo] = useState<ScanInfo | null>(null);
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [actionError, setActionError] = useState("");
-  const [flash, setFlash] = useState<"in" | "out" | null>(null);
+
+  const clockHref = `/staff/clock?token=${encodeURIComponent(params.token)}`;
 
   useEffect(() => {
     fetch(`/api/attendance/scan/${encodeURIComponent(params.token)}`)
@@ -40,30 +42,18 @@ export default function ScanPage({ params }: { params: { token: string } }) {
       .catch(() => setError("We couldn't reach ChronoSwift. Check your connection and try again."));
   }, [params.token]);
 
-  async function clock(mode: "in" | "out") {
-    setBusy(true);
-    setActionError("");
-    try {
-      const r = await fetch(`/api/attendance/clock?mode=${mode}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locationToken: params.token }),
-      });
-      const d = await r.json();
-      if (!r.ok) {
-        setActionError(d.error || "We couldn't record that. Please try again.");
-        return;
-      }
-      setFlash(mode);
-      const r2 = await fetch(`/api/attendance/scan/${encodeURIComponent(params.token)}`);
-      const d2 = await r2.json();
-      if (r2.ok) setInfo(d2);
-    } catch {
-      setActionError("Network error. Please try again.");
-    } finally {
-      setBusy(false);
+  useEffect(() => {
+    if (info?.authenticated && info?.belongs) {
+      router.replace(clockHref);
     }
-  }
+  }, [info, clockHref, router]);
+
+  const homeHref =
+    info?.role === "ORGANIZATION_ADMIN"
+      ? "/dashboard"
+      : info?.role === "SUPER_ADMIN"
+        ? "/super-admin"
+        : "/staff";
 
   if (error) {
     return (
@@ -108,10 +98,10 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           </div>
           <div className="mt-2 text-xl font-semibold tracking-[-0.02em] text-neutral-900">Sign in to clock in</div>
           <p className="mt-2 text-[14px] leading-relaxed text-neutral-500">
-            Your scan worked — sign in so we can record attendance for {info.display.displayDate}.
+            Your scan worked — sign in to open your dashboard and record attendance for {info.display.displayDate}.
           </p>
           <Link
-            href={`/login?next=${encodeURIComponent(`/attendance/scan/${params.token}`)}`}
+            href={`/login?next=${encodeURIComponent(clockHref)}`}
             className="mt-5 block rounded-xl bg-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-xs transition hover:bg-brand-700 active:translate-y-px"
           >
             Sign in
@@ -120,15 +110,6 @@ export default function ScanPage({ params }: { params: { token: string } }) {
       </Shell>
     );
   }
-
-  // Home for the signed-in account — the scan screen must always offer a way
-  // back to the rest of the product, matched to the account's role.
-  const homeHref =
-    info.role === "ORGANIZATION_ADMIN"
-      ? "/dashboard"
-      : info.role === "SUPER_ADMIN"
-        ? "/super-admin"
-        : "/staff";
 
   if (!info.belongs) {
     return (
@@ -148,7 +129,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
             </p>
           )}
           <Link
-            href={`/login?next=${encodeURIComponent(`/attendance/scan/${params.token}`)}`}
+            href={`/login?next=${encodeURIComponent(clockHref)}`}
             className="mt-5 block rounded-xl bg-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-xs transition hover:bg-brand-700 active:translate-y-px"
           >
             Switch account
@@ -164,165 +145,25 @@ export default function ScanPage({ params }: { params: { token: string } }) {
     );
   }
 
-  const att = info.attendance;
-  const clockedIn = Boolean(att?.clockIn);
-  const clockedOut = Boolean(att?.clockOut);
-  const justClockedIn = flash === "in" && clockedIn && !clockedOut;
-  const justClockedOut = flash === "out" && clockedOut;
-
+  // Cleared to clock in — hand off to the dashboard clock page.
   return (
-    <Shell homeHref={homeHref}>
-      <div className="w-full max-w-md">
-        {/* Location */}
-        <div className="flex justify-center">
-          <span className="inline-flex max-w-full items-center gap-1.5 truncate rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[12.5px] font-medium text-neutral-600 shadow-xs">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-brand-500" />
-            <span className="truncate">{info.orgName}</span>
-            <span className="text-neutral-300">·</span>
-            <span className="truncate font-semibold text-neutral-800">{info.locationName}</span>
-          </span>
-        </div>
-
-        {/* Clock */}
-        <div className="mt-7 text-center">
-          <div className="text-[13px] font-medium uppercase tracking-[0.16em] text-neutral-500">
-            {info.display.displayDate}
-          </div>
-          <div className="mt-2 text-5xl font-semibold leading-none tracking-[-0.04em] tabular text-neutral-900 sm:text-[64px]">
-            {info.display.displayTime}
-          </div>
-        </div>
-
-        {/* Status card */}
-        <div className="mt-7 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card">
-          <div className="px-5 py-6 text-center sm:px-6">
-            {!clockedIn && (
-              <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                  Today&apos;s status
-                </div>
-                <div className="mt-2.5 text-[22px] font-semibold tracking-[-0.02em] text-neutral-900">
-                  You&apos;re ready to clock in.
-                </div>
-                <p className="mx-auto mt-1.5 max-w-[18rem] text-[13.5px] leading-relaxed text-neutral-500">
-                  Recording starts the moment you tap the button.
-                </p>
-              </>
-            )}
-
-            {clockedIn && !clockedOut && !justClockedIn && (
-              <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                  Today&apos;s status
-                </div>
-                <div className="mt-2.5 flex justify-center">
-                  <StatusBadge value={att!.status} />
-                </div>
-                <p className="mx-auto mt-3 text-[14px] leading-relaxed text-neutral-600">
-                  Clocked in at{" "}
-                  <strong className="font-semibold tabular text-neutral-900">{timeOf(att!.clockIn)}</strong> — you&apos;re
-                  on the clock.
-                </p>
-              </>
-            )}
-
-            {(justClockedIn || justClockedOut) && (
-              <div className="animate-fade-up">
-                <div className="check-pop mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-                  <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path
-                      d="M5 13l4 4L19 7"
-                      className="text-emerald-600"
-                      style={{ strokeDasharray: 32, animation: "draw-check 0.45s 0.1s ease-out both" }}
-                    />
-                  </svg>
-                </div>
-                <div className="mt-4 text-[22px] font-semibold tracking-[-0.02em] text-neutral-900">
-                  {justClockedIn ? "Clocked in" : "Clocked out"}
-                </div>
-                <div className="mt-1 text-[32px] font-semibold leading-none tracking-[-0.03em] tabular text-emerald-600">
-                  {timeOf(justClockedIn ? att?.clockIn : att?.clockOut)}
-                </div>
-                <p className="mt-3 text-[14px] text-neutral-500">
-                  {justClockedIn ? "Have a productive day." : "Great work today."}
-                </p>
-              </div>
-            )}
-
-            {clockedOut && !justClockedIn && !justClockedOut && (
-              <>
-                <div className="check-pop mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                  <CheckCircle2 className="h-7 w-7" />
-                </div>
-                <div className="mt-3 text-[19px] font-semibold tracking-[-0.02em] text-neutral-900">
-                  Shift complete
-                </div>
-                <p className="mt-1.5 text-[14px] text-neutral-500">
-                  Clocked out at <strong className="font-semibold tabular text-neutral-700">{timeOf(att?.clockOut)}</strong>
-                  {att?.totalMinutes ? ` · ${Math.floor(att.totalMinutes / 60)}h ${att.totalMinutes % 60}m worked` : ""}
-                </p>
-              </>
-            )}
-
-            {actionError && (
-              <div
-                role="alert"
-                className="check-pop mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-left text-[13.5px] font-medium text-red-700"
-              >
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-                {actionError}
-              </div>
-            )}
-          </div>
-
-          <div className="border-t border-neutral-100 bg-neutral-50/60 px-5 py-4 sm:px-6">
-            {!clockedIn && (
-              <Button size="xl" className="w-full" loading={busy} onClick={() => clock("in")}>
-                <Clock3 className="h-[18px] w-[18px]" />
-                {busy ? "Recording…" : "Clock In"}
-              </Button>
-            )}
-            {clockedIn && !clockedOut && (
-              <Button size="xl" variant="success" className="w-full" loading={busy} onClick={() => clock("out")}>
-                {busy ? "Recording…" : "Clock Out"}
-              </Button>
-            )}
-            {clockedOut && (
-              <Link
-                href={homeHref}
-                className="flex h-14 w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white text-[15px] font-semibold text-neutral-800 shadow-xs transition hover:bg-neutral-50"
-              >
-                View my day <ArrowRight className="h-4 w-4" />
-              </Link>
-            )}
-          </div>
-        </div>
-
-        <p className="mt-5 text-center text-[11.5px] leading-relaxed text-neutral-500">
-          Times are recorded by the server ({info.timezone}).
-          <br />
-          Screenshots of this page don&apos;t record attendance.
-        </p>
+    <Shell>
+      <div className="w-full max-w-sm space-y-3" aria-busy="true" aria-live="polite">
+        <div className="skeleton mx-auto h-6 w-48 rounded-lg" />
+        <div className="skeleton h-12 w-full" />
+        <span className="sr-only">Opening your dashboard…</span>
       </div>
     </Shell>
   );
 }
 
-function Shell({ children, homeHref }: { children: React.ReactNode; homeHref?: string }) {
+function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
       <div className="flex w-full max-w-md items-center justify-center gap-2.5">
         <LogoMark className="h-8 w-8" />
-        <span className={cn("text-[17px] font-semibold tracking-[-0.02em] text-neutral-900")}>ChronoSwift</span>
+        <span className="text-[17px] font-semibold tracking-[-0.02em] text-neutral-900">ChronoSwift</span>
       </div>
-      {homeHref && (
-        <Link
-          href={homeHref}
-          className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-600 hover:underline"
-        >
-          View my dashboard <ArrowRight className="h-4 w-4" />
-        </Link>
-      )}
       <div className="mt-8 flex w-full flex-col items-center">{children}</div>
     </div>
   );

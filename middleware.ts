@@ -36,7 +36,11 @@ export async function middleware(req: NextRequest) {
   if (!session) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("next", pathname);
+    // Keep the query string so flows like /staff/clock?token=… survive
+    // sign-in and land back where the user was headed. Drop any stale
+    // params from the original URL first.
+    url.search = "";
+    url.searchParams.set("next", pathname + req.nextUrl.search);
     return NextResponse.redirect(url);
   }
   // Role gates
