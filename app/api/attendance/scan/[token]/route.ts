@@ -7,6 +7,7 @@ import { getSession } from "@/lib/auth/session";
 import { hashToken } from "@/lib/auth/tokens";
 import { orgTodayKey, orgNowParts } from "@/lib/attendance/rules";
 import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
+import { User } from "@/models/User";
 
 export async function GET(req: Request, { params }: { params: { token: string } }) {
   // Public by design (logged-out scans see a sign-in prompt), so limit by IP.
@@ -25,6 +26,17 @@ export async function GET(req: Request, { params }: { params: { token: string } 
   const tz = org.attendanceSettings?.timezone || org.timezone || "Africa/Accra";
   const now = new Date();
   const s = await getSession();
+
+  // Shown on the "wrong organization" screen so the user can tell WHICH
+  // account they're signed in with (stale sessions from another account are
+  // the common cause) and switch without guessing.
+  let sessionEmail: string | null = null;
+  if (s) {
+    const me = (await User.findById(s.sub).select("email").lean()) as unknown as {
+      email?: string;
+    } | null;
+    sessionEmail = me?.email || null;
+  }
 
   let mine: Record<string, unknown> | null = null;
   let belongs = false;
@@ -45,6 +57,7 @@ export async function GET(req: Request, { params }: { params: { token: string } 
     display: orgNowParts(now, tz),
     timezone: tz,
     authenticated: Boolean(s),
+    sessionEmail,
     belongs,
     attendance: mine,
     role: s?.role || null,

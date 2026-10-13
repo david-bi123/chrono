@@ -35,6 +35,7 @@ import {
   POST as acceptPost,
 } from "../../app/api/auth/accept-invitation/route";
 import { POST as login } from "../../app/api/auth/login/route";
+import { POST as logout } from "../../app/api/auth/logout/route";
 import { GET as scanGet } from "../../app/api/attendance/scan/[token]/route";
 import { POST as clock } from "../../app/api/attendance/clock/route";
 import { PATCH as settingsPatch } from "../../app/api/org/settings/route";
@@ -136,9 +137,10 @@ describe.skipIf(!hasDb)("staff + attendance (integration)", () => {
     const mine = await scanGet(req(`/api/attendance/scan/${raw}`, { ip: nextIp() }), {
       params: { token: raw },
     });
-    const md = (await mine.json()) as { authenticated: boolean; belongs: boolean; attendance: unknown };
+    const md = (await mine.json()) as { authenticated: boolean; belongs: boolean; attendance: unknown; sessionEmail: string };
     expect(md.authenticated).toBe(true);
     expect(md.belongs).toBe(true);
+    expect(md.sessionEmail).toBe("sam@t.co");
     expect(md.attendance).toBeNull();
 
     const body = { locationToken: raw };
@@ -180,8 +182,9 @@ describe.skipIf(!hasDb)("staff + attendance (integration)", () => {
     const seen = await scanGet(req(`/api/attendance/scan/${rawB}`, { ip: nextIp() }), {
       params: { token: rawB },
     });
-    const sd = (await seen.json()) as { belongs: boolean; orgName: string };
+    const sd = (await seen.json()) as { belongs: boolean; orgName: string; sessionEmail: string };
     expect(sd.belongs).toBe(false);
+    expect(sd.sessionEmail).toBe("sam@t.co");
 
     const attempt = await clock(
       req("/api/attendance/clock?mode=in", {
@@ -264,6 +267,33 @@ describe.skipIf(!hasDb)("staff + attendance (integration)", () => {
       })
     );
     expect(relogin.status).toBe(200);
+  });
+
+  it("kills the session on logout", async () => {
+    const { org } = await adminCtx();
+    await makeStaff(org._id, "sam@t.co", true);
+    const cookie = await loginAs("sam@t.co", "Fixture123!", nextIp());
+    setJar(cookie);
+
+    const r = await logout();
+    expect(r.status).toBe(200);
+    const setCookies: string[] =
+      (r.headers as unknown as { getSetCookie?: () => string[] }).getSetCookie?.() ?? [];
+    const cleared = setCookies.map(String).find((c) => c.startsWith("chrono_session="));
+    expect(cleared).toBeTruthy();
+    expect(cleared).toMatch(/Max-Age=0/i);
+
+    // Simulate the browser dropping the cleared cookie: later calls are anonymous.
+    setJar(null);
+    const raw = `chr_test_${Date.now()}`;
+    await makeLocation(org._id, raw);
+    const seen = await scanGet(req(`/api/attendance/scan/${raw}`, { ip: nextIp() }), {
+      params: { token: raw },
+    });
+    const sd = (await seen.json()) as { authenticated: boolean; belongs: boolean };
+    expect(seen.status).toBe(200);
+    expect(sd.authenticated).toBe(false);
+    expect(sd.belongs).toBe(false);
   });
 
   it("rate-limits repeated login attempts", async () => {

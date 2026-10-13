@@ -13,6 +13,7 @@ interface ScanInfo {
   display: { displayDate: string; displayTime: string };
   timezone: string;
   authenticated: boolean;
+  sessionEmail: string | null;
   belongs: boolean;
   role: string | null;
   attendance: { clockIn?: string; clockOut?: string; status: string; totalMinutes?: number } | null;
@@ -132,9 +133,20 @@ export default function ScanPage({ params }: { params: { token: string } }) {
             It belongs to <strong className="font-semibold text-neutral-800">{info.orgName}</strong>, which your
             account can&apos;t access.
           </p>
+          {info.sessionEmail && (
+            <p className="mt-2 text-[13px] text-neutral-500">
+              You&apos;re signed in as <span className="font-medium text-neutral-700">{info.sessionEmail}</span>.
+            </p>
+          )}
+          <Link
+            href={`/login?next=${encodeURIComponent(`/attendance/scan/${params.token}`)}`}
+            className="mt-5 block rounded-xl bg-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-xs transition hover:bg-brand-700 active:translate-y-px"
+          >
+            Switch account
+          </Link>
           <Link
             href="/staff"
-            className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand-600 hover:underline"
+            className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand-600 hover:underline"
           >
             Go to my day <ArrowRight className="h-4 w-4" />
           </Link>
