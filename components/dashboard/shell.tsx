@@ -16,6 +16,7 @@ import {
   LogOut,
   UserRound,
   History,
+  ScanLine,
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
@@ -58,6 +59,7 @@ const ICONS: Record<string, LucideIcon> = {
   Activity: ScrollText,
   Organizations: Building2,
   Today: LayoutDashboard,
+  "Clock In": ScanLine,
   History: History,
   Profile: UserRound,
 };

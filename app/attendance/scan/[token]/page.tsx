@@ -121,6 +121,15 @@ export default function ScanPage({ params }: { params: { token: string } }) {
     );
   }
 
+  // Home for the signed-in account — the scan screen must always offer a way
+  // back to the rest of the product, matched to the account's role.
+  const homeHref =
+    info.role === "ORGANIZATION_ADMIN"
+      ? "/dashboard"
+      : info.role === "SUPER_ADMIN"
+        ? "/super-admin"
+        : "/staff";
+
   if (!info.belongs) {
     return (
       <Shell>
@@ -145,7 +154,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
             Switch account
           </Link>
           <Link
-            href="/staff"
+            href={homeHref}
             className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand-600 hover:underline"
           >
             Go to my day <ArrowRight className="h-4 w-4" />
@@ -162,7 +171,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
   const justClockedOut = flash === "out" && clockedOut;
 
   return (
-    <Shell>
+    <Shell homeHref={homeHref}>
       <div className="w-full max-w-md">
         {/* Location */}
         <div className="flex justify-center">
@@ -280,7 +289,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
             )}
             {clockedOut && (
               <Link
-                href="/staff"
+                href={homeHref}
                 className="flex h-14 w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white text-[15px] font-semibold text-neutral-800 shadow-xs transition hover:bg-neutral-50"
               >
                 View my day <ArrowRight className="h-4 w-4" />
@@ -299,13 +308,21 @@ export default function ScanPage({ params }: { params: { token: string } }) {
   );
 }
 
-function Shell({ children }: { children: React.ReactNode }) {
+function Shell({ children, homeHref }: { children: React.ReactNode; homeHref?: string }) {
   return (
     <div className="flex min-h-dvh flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
       <div className="flex w-full max-w-md items-center justify-center gap-2.5">
         <LogoMark className="h-8 w-8" />
         <span className={cn("text-[17px] font-semibold tracking-[-0.02em] text-neutral-900")}>ChronoSwift</span>
       </div>
+      {homeHref && (
+        <Link
+          href={homeHref}
+          className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-600 hover:underline"
+        >
+          View my dashboard <ArrowRight className="h-4 w-4" />
+        </Link>
+      )}
       <div className="mt-8 flex w-full flex-col items-center">{children}</div>
     </div>
   );

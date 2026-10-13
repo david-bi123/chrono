@@ -34,6 +34,7 @@ export const ORG_NAV: NavItem[] = [
 
 export const STAFF_NAV: NavItem[] = [
   { href: "/staff", label: "Today", icon: "Today" },
+  { href: "/staff/clock", label: "Clock In", icon: "Clock In" },
   { href: "/staff/history", label: "History", icon: "History" },
   { href: "/staff/profile", label: "Profile", icon: "Profile" },
 ];

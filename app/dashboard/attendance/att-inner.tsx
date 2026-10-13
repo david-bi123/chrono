@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { Download, Pencil, CalendarDays, RefreshCw } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Download, Pencil, CalendarDays, RefreshCw, Eye } from "lucide-react";
 import { Input, Select, Textarea, Field } from "@/components/ui/input";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +16,7 @@ import { formatMinutes } from "@/lib/utils";
 
 type Row = {
   _id: string;
-  staffId?: { firstName?: string; lastName?: string; employeeId?: string; department?: string } | null;
+  staffId?: { _id?: string; firstName?: string; lastName?: string; employeeId?: string; department?: string } | null;
   locationId?: { name?: string } | null;
   clockIn?: string | null;
   clockOut?: string | null;
@@ -42,6 +43,7 @@ function toLocalInput(iso?: string | null) {
 }
 
 export default function AttendancePage() {
+  const router = useRouter();
   const { toast } = useToast();
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [status, setStatus] = useState("");
@@ -88,6 +90,10 @@ export default function AttendancePage() {
   function applySearch() {
     setPage(1);
     load({ date, status, search, page: 1 });
+  }
+
+  function goProfile(r: Row) {
+    if (r.staffId?._id) router.push(`/dashboard/staff/${r.staffId._id}`);
   }
 
   function openEdit(row: Row) {
@@ -298,6 +304,7 @@ export default function AttendancePage() {
                   rows={rows}
                   rowKey={(r) => r._id}
                   loading={loading}
+                  onRowClick={goProfile}
                   empty={
                     <EmptyState
                       icon={CalendarDays}
@@ -349,7 +356,12 @@ export default function AttendancePage() {
                           </dd>
                         </div>
                       </dl>
-                      <div className="mt-3 flex justify-end">
+                      <div className="mt-3 flex justify-end gap-2">
+                        {r.staffId?._id && (
+                          <Button size="sm" variant="outline" onClick={() => goProfile(r)}>
+                            <Eye className="h-3.5 w-3.5" /> View profile
+                          </Button>
+                        )}
                         <Button size="sm" variant="outline" onClick={() => openEdit(r)}>
                           <Pencil className="h-3.5 w-3.5" /> Correct record
                         </Button>
