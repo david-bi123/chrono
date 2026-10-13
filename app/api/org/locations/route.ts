@@ -6,6 +6,7 @@ import { AttendanceLocation } from "@/models/AttendanceLocation";
 import { getSession } from "@/lib/auth/session";
 import { generateRawToken, hashToken } from "@/lib/auth/tokens";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
+import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 
 function appUrl() {
   return (process.env.APP_URL || "").replace(/\/$/, "");
@@ -33,6 +34,8 @@ export async function GET() {
 export async function POST(req: Request) {
   const s = await getSession();
   if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const rl = rateLimit(rateLimitKey(req, `qr:${s.orgId}`), 20, 60 * 60 * 1000);
+  if (!rl.ok) return NextResponse.json({ error: "Too many QR codes. Try again later." }, { status: 429 });
   const body = await req.json().catch(() => ({}));
   const parsed = z.object({ name: z.string().trim().min(1).max(100) }).safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Name is required" }, { status: 400 });

@@ -106,8 +106,8 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white text-neutral-900">
       <header className="sticky top-0 z-40 border-b border-neutral-200/70 bg-white/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-2.5">
-            <Logo size="md" />
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Logo size="md" className="shrink-0 [&>span:last-child]:hidden min-[400px]:[&>span:last-child]:inline" />
           </div>
           <nav className="hidden items-center gap-7 text-[13.5px] font-medium text-neutral-500 lg:flex">
             <a href="#features" className="transition hover:text-neutral-900">Features</a>
@@ -115,11 +115,11 @@ export default function LandingPage() {
             <a href="#how" className="transition hover:text-neutral-900">How it works</a>
             <a href="#faq" className="transition hover:text-neutral-900">FAQ</a>
           </nav>
-          <div className="flex items-center gap-2">
-            <Link href="/login" className="rounded-xl px-3.5 py-2 text-sm font-semibold text-neutral-600 transition hover:text-neutral-900">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <Link href="/login" className="hidden rounded-xl px-3.5 py-2 text-sm font-semibold text-neutral-600 transition hover:text-neutral-900 min-[420px]:block">
               Sign in
             </Link>
-            <Link href="/login" className="rounded-xl bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white shadow-soft transition hover:bg-neutral-800 active:scale-[0.98]">
+            <Link href="/login" className="rounded-xl bg-neutral-900 px-3.5 py-2 text-[13px] font-semibold text-white shadow-soft transition hover:bg-neutral-800 active:scale-[0.98] sm:px-4 sm:py-2.5 sm:text-sm">
               Get started
             </Link>
           </div>
@@ -131,7 +131,7 @@ export default function LandingPage() {
         <section className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_340px_at_50%_-80px,rgba(11,15,25,0.09),transparent)]" />
           <div className="relative mx-auto max-w-6xl px-4 pb-16 pt-14 text-center sm:px-6 sm:pb-20 sm:pt-20">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 py-1.5 pl-2 pr-3.5 text-xs font-semibold text-neutral-600">
+            <div className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 py-1.5 pl-2 pr-3.5 text-center text-xs font-semibold text-neutral-600">
               <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">New</span>
               Multi-tenant attendance for modern teams
             </div>

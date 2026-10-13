@@ -14,6 +14,27 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+function isValidTimeZone(tz: string) {
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** IANA timezone name. An invalid value saved here breaks every
+ *  timezone-dependent endpoint for the whole organization, so reject it. */
+export const timezoneSchema = z
+  .string()
+  .min(1, "Timezone is required")
+  .max(80)
+  .refine(isValidTimeZone, "Unknown timezone");
+
+function isParseableDate(s: string) {
+  return s.length > 0 && !Number.isNaN(Date.parse(s));
+}
+
 export const createOrgSchema = z.object({
   name: z.string().trim().min(2).max(120),
   email: emailSchema,
@@ -45,7 +66,7 @@ export const setupAccountSchema = z.object({
 });
 
 export const attendanceSettingsSchema = z.object({
-  timezone: z.string().min(1).max(80).default("Africa/Accra"),
+  timezone: timezoneSchema.default("Africa/Accra"),
   workStart: z.string().regex(/^\d{2}:\d{2}$/, "Use HH:MM"),
   workEnd: z.string().regex(/^\d{2}:\d{2}$/, "Use HH:MM"),
   graceMinutes: z.coerce.number().int().min(0).max(120),
@@ -59,11 +80,18 @@ export const orgSettingsSchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   address: z.string().trim().max(300).optional().or(z.literal("")),
   industry: z.string().trim().max(100).optional().or(z.literal("")),
-  timezone: z.string().min(1).max(80),
+  timezone: timezoneSchema,
 });
 
 export const correctionSchema = z.object({
-  clockIn: z.string().min(1, "Clock-in is required"),
-  clockOut: z.string().optional().or(z.literal("")),
+  clockIn: z
+    .string()
+    .min(1, "Clock-in is required")
+    .refine(isParseableDate, "Clock-in is not a valid date"),
+  clockOut: z
+    .string()
+    .optional()
+    .or(z.literal(""))
+    .refine((s) => !s || isParseableDate(s), "Clock-out is not a valid date"),
   reason: z.string().trim().min(5, "Provide a reason (min 5 chars)").max(500),
 });

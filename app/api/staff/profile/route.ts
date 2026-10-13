@@ -4,6 +4,7 @@ import { dbConnect } from "@/lib/db/mongoose";
 import { User } from "@/models/User";
 import { getSession } from "@/lib/auth/session";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
+import { passwordSchema } from "@/lib/validation/schemas";
 
 const profileSchema = z.object({
   firstName: z.string().trim().min(1).max(80).optional(),
@@ -26,10 +27,14 @@ export async function PATCH(req: Request) {
   if (!s) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await req.json().catch(() => ({}));
 
-  // password change branch
+  // password change branch — same policy as invitation/reset flows
   if (body.currentPassword && body.newPassword) {
-    const np = z.string().min(8).max(128).safeParse(body.newPassword);
-    if (!np.success) return NextResponse.json({ error: "New password too weak" }, { status: 400 });
+    const np = passwordSchema.safeParse(body.newPassword);
+    if (!np.success)
+      return NextResponse.json(
+        { error: np.error.issues[0]?.message || "New password does not meet the policy" },
+        { status: 400 }
+      );
     await dbConnect();
     const u = await User.findById(s.sub).select("+passwordHash");
     if (!u || !u.passwordHash) return NextResponse.json({ error: "Not found" }, { status: 404 });

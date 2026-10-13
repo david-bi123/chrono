@@ -14,7 +14,10 @@ export async function GET(req: Request) {
   if (s.role === "SUPER_ADMIN") {
     // platform-wide, optional org filter
     const orgId = url.searchParams.get("orgId");
-    if (orgId) filter.organizationId = orgId;
+    if (orgId) {
+      if (!/^[a-fA-F0-9]{24}$/.test(orgId)) return NextResponse.json({ error: "Invalid organization" }, { status: 400 });
+      filter.organizationId = orgId;
+    }
   } else {
     if (!s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     filter.organizationId = s.orgId;

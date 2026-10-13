@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Input, Label, FieldError, PasswordInput } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthShell } from "@/components/auth/auth-shell";
+import { safeNextPath } from "@/lib/auth/redirect";
 import { CheckCircle2, X } from "lucide-react";
 
 export default function LoginPage() {
@@ -18,7 +19,9 @@ export default function LoginPage() {
 function LoginInner() {
   const router = useRouter();
   const search = useSearchParams();
-  const next = search.get("next") || "";
+  // Only same-origin app paths are allowed after sign-in — never an
+  // absolute or protocol-relative URL (open-redirect protection).
+  const next = safeNextPath(search.get("next"));
   const invited = search.get("invited");
   const reset = search.get("reset");
   const [email, setEmail] = useState("");

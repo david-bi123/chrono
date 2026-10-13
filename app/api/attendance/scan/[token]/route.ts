@@ -6,8 +6,13 @@ import { Attendance } from "@/models/Attendance";
 import { getSession } from "@/lib/auth/session";
 import { hashToken } from "@/lib/auth/tokens";
 import { orgTodayKey, orgNowParts } from "@/lib/attendance/rules";
+import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 
-export async function GET(_req: Request, { params }: { params: { token: string } }) {
+export async function GET(req: Request, { params }: { params: { token: string } }) {
+  // Public by design (logged-out scans see a sign-in prompt), so limit by IP.
+  // Generous ceiling: whole offices often share one public IP at clock-in time.
+  const rl = rateLimit(rateLimitKey(req, "scan"), 120, 60_000);
+  if (!rl.ok) return NextResponse.json({ error: "Too many attempts. Try again shortly." }, { status: 429 });
   const raw = params.token;
   await dbConnect();
   const loc = await AttendanceLocation.findOne({ tokenHash: hashToken(raw), status: "ACTIVE" }).lean();

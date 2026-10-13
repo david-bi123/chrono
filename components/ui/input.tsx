@@ -3,7 +3,7 @@ import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const inputBase =
-  "flex w-full rounded-lg border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 shadow-xs outline-none transition-colors duration-150 placeholder:text-neutral-500 hover:border-neutral-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10 disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500";
+  "flex w-full rounded-lg border border-neutral-300 bg-white px-3.5 text-base text-neutral-900 shadow-xs outline-none transition-colors duration-150 placeholder:text-neutral-500 hover:border-neutral-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10 disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500 sm:text-sm";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 

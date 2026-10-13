@@ -43,6 +43,18 @@
     border-color: hsl(var(--border));
   }
 
+  /* No grey tap flash on touch devices; our active states cover feedback. */
+  button,
+  a,
+  [role="button"],
+  [role="tab"],
+  input,
+  select,
+  textarea,
+  label {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   html {
     text-size-adjust: 100%;
   }

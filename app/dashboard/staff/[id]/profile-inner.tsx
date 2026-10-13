@@ -305,38 +305,63 @@ export default function StaffProfile({ id }: { id: string }) {
               </div>
             ) : (
               <div className="px-5 sm:px-6">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Clock in</th>
-                      <th className="hidden sm:table-cell">Clock out</th>
-                      <th>Hours</th>
-                      <th className="hidden lg:table-cell">Location</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.attendance.map((r) => (
-                      <tr key={r._id}>
-                        <td className="font-medium text-neutral-800">{r.date}</td>
-                        <td className="tabular text-neutral-700">
-                          {r.clockIn ? new Date(r.clockIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
-                        </td>
-                        <td className="hidden tabular text-neutral-700 sm:table-cell">
-                          {r.clockOut ? new Date(r.clockOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
-                        </td>
-                        <td className="tabular text-neutral-700">
-                          {r.totalMinutes ? formatMinutes(r.totalMinutes) : "—"}
-                        </td>
-                        <td className="hidden text-neutral-600 lg:table-cell">{r.locationId?.name || "—"}</td>
-                        <td>
-                          <StatusBadge value={r.status} size="sm" />
-                        </td>
+                <div className="-mx-5 hidden overflow-x-auto px-5 sm:-mx-6 sm:px-6 md:block">
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Clock in</th>
+                        <th className="hidden lg:table-cell">Clock out</th>
+                        <th>Hours</th>
+                        <th className="hidden lg:table-cell">Location</th>
+                        <th>Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {data.attendance.map((r) => (
+                        <tr key={r._id}>
+                          <td className="font-medium text-neutral-800">{r.date}</td>
+                          <td className="tabular text-neutral-700">
+                            {r.clockIn ? new Date(r.clockIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
+                          </td>
+                          <td className="hidden tabular text-neutral-700 lg:table-cell">
+                            {r.clockOut ? new Date(r.clockOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
+                          </td>
+                          <td className="tabular text-neutral-700">
+                            {r.totalMinutes ? formatMinutes(r.totalMinutes) : "—"}
+                          </td>
+                          <td className="hidden text-neutral-600 lg:table-cell">{r.locationId?.name || "—"}</td>
+                          <td>
+                            <StatusBadge value={r.status} size="sm" />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <ul className="flex flex-col gap-2.5 md:hidden">
+                  {data.attendance.map((r) => (
+                    <li
+                      key={r._id}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200/80 bg-white p-3.5"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-[13.5px] font-semibold text-neutral-900">{r.date}</div>
+                        <div className="mt-0.5 truncate text-[12px] tabular text-neutral-500">
+                          {r.clockIn ? new Date(r.clockIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
+                          {" → "}
+                          {r.clockOut ? new Date(r.clockOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "working"}
+                          {r.totalMinutes ? ` · ${formatMinutes(r.totalMinutes)}` : ""}
+                        </div>
+                        {r.locationId?.name && (
+                          <div className="mt-0.5 truncate text-[11.5px] text-neutral-500">{r.locationId.name}</div>
+                        )}
+                      </div>
+                      <StatusBadge value={r.status} size="sm" />
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </CardContent>

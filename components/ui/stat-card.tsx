@@ -46,7 +46,7 @@ export function StatCard({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate text-[12.5px] font-medium text-neutral-500">{label}</div>
-          <div className="mt-1.5 text-[28px] font-semibold leading-none tracking-[-0.03em] tabular text-neutral-900">
+          <div className="mt-1.5 truncate text-[28px] font-semibold leading-none tracking-[-0.03em] tabular text-neutral-900">
             {value}
           </div>
         </div>

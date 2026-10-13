@@ -241,9 +241,9 @@ export function AppShell({
   const showBottomNav = nav.length <= 4;
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-dvh bg-background">
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex no-print">
+      <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex no-print">
         <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-neutral-100 px-5">
           <Logo size="md" />
           {orgName && (
@@ -347,7 +347,7 @@ export function AppShell({
             className="fixed inset-x-0 bottom-0 z-30 border-t border-neutral-200/80 bg-white/95 backdrop-blur-md md:hidden no-print"
             aria-label="Primary"
           >
-            <div className="mx-auto grid max-w-lg auto-cols-fr grid-flow-col px-2 py-1.5">
+            <div className="mx-auto grid max-w-lg auto-cols-fr grid-flow-col px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
               {nav.map((n) => {
                 const Icon = navIcon(n);
                 const active = isActive(n.href);

@@ -5,10 +5,13 @@ import { AttendanceLocation } from "@/models/AttendanceLocation";
 import { getSession } from "@/lib/auth/session";
 import { generateRawToken, hashToken } from "@/lib/auth/tokens";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
+import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const s = await getSession();
   if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const rl = rateLimit(rateLimitKey(req, `qr:${s.orgId}`), 20, 60 * 60 * 1000);
+  if (!rl.ok) return NextResponse.json({ error: "Too many changes. Try again later." }, { status: 429 });
   const url = new URL(req.url);
   const action = url.searchParams.get("action") || "rotate"; // rotate | revoke
   await dbConnect();

@@ -19,7 +19,7 @@ export function AuthShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="grid min-h-screen bg-white lg:grid-cols-[1.05fr_1fr]">
+    <div className="grid min-h-dvh bg-white lg:grid-cols-[1.05fr_1fr]">
       {/* Brand panel */}
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-neutral-950 p-10 text-white lg:flex xl:p-12">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_380px_at_15%_-10%,rgba(65,102,245,0.22),transparent_70%)]" />

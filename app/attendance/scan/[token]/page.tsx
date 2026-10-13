@@ -167,7 +167,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           <div className="text-[13px] font-medium uppercase tracking-[0.16em] text-neutral-500">
             {info.display.displayDate}
           </div>
-          <div className="mt-2 text-[56px] font-semibold leading-none tracking-[-0.04em] tabular text-neutral-900 sm:text-[64px]">
+          <div className="mt-2 text-5xl font-semibold leading-none tracking-[-0.04em] tabular text-neutral-900 sm:text-[64px]">
             {info.display.displayTime}
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
+    <div className="flex min-h-dvh flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
       <div className="flex w-full max-w-md items-center justify-center gap-2.5">
         <LogoMark className="h-8 w-8" />
         <span className={cn("text-[17px] font-semibold tracking-[-0.02em] text-neutral-900")}>ChronoSwift</span>

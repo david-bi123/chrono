@@ -5,7 +5,7 @@ import { ShieldAlert, ArrowLeft, Home } from "lucide-react";
 
 export default function Unauthorized() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F8FA] px-4 py-12">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-[#F7F8FA] px-4 py-12">
       <div className="mb-8">
         <Logo size="lg" />
       </div>

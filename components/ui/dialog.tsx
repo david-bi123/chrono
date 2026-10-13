@@ -52,7 +52,7 @@ export function Modal({
               )}
             </div>
             <DialogPrimitive.Close
-              className="-mr-1.5 -mt-1 rounded-md p-1.5 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+              className="-mr-1.5 -mt-1 rounded-md p-2 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
               aria-label="Close dialog"
             >
               <X className="h-[18px] w-[18px]" />

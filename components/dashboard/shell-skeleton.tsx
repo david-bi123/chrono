@@ -9,10 +9,10 @@ import { Skeleton } from "@/components/ui/states";
  */
 export function ShellSkeleton() {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-dvh bg-background">
       {/* Sidebar (desktop) */}
       <aside
-        className="sticky top-0 hidden h-screen w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex"
+        className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex"
         aria-hidden
       >
         <div className="flex h-16 items-center gap-2.5 border-b border-neutral-100 px-5">
@@ -79,7 +79,7 @@ export function ShellSkeleton() {
 
         {/* Mobile bottom nav */}
         <div className="fixed inset-x-0 bottom-0 z-30 border-t border-neutral-200/80 bg-white/95 md:hidden">
-          <div className="mx-auto grid max-w-lg auto-cols-fr grid-flow-col px-2 py-1.5">
+          <div className="mx-auto grid max-w-lg auto-cols-fr grid-flow-col px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
             {[0, 1, 2].map((i) => (
               <div key={i} className="flex flex-col items-center gap-1.5 py-1.5">
                 <Skeleton className="h-5 w-5 rounded-md" />

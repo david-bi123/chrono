@@ -319,7 +319,7 @@ function QrPanel({
     <div className="chrono-print-portal fixed inset-0 z-[70] overflow-auto bg-neutral-100">
       <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col gap-4 p-4 sm:p-8">
         {/* Controls — hidden on paper */}
-        <div className="no-print flex items-center justify-between gap-3">
+        <div className="no-print flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-[13px] font-medium text-neutral-600">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             QR ready — download or print it now
@@ -364,7 +364,7 @@ function QrPanel({
           <img
             src={location.qrDataUrl}
             alt={`QR code for ${location.name}`}
-            className="mx-auto mt-7 h-64 w-64 rounded-xl border border-neutral-200 p-2"
+            className="mx-auto mt-7 h-auto w-full max-w-64 rounded-xl border border-neutral-200 p-2"
           />
 
           <div className="mt-7 text-[15px] font-semibold text-neutral-900">Scan to record your attendance</div>

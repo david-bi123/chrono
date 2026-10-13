@@ -243,9 +243,9 @@ export default function ReportsPage() {
                   <ul className="space-y-3.5">
                     {byDepartment.map((d) => (
                       <li key={d.dept}>
-                        <div className="flex items-center justify-between text-[13px]">
-                          <span className="font-medium text-neutral-800">{d.dept}</span>
-                          <span className="tabular text-neutral-500">
+                        <div className="flex items-center justify-between gap-3 text-[13px]">
+                          <span className="min-w-0 truncate font-medium text-neutral-800">{d.dept}</span>
+                          <span className="shrink-0 tabular text-neutral-500">
                             {d.pct}% · {d.present}/{d.records} days
                             {d.late > 0 && <span className="ml-2 text-amber-600">{d.late} late</span>}
                           </span>
@@ -286,7 +286,32 @@ export default function ReportsPage() {
               ) : (
                 <>
                   <div className="px-5 sm:px-6">
-                    <DataTable columns={columns} rows={paged} rowKey={(r) => r._id} />
+                    <DataTable
+                      columns={columns}
+                      rows={paged}
+                      rowKey={(r) => r._id}
+                      renderMobile={(r) => (
+                        <div className="rounded-xl border border-neutral-200/80 bg-white p-3.5">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <div className="truncate text-[13.5px] font-semibold text-neutral-900">
+                                {r.staffId?.firstName} {r.staffId?.lastName}
+                              </div>
+                              <div className="mt-0.5 text-[12px] tabular text-neutral-500">
+                                {r.date} · {timeOf(r.clockIn)} → {timeOf(r.clockOut)}
+                              </div>
+                            </div>
+                            <StatusBadge value={r.status} size="sm" />
+                          </div>
+                          <div className="mt-2.5 flex items-center justify-between border-t border-neutral-100 pt-2.5 text-[12.5px] text-neutral-500">
+                            <span className="truncate">{r.staffId?.department || "Unassigned"}</span>
+                            <span className="shrink-0 tabular font-medium text-neutral-700">
+                              {r.totalMinutes ? formatMinutes(r.totalMinutes) : "—"}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    />
                   </div>
                   <TablePagination page={page} pages={pages} total={rows.length} onPage={setPage} label="records" />
                 </>

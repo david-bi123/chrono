@@ -293,6 +293,7 @@ function ScanCard({ state }: { state: "in" | "out" | "done" }) {
           <div className="mt-1 flex gap-2">
             <Input
               id="scan-link"
+              className="min-w-0"
               value={value}
               onChange={(e) => {
                 setValue(e.target.value);

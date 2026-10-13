@@ -108,7 +108,7 @@ export function SearchInput({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKeyDown}
         className={cn(
-          "h-9 w-full rounded-lg border border-neutral-300 bg-white pl-9 pr-3.5 text-sm text-neutral-900 shadow-xs outline-none transition-colors placeholder:text-neutral-500 hover:border-neutral-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10",
+          "h-9 w-full rounded-lg border border-neutral-300 bg-white pl-9 pr-3.5 text-base text-neutral-900 shadow-xs outline-none transition-colors placeholder:text-neutral-500 hover:border-neutral-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-600/10 sm:text-sm",
           "[&::-webkit-search-cancel-button]:cursor-pointer"
         )}
       />

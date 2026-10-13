@@ -4,6 +4,7 @@ import { dbConnect } from "@/lib/db/mongoose";
 import { Organization } from "@/models/Organization";
 import { getSession } from "@/lib/auth/session";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
+import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 
 const patchSchema = z.object({
   name: z.string().trim().min(2).max(120).optional(),
@@ -17,6 +18,8 @@ const patchSchema = z.object({
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const s = await getSession();
   if (!s || s.role !== "SUPER_ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const rl = rateLimit(rateLimitKey(req, "org-update"), 60, 60 * 60 * 1000);
+  if (!rl.ok) return NextResponse.json({ error: "Rate limited" }, { status: 429 });
   const body = await req.json().catch(() => ({}));
   const parsed = patchSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid input" }, { status: 400 });
