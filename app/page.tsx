@@ -11,9 +11,11 @@ import {
   Building2,
   UserCog,
   HardHat,
-  Lock,
   Smartphone,
   Zap,
+  ClipboardCheck,
+  FileSpreadsheet,
+  AlarmClock,
 } from "lucide-react";
 
 const features = [
@@ -73,101 +75,23 @@ const faqs = [
   },
 ];
 
-/** Stylised product preview for the hero — a static illustration of the dashboard, not live data. */
-function DashboardMock() {
-  const rows = [
-    { initials: "KM", tone: "bg-brand-50 text-brand-600", name: "K. Mensah", dept: "Engineering", time: "07:52 → Working", status: "Present", pill: "bg-emerald-50 text-emerald-700" },
-    { initials: "AO", tone: "bg-amber-50 text-amber-600", name: "A. Owusu", dept: "Design", time: "08:21 → Working", status: "Late", pill: "bg-amber-50 text-amber-700" },
-    { initials: "EB", tone: "bg-sky-50 text-sky-600", name: "E. Boateng", dept: "Operations", time: "07:45 → 17:02", status: "Present", pill: "bg-emerald-50 text-emerald-700" },
-  ];
-  const nav = ["Overview", "Attendance", "Staff", "QR Codes", "Reports"];
-  return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-lift">
-      {/* Browser bar */}
-      <div className="flex items-center gap-2 border-b border-neutral-100 px-4 py-2.5">
-        <span className="flex gap-1.5" aria-hidden>
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
-          <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
-        </span>
-        <span className="ml-2 inline-flex min-w-0 items-center gap-1.5 rounded-md bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500">
-          <Lock className="h-3 w-3 shrink-0" aria-hidden />
-          <span className="truncate">chronoswift.app/dashboard</span>
-        </span>
-      </div>
-
-      <div className="grid md:grid-cols-[190px_minmax(0,1fr)]">
-        {/* Mini sidebar */}
-        <div className="hidden flex-col gap-1 border-r border-neutral-100 p-3 md:flex" aria-hidden>
-          <div className="mb-2 flex items-center gap-2 px-2 py-1">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-neutral-900 text-[10px] font-bold text-white">C</span>
-            <span className="text-[12px] font-semibold text-neutral-900">Acme Ltd</span>
-          </div>
-          {nav.map((n, i) => (
-            <span
-              key={n}
-              className={
-                "rounded-lg px-2.5 py-2 text-[12.5px] font-medium " +
-                (i === 0 ? "bg-brand-50 text-brand-700" : "text-neutral-500")
-              }
-            >
-              {n}
-            </span>
-          ))}
-          <div className="mt-auto flex items-center gap-2 px-2 pt-3">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-900 text-[10px] font-bold text-white">AA</span>
-            <span className="text-[12px] font-medium text-neutral-600">A. Admin</span>
-          </div>
-        </div>
-
-        {/* Main panel */}
-        <div className="min-w-0 p-5 sm:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="text-[13.5px] font-semibold text-neutral-900">Today&apos;s attendance</div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
-              <span className="relative flex h-2 w-2" aria-hidden>
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              Live
-            </span>
-          </div>
-          <div className="mt-3 flex items-end gap-3">
-            <div className="text-[40px] font-semibold leading-none tracking-[-0.03em] tabular text-neutral-900 sm:text-[48px]">
-              94<span className="text-[22px] font-medium text-neutral-400">%</span>
-            </div>
-            <div className="pb-1 text-[12.5px] font-medium text-neutral-500">of 32 staff present</div>
-          </div>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-100" aria-hidden>
-            <div className="h-full w-[94%] rounded-full bg-emerald-500" />
-          </div>
-
-          <ul className="mt-5 space-y-2">
-            {rows.map((r) => (
-              <li
-                key={r.name}
-                className="flex items-center justify-between gap-3 rounded-xl border border-neutral-100 bg-neutral-50/60 px-3.5 py-2.5"
-              >
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold ${r.tone}`} aria-hidden>
-                    {r.initials}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="truncate text-[13px] font-semibold text-neutral-900">{r.name}</div>
-                    <div className="truncate text-[11.5px] tabular text-neutral-500">
-                      {r.dept} · {r.time}
-                    </div>
-                  </div>
-                </div>
-                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ${r.pill}`}>{r.status}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}
+const hrWins = [
+  {
+    icon: ClipboardCheck,
+    title: "One dashboard, not paper",
+    desc: "Every clock-in lands in a live dashboard. Month-end means opening Reports — not chasing registers around the office.",
+  },
+  {
+    icon: FileSpreadsheet,
+    title: "Payroll-ready exports",
+    desc: "Filter by date, staff or status and download CSV straight into payroll, with hours already computed.",
+  },
+  {
+    icon: AlarmClock,
+    title: "Fair lateness, automatically",
+    desc: "Start times and grace periods apply the same rules to everyone, backed by an audit trail on every record.",
+  },
+];
 
 export default function LandingPage() {
   return (
@@ -207,10 +131,10 @@ export default function LandingPage() {
               Real-time team attendance
             </div>
             <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
-              See who&apos;s working, the moment they clock in.
+              Making the work of HR easier and simpler.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-neutral-500 sm:text-base">
-              ChronoSwift turns any printed QR code into a tamper-proof time clock. No apps to install, no hardware to buy — just scan and go.
+              ChronoSwift takes attendance off your plate — staff clock in with a QR scan while late arrivals, absences and payroll-ready reports take care of themselves.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link href="/login" className="w-full rounded-2xl bg-neutral-900 px-7 py-3.5 text-sm font-semibold text-white shadow-lift transition hover:bg-neutral-800 active:scale-[0.98] sm:w-auto">
@@ -233,25 +157,17 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* Product preview */}
-            <div className="relative mx-auto mt-12 max-w-4xl sm:mt-14">
-              <div className="pointer-events-none absolute -inset-x-8 top-8 -bottom-8 bg-[radial-gradient(500px_260px_at_50%_0%,rgba(31,79,224,0.08),transparent)]" aria-hidden />
-              <div className="relative">
-                <DashboardMock />
-                <div className="absolute -right-3 top-14 hidden items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[12.5px] font-semibold text-neutral-800 shadow-lift md:flex lg:-right-8" aria-hidden>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-                    <Check className="h-3.5 w-3.5" />
-                  </span>
-                  Clocked in · 07:52
+            {/* Why HR teams switch — realistic outcomes, no mock data */}
+            <div className="mx-auto mt-12 grid max-w-4xl gap-4 text-left sm:mt-14 md:grid-cols-3">
+              {hrWins.map((w) => (
+                <div key={w.title} className="rounded-2xl border border-neutral-200/70 bg-white p-5 shadow-soft sm:p-6">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                    <w.icon className="h-5 w-5" aria-hidden />
+                  </div>
+                  <div className="mt-4 text-[15px] font-semibold tracking-tight">{w.title}</div>
+                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{w.desc}</p>
                 </div>
-                <div className="absolute -left-3 bottom-14 hidden items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[12.5px] font-semibold text-neutral-800 shadow-lift md:flex lg:-left-8" aria-hidden>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
-                    <Clock className="h-3.5 w-3.5" />
-                  </span>
-                  Late arrivals flagged
-                </div>
-              </div>
-              <p className="mt-4 text-center text-[12px] text-neutral-400">Illustrated preview of the live dashboard</p>
+              ))}
             </div>
           </div>
         </section>
