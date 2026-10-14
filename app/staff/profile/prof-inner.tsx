@@ -120,11 +120,11 @@ export default function ProfilePage() {
               <div className="text-lg font-semibold tracking-[-0.02em] text-neutral-900">{name}</div>
               <StatusBadge value={profile.status} size="sm" />
             </div>
-            <div className="mt-1 text-[13.5px] text-neutral-500">
+              <div className="mt-1 text-sm text-neutral-500">
               {profile.position || "Staff member"}
               {profile.department ? ` · ${profile.department}` : ""}
             </div>
-            <div className="mt-1 text-[13px] text-neutral-500">{profile.email}</div>
+            <div className="mt-1 text-sm text-neutral-500">{profile.email}</div>
           </div>
         </CardContent>
       </Card>

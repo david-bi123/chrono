@@ -111,10 +111,10 @@ export default function HistoryPage() {
               renderMobile={(r) => (
                 <div className="rounded-xl border border-neutral-200/80 bg-white p-3.5">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-[13.5px] font-semibold text-neutral-900">{r.date}</span>
+                    <span className="text-sm font-semibold text-neutral-900">{r.date}</span>
                     <StatusBadge value={r.status} size="sm" />
                   </div>
-                  <div className="mt-2 flex items-center justify-between text-[13px] tabular text-neutral-600">
+                  <div className="mt-2 flex items-center justify-between text-sm tabular text-neutral-600">
                     <span>
                       {timeOf(r.clockIn)} → {timeOf(r.clockOut)}
                     </span>

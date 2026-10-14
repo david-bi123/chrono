@@ -135,7 +135,7 @@ export function AppShell({
         onClick={() => setOpen(false)}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors duration-150",
+          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150",
           active
             ? "bg-brand-50 text-brand-700 before:absolute before:-left-3 before:top-1/2 before:h-4 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand-600"
             : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
@@ -178,8 +178,8 @@ export function AppShell({
       <div className="flex items-center gap-2.5 rounded-lg px-2 py-2">
         <Avatar name={userName} email={userEmail} size="sm" />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[13px] font-semibold text-neutral-900">{userName}</div>
-          <div className="truncate text-[11.5px] capitalize text-neutral-500">{roleLabel}</div>
+          <div className="truncate text-sm font-semibold text-neutral-900">{userName}</div>
+          <div className="truncate text-[12.5px] capitalize text-neutral-500">{roleLabel}</div>
         </div>
         {settingsHref && (
           <Link
@@ -218,8 +218,8 @@ export function AppShell({
         <div className="flex items-center gap-2.5 px-2.5 py-2.5">
           <Avatar name={userName} email={userEmail} size="sm" />
           <div className="min-w-0">
-            <div className="truncate text-[13.5px] font-semibold text-neutral-900">{userName}</div>
-            <div className="truncate text-[12px] text-neutral-500">{userEmail || orgName}</div>
+            <div className="truncate text-sm font-semibold text-neutral-900">{userName}</div>
+            <div className="truncate text-[12.5px] text-neutral-500">{userEmail || orgName}</div>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -249,7 +249,7 @@ export function AppShell({
         <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-neutral-100 px-5">
           <Logo size="md" />
           {orgName && (
-            <span className="ml-auto max-w-[112px] truncate text-[12px] font-medium text-neutral-500" title={orgName}>
+            <span className="ml-auto max-w-[112px] truncate text-[12.5px] font-medium text-neutral-500" title={orgName}>
               {orgName}
             </span>
           )}
@@ -299,7 +299,7 @@ export function AppShell({
               <Menu className="h-5 w-5" />
             </button>
 
-            <div className="hidden min-w-0 items-center gap-2 text-[13px] md:flex">
+            <div className="hidden min-w-0 items-center gap-2 text-sm md:flex">
               <span className="flex items-center gap-1.5 font-medium text-neutral-500">
                 <LogoMark className="h-4 w-4" />
                 ChronoSwift
@@ -359,7 +359,7 @@ export function AppShell({
                     href={n.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex flex-col items-center gap-1 rounded-lg px-1 py-2 text-[10.5px] font-semibold transition-colors",
+                      "flex flex-col items-center gap-1 rounded-lg px-1 py-2 text-[11px] font-semibold transition-colors",
                       active ? "text-brand-600" : "text-neutral-500"
                     )}
                   >

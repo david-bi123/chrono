@@ -48,7 +48,7 @@ export function AuthShell({
           </ul>
         </div>
 
-        <div className="relative flex items-center gap-2 text-[13px] text-neutral-500">
+        <div className="relative flex items-center gap-2 text-sm text-neutral-500">
           <Check className="h-3.5 w-3.5 text-emerald-400" />
           Smart attendance. Simple management.
         </div>
@@ -67,7 +67,7 @@ export function AuthShell({
             {children}
           </div>
 
-          {footer && <div className="mt-5 text-center text-[13.5px] text-neutral-500">{footer}</div>}
+          {footer && <div className="mt-5 text-center text-sm text-neutral-500">{footer}</div>}
         </div>
       </main>
     </div>

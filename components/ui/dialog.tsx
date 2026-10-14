@@ -46,7 +46,7 @@ export function Modal({
                 {title}
               </DialogPrimitive.Title>
               {description && (
-                <DialogPrimitive.Description className="mt-1 text-[13.5px] leading-relaxed text-neutral-500">
+                <DialogPrimitive.Description className="mt-1 text-sm leading-relaxed text-neutral-500">
                   {description}
                 </DialogPrimitive.Description>
               )}
@@ -121,7 +121,7 @@ export function ConfirmDialog({
         >
           <AlertTriangle className="h-[18px] w-[18px]" strokeWidth={2} />
         </div>
-        <p className="pt-1.5 text-[13.5px] leading-relaxed text-neutral-600">{description}</p>
+        <p className="pt-1.5 text-sm leading-relaxed text-neutral-600">{description}</p>
       </div>
     </Modal>
   );

@@ -148,10 +148,10 @@ export default function NewOrgForm() {
           </div>
 
           <div className="border-t border-neutral-100 pt-5">
-            <div className="flex items-center gap-2 text-[13px] font-semibold text-neutral-900">
+            <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <Mail className="h-4 w-4 text-neutral-500" /> Administrator
             </div>
-            <p className="mt-1 text-[13px] text-neutral-500">
+            <p className="mt-1 text-sm text-neutral-500">
               They&apos;ll receive a secure setup link and choose their own password.
             </p>
             <div className="mt-4 grid gap-4 md:grid-cols-2">

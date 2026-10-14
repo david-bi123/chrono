@@ -91,7 +91,7 @@ export default function SuperAdminHome() {
             </div>
             <Link
               href="/super-admin/organizations"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-[12.5px] font-semibold text-neutral-700 transition hover:bg-neutral-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-[13px] font-semibold text-neutral-700 transition hover:bg-neutral-50"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -121,8 +121,8 @@ export default function SuperAdminHome() {
                         <Building2 className="h-4 w-4" />
                       </span>
                       <div className="min-w-0">
-                        <div className="truncate text-[13.5px] font-semibold text-neutral-900">{o.name}</div>
-                        <div className="truncate text-[12px] text-neutral-500">
+                        <div className="truncate text-sm font-semibold text-neutral-900">{o.name}</div>
+                        <div className="truncate text-[12.5px] text-neutral-500">
                           {o.email}
                           {o.createdAt ? ` · created ${new Date(o.createdAt).toLocaleDateString()}` : ""}
                         </div>
@@ -165,7 +165,7 @@ export default function SuperAdminHome() {
               <CardTitle className="text-brand-900">How provisioning works</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-[13px] leading-relaxed text-brand-800">
+              <p className="text-sm leading-relaxed text-brand-800">
                 Creating an organization also creates its administrator and emails a single-use setup link that expires
                 in 72 hours. Only a hash of the token is stored, and the admin sets their own password — it&apos;s never
                 sent by email.

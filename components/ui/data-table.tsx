@@ -113,7 +113,7 @@ export function DataTable<T>({
                     <dt className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
                       {typeof c.header === "string" ? c.header : c.key}
                     </dt>
-                    <dd className="mt-0.5 text-[13.5px] text-neutral-800">{c.render(row)}</dd>
+                    <dd className="mt-0.5 text-sm text-neutral-800">{c.render(row)}</dd>
                   </div>
                 ))}
               </dl>

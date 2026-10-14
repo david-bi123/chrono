@@ -103,7 +103,7 @@ export default function ReportsPage() {
           <div className="truncate font-medium text-neutral-900">
             {r.staffId?.firstName} {r.staffId?.lastName}
           </div>
-          <div className="truncate text-[11.5px] text-neutral-500">{r.staffId?.employeeId || "—"}</div>
+          <div className="truncate text-[12.5px] text-neutral-500">{r.staffId?.employeeId || "—"}</div>
         </div>
       ),
     },
@@ -149,13 +149,13 @@ export default function ReportsPage() {
         }
       >
         <div className="flex items-center gap-2">
-          <label htmlFor="rep-from" className="text-[13px] font-medium text-neutral-500">
+          <label htmlFor="rep-from" className="text-sm font-medium text-neutral-500">
             From
           </label>
           <Input id="rep-from" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-[152px]" />
         </div>
         <div className="flex items-center gap-2">
-          <label htmlFor="rep-to" className="text-[13px] font-medium text-neutral-500">
+          <label htmlFor="rep-to" className="text-sm font-medium text-neutral-500">
             To
           </label>
           <Input id="rep-to" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-[152px]" />
@@ -212,7 +212,7 @@ export default function ReportsPage() {
                     />
                   ))}
                 </div>
-                <ul className="mt-4 space-y-2.5 text-[13px]">
+                <ul className="mt-4 space-y-2.5 text-sm">
                   {distribution.map((d) => (
                     <li key={d.label} className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-neutral-600">
@@ -238,12 +238,12 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 {byDepartment.length === 0 ? (
-                  <p className="py-6 text-center text-[13.5px] text-neutral-500">No records in this range.</p>
+                  <p className="py-6 text-center text-sm text-neutral-500">No records in this range.</p>
                 ) : (
                   <ul className="space-y-3.5">
                     {byDepartment.map((d) => (
                       <li key={d.dept}>
-                        <div className="flex items-center justify-between gap-3 text-[13px]">
+                        <div className="flex items-center justify-between gap-3 text-sm">
                           <span className="min-w-0 truncate font-medium text-neutral-800">{d.dept}</span>
                           <span className="shrink-0 tabular text-neutral-500">
                             {d.pct}% · {d.present}/{d.records} days
@@ -294,10 +294,10 @@ export default function ReportsPage() {
                         <div className="rounded-xl border border-neutral-200/80 bg-white p-3.5">
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                              <div className="truncate text-[13.5px] font-semibold text-neutral-900">
+                              <div className="truncate text-sm font-semibold text-neutral-900">
                                 {r.staffId?.firstName} {r.staffId?.lastName}
                               </div>
-                              <div className="mt-0.5 text-[12px] tabular text-neutral-500">
+                              <div className="mt-0.5 text-[12.5px] tabular text-neutral-500">
                                 {r.date} · {timeOf(r.clockIn)} → {timeOf(r.clockOut)}
                               </div>
                             </div>

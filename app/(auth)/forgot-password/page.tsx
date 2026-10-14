@@ -50,7 +50,7 @@ function ForgotInner() {
         <div className="mt-6 space-y-4">
           <div
             role="status"
-            className="flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-[13.5px] leading-snug text-emerald-800"
+            className="flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-sm leading-snug text-emerald-800"
           >
             <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
             <span>

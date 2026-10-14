@@ -5,7 +5,7 @@ import { AlertTriangle, Check, Copy } from "lucide-react";
 export function SpamNotice({ email, compact }: { email?: string; compact?: boolean }) {
   return (
     <div
-      className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-[13px] leading-relaxed text-amber-900"
+      className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm leading-relaxed text-amber-900"
       role="status"
     >
       <span className="font-semibold">📧 Email sent{email ? ` to ${email}` : ""}.</span>{" "}
@@ -48,16 +48,16 @@ export function SetupLinkPanel({ link, email }: { link: string; email?: string }
       <div className="flex items-start gap-2.5">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden />
         <div>
-          <div className="text-[13.5px] font-semibold text-amber-900">
+          <div className="text-sm font-semibold text-amber-900">
             We couldn&apos;t send the email{email ? ` to ${email}` : ""}.
           </div>
-          <p className="mt-0.5 text-[13px] leading-relaxed text-amber-800">
+          <p className="mt-0.5 text-sm leading-relaxed text-amber-800">
             Share this one-time setup link manually instead — it expires in 72 hours and can only be used once.
           </p>
         </div>
       </div>
       <div className="mt-3 flex items-stretch gap-2">
-        <code className="min-w-0 flex-1 break-all rounded-lg bg-white px-3 py-2 font-mono text-[11.5px] leading-relaxed text-neutral-700 ring-1 ring-amber-200">
+        <code className="min-w-0 flex-1 break-all rounded-lg bg-white px-3 py-2 font-mono text-xs leading-relaxed text-neutral-700 ring-1 ring-amber-200">
           {link}
         </code>
         <button

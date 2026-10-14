@@ -95,7 +95,7 @@ function TodayStatus() {
               {clockedOut ? <CheckCircle2 className="h-[18px] w-[18px]" /> : <Clock3 className="h-[18px] w-[18px]" />}
             </span>
             <div>
-              <div className="text-[13.5px] font-semibold text-neutral-900">Today&apos;s attendance</div>
+              <div className="text-sm font-semibold text-neutral-900">Today&apos;s attendance</div>
               <div className="text-[12.5px] text-neutral-500">
                 {!loaded
                   ? "Checking…"
@@ -125,7 +125,7 @@ function TodayStatus() {
             <Cell label="Date" value={today.date || "—"} />
           </div>
         ) : (
-          <p className="max-w-lg text-[13.5px] leading-relaxed text-neutral-500">
+          <p className="max-w-lg text-sm leading-relaxed text-neutral-500">
             Your day starts when you scan the QR code posted at your entrance and tap Clock In below.
           </p>
         )}
@@ -258,7 +258,7 @@ function LocationClock({ token }: { token: string }) {
             account can&apos;t access.
           </p>
           {info.sessionEmail && (
-            <p className="mt-2 text-[13px] text-neutral-500">
+            <p className="mt-2 text-sm text-neutral-500">
               You&apos;re signed in as <span className="font-medium text-neutral-700">{info.sessionEmail}</span>.
             </p>
           )}
@@ -283,7 +283,7 @@ function LocationClock({ token }: { token: string }) {
     <Card className="overflow-hidden">
       <div className="border-b border-neutral-100 bg-neutral-50/60 px-5 py-4 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-1.5 text-[13px] font-medium text-neutral-600">
+          <div className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-neutral-600">
             <MapPin className="h-4 w-4 shrink-0 text-brand-500" />
             <span className="truncate">{info.orgName}</span>
             <span className="text-neutral-300">·</span>
@@ -308,7 +308,7 @@ function LocationClock({ token }: { token: string }) {
               <div className="mt-2.5 text-[22px] font-semibold tracking-[-0.02em] text-neutral-900">
                 You&apos;re ready to clock in.
               </div>
-              <p className="mx-auto mt-1.5 max-w-[18rem] text-[13.5px] leading-relaxed text-neutral-500">
+              <p className="mx-auto mt-1.5 max-w-[18rem] text-sm leading-relaxed text-neutral-500">
                 Recording starts the moment you tap the button.
               </p>
             </>
@@ -392,7 +392,7 @@ function LocationClock({ token }: { token: string }) {
             </Button>
           )}
           {clockedOut && (
-            <p className="text-center text-[13.5px] text-neutral-500">
+            <p className="text-center text-sm text-neutral-500">
               Times are recorded by the server ({info.timezone}).
             </p>
           )}
@@ -440,7 +440,7 @@ function HowTo({ showOpener }: { showOpener: boolean }) {
             "Point your phone camera at it and open the link.",
             "Tap Clock In — attendance is recorded instantly.",
           ].map((s, i) => (
-            <li key={s} className="flex items-start gap-3 text-[13.5px] leading-relaxed text-neutral-600">
+            <li key={s} className="flex items-start gap-3 text-sm leading-relaxed text-neutral-600">
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold tabular text-white">
                 {i + 1}
               </span>

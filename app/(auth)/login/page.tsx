@@ -76,7 +76,7 @@ function LoginInner() {
       {banner && (
         <div
           role="status"
-          className="mt-5 flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-[13.5px] text-emerald-800"
+          className="mt-5 flex items-start gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-sm text-emerald-800"
         >
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
           <div className="flex-1 leading-snug">{banner}</div>
@@ -108,7 +108,7 @@ function LoginInner() {
             </Label>
             <Link
               href="/forgot-password"
-              className="text-[13px] font-medium text-neutral-500 transition hover:text-neutral-900"
+              className="text-sm font-medium text-neutral-500 transition hover:text-neutral-900"
             >
               Forgot password?
             </Link>

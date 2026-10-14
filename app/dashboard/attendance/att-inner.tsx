@@ -157,7 +157,7 @@ export default function AttendancePage() {
             <div className="truncate font-medium text-neutral-900">
               {r.staffId?.firstName} {r.staffId?.lastName}
             </div>
-            <div className="truncate text-[11.5px] text-neutral-500">{r.staffId?.employeeId || "—"}</div>
+            <div className="truncate text-[12.5px] text-neutral-500">{r.staffId?.employeeId || "—"}</div>
           </div>
         </div>
       ),
@@ -326,10 +326,10 @@ export default function AttendancePage() {
                             size="sm"
                           />
                           <div className="min-w-0">
-                            <div className="truncate text-[13.5px] font-semibold text-neutral-900">
+                            <div className="truncate text-sm font-semibold text-neutral-900">
                               {r.staffId?.firstName} {r.staffId?.lastName}
                             </div>
-                            <div className="truncate text-[11.5px] text-neutral-500">
+                            <div className="truncate text-[12.5px] text-neutral-500">
                               {r.staffId?.department || "—"} · {r.locationId?.name || "No location"}
                             </div>
                           </div>
@@ -339,19 +339,19 @@ export default function AttendancePage() {
                       <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-neutral-100 pt-3 text-center">
                         <div>
                           <dt className="text-[10.5px] font-semibold uppercase tracking-wide text-neutral-500">In</dt>
-                          <dd className="mt-0.5 text-[13px] font-medium tabular text-neutral-800">
+                          <dd className="mt-0.5 text-sm font-medium tabular text-neutral-800">
                             {r.clockIn ? new Date(r.clockIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
                           </dd>
                         </div>
                         <div>
                           <dt className="text-[10.5px] font-semibold uppercase tracking-wide text-neutral-500">Out</dt>
-                          <dd className="mt-0.5 text-[13px] font-medium tabular text-neutral-800">
+                          <dd className="mt-0.5 text-sm font-medium tabular text-neutral-800">
                             {r.clockOut ? new Date(r.clockOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
                           </dd>
                         </div>
                         <div>
                           <dt className="text-[10.5px] font-semibold uppercase tracking-wide text-neutral-500">Hours</dt>
-                          <dd className="mt-0.5 text-[13px] font-medium tabular text-neutral-800">
+                          <dd className="mt-0.5 text-sm font-medium tabular text-neutral-800">
                             {r.totalMinutes ? formatMinutes(r.totalMinutes) : "—"}
                           </dd>
                         </div>

@@ -94,7 +94,7 @@ export function EmptyState({
         </div>
       )}
       <div className="text-[15px] font-semibold tracking-[-0.01em] text-neutral-900">{title}</div>
-      <p className="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-neutral-500">{description}</p>
+      <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-neutral-500">{description}</p>
       {action && <div className="mt-5">{action}</div>}
     </div>
   );
@@ -123,7 +123,7 @@ export function ErrorState({
         <AlertTriangle className="h-5 w-5" />
       </div>
       <div className="text-sm font-semibold text-red-900">{title}</div>
-      <p className="mx-auto mt-1 max-w-sm text-[13px] leading-relaxed text-red-700">{message}</p>
+      <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-red-700">{message}</p>
       {onRetry && (
         <button
           onClick={onRetry}

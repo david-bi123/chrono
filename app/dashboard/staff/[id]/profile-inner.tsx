@@ -128,7 +128,7 @@ export default function StaffProfile({ id }: { id: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 text-[13px] text-neutral-500">
+      <div className="flex items-center gap-2 text-sm text-neutral-500">
         <Link
           href="/dashboard/staff"
           className="inline-flex items-center gap-1.5 font-medium transition hover:text-neutral-900"
@@ -151,7 +151,7 @@ export default function StaffProfile({ id }: { id: string }) {
                 {p.position || "Staff member"}
                 {p.department ? ` · ${p.department}` : ""}
               </p>
-              <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-neutral-500">
+              <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
                 <span className="inline-flex items-center gap-1.5">
                   <Mail className="h-3.5 w-3.5 text-neutral-500" /> {p.email}
                 </span>
@@ -234,7 +234,7 @@ export default function StaffProfile({ id }: { id: string }) {
             aria-selected={tab === t}
             onClick={() => setTab(t)}
             className={
-              "rounded-md px-3.5 py-1.5 text-[13px] font-semibold transition-colors " +
+              "rounded-md px-3.5 py-1.5 text-sm font-semibold transition-colors " +
               (tab === t ? "bg-neutral-900 text-white" : "text-neutral-500 hover:text-neutral-900")
             }
           >
@@ -251,7 +251,7 @@ export default function StaffProfile({ id }: { id: string }) {
               <CardDescription>Details captured when the invitation was accepted.</CardDescription>
             </CardHeader>
             <CardContent>
-              <dl className="divide-y divide-neutral-100 text-[13.5px]">
+              <dl className="divide-y divide-neutral-100 text-sm">
                 <Row label="Full name" value={name} />
                 <Row label="Email" value={p.email} />
                 <Row label="Phone" value={p.phone || "—"} />
@@ -266,7 +266,7 @@ export default function StaffProfile({ id }: { id: string }) {
               <CardDescription>Organization and access details.</CardDescription>
             </CardHeader>
             <CardContent>
-              <dl className="divide-y divide-neutral-100 text-[13.5px]">
+              <dl className="divide-y divide-neutral-100 text-sm">
                 <Row label="Department" value={p.department || "—"} />
                 <Row label="Position" value={p.position || "—"} />
                 <Row label="Status" value={<StatusBadge value={p.status} size="sm" />} />
@@ -347,15 +347,15 @@ export default function StaffProfile({ id }: { id: string }) {
                       className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200/80 bg-white p-3.5"
                     >
                       <div className="min-w-0">
-                        <div className="text-[13.5px] font-semibold text-neutral-900">{r.date}</div>
-                        <div className="mt-0.5 truncate text-[12px] tabular text-neutral-500">
+                        <div className="text-sm font-semibold text-neutral-900">{r.date}</div>
+                        <div className="mt-0.5 truncate text-[12.5px] tabular text-neutral-500">
                           {r.clockIn ? new Date(r.clockIn).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"}
                           {" → "}
                           {r.clockOut ? new Date(r.clockOut).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "working"}
                           {r.totalMinutes ? ` · ${formatMinutes(r.totalMinutes)}` : ""}
                         </div>
                         {r.locationId?.name && (
-                          <div className="mt-0.5 truncate text-[11.5px] text-neutral-500">{r.locationId.name}</div>
+                          <div className="mt-0.5 truncate text-[12.5px] text-neutral-500">{r.locationId.name}</div>
                         )}
                       </div>
                       <StatusBadge value={r.status} size="sm" />

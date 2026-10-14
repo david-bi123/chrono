@@ -127,7 +127,7 @@ export default function QrPage({ orgName }: { orgName: string }) {
         }
       />
 
-      <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3.5 text-[13px] leading-relaxed text-brand-800">
+          <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3.5 text-sm leading-relaxed text-brand-800">
         <div className="flex gap-2.5">
           <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
           <p>
@@ -320,7 +320,7 @@ function QrPanel({
       <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col gap-4 p-4 sm:p-8">
         {/* Controls — hidden on paper */}
         <div className="no-print flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 text-[13px] font-medium text-neutral-600">
+          <div className="flex items-center gap-2 text-sm font-medium text-neutral-600">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             QR ready — download or print it now
           </div>
@@ -338,7 +338,7 @@ function QrPanel({
         {!absolute && (
           <div
             role="alert"
-            className="no-print mx-auto flex w-full max-w-[520px] items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-[13px] leading-relaxed text-amber-800"
+            className="no-print mx-auto flex w-full max-w-[520px] items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-sm leading-relaxed text-amber-800"
           >
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
             <span>
@@ -352,7 +352,7 @@ function QrPanel({
           <div className="flex flex-col items-center">
             <LogoMark className="h-11 w-11" />
             <div className="mt-3 text-[17px] font-semibold tracking-[-0.02em]">ChronoSwift</div>
-            <div className="mt-0.5 text-[13px] text-neutral-500">{orgName}</div>
+            <div className="mt-0.5 text-sm text-neutral-500">{orgName}</div>
           </div>
 
           <div className="mt-7 border-t border-neutral-100 pt-7">
@@ -368,11 +368,11 @@ function QrPanel({
           />
 
           <div className="mt-7 text-[15px] font-semibold text-neutral-900">Scan to record your attendance</div>
-          <p className="mx-auto mt-1.5 max-w-xs text-[13px] leading-relaxed text-neutral-500">
+          <p className="mx-auto mt-1.5 max-w-xs text-sm leading-relaxed text-neutral-500">
             Open your phone camera, point it at the code, then tap Clock In.
           </p>
 
-          <div className="mt-7 break-all rounded-lg bg-neutral-50 px-3 py-2.5 font-mono text-[11px] text-neutral-500">
+          <div className="mt-7 break-all rounded-lg bg-neutral-50 px-3 py-2.5 font-mono text-xs text-neutral-500">
             {location.url}
           </div>
         </div>

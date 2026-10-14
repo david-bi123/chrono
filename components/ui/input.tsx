@@ -70,7 +70,7 @@ export function PasswordInput({ className, ...props }: InputProps) {
 
 export function Label({ className, required, ...props }: React.LabelHTMLAttributes<HTMLLabelElement> & { required?: boolean }) {
   return (
-    <label className={cn("mb-1.5 block text-[13px] font-medium text-neutral-700", className)} {...props}>
+    <label className={cn("mb-1.5 block text-sm font-medium text-neutral-700", className)} {...props}>
       {props.children}
       {required && <span className="ml-0.5 text-red-500" aria-hidden>*</span>}
     </label>
@@ -116,5 +116,5 @@ export function FieldError({ message }: { message?: string }) {
 }
 
 export function Hint({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={cn("mt-1.5 text-xs leading-relaxed text-neutral-500", className)}>{children}</p>;
+  return <p className={cn("mt-1.5 text-[13px] leading-relaxed text-neutral-500", className)}>{children}</p>;
 }

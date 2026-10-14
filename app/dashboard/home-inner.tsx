@@ -144,9 +144,9 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                   {rate}
                   <span className="text-[24px] font-medium text-neutral-500">%</span>
                 </div>
-                <div className="mt-2 text-[13px] font-medium text-neutral-500">of {o.totalStaff} staff present</div>
+                <div className="mt-2 text-sm font-medium text-neutral-500">of {o.totalStaff} staff present</div>
               </div>
-              <div className="flex flex-1 flex-wrap gap-x-6 gap-y-2 text-[13px]">
+              <div className="flex flex-1 flex-wrap gap-x-6 gap-y-2 text-sm">
                 <Legend color="bg-emerald-500" label="Present" value={o.present} pct={pct(o.present)} />
                 <Legend color="bg-amber-500" label="Late" value={o.late} pct={pct(o.late)} />
                 <Legend color="bg-red-400" label="Absent" value={o.absent} pct={pct(o.absent)} />
@@ -179,7 +179,7 @@ export default function DashboardHome({ userName }: { userName?: string }) {
             </div>
             <Link
               href="/dashboard/attendance"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-[12.5px] font-semibold text-neutral-700 transition hover:bg-neutral-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-1.5 text-[13px] font-semibold text-neutral-700 transition hover:bg-neutral-50"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -227,7 +227,7 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                                   <div className="truncate font-medium text-neutral-900">
                                     {a.staffId?.firstName} {a.staffId?.lastName}
                                   </div>
-                                  <div className="truncate text-[11.5px] text-neutral-500 lg:hidden">
+                                  <div className="truncate text-[12.5px] text-neutral-500 lg:hidden">
                                     {a.staffId?.department || "—"}
                                   </div>
                                 </div>
@@ -261,10 +261,10 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                             size="sm"
                           />
                           <div className="min-w-0">
-                            <div className="truncate text-[13.5px] font-semibold text-neutral-900">
+                            <div className="truncate text-sm font-semibold text-neutral-900">
                               {a.staffId?.firstName} {a.staffId?.lastName}
                             </div>
-                            <div className="text-[11.5px] tabular text-neutral-500">
+                            <div className="text-[12.5px] tabular text-neutral-500">
                               {timeOf(a.clockIn) ?? "—"} → {timeOf(a.clockOut) ?? "working"}
                               {a.totalMinutes ? ` · ${formatMinutes(a.totalMinutes)}` : ""}
                             </div>
@@ -287,7 +287,7 @@ export default function DashboardHome({ userName }: { userName?: string }) {
           </CardHeader>
           <CardContent>
             {timeline.length === 0 ? (
-              <p className="py-6 text-center text-[13.5px] text-neutral-500">
+              <p className="py-6 text-center text-sm text-neutral-500">
                 Events will appear as your team clocks in.
               </p>
             ) : (
@@ -301,14 +301,14 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[13px] font-semibold tabular text-neutral-900">{e.time}</span>
+                        <span className="text-sm font-semibold tabular text-neutral-900">{e.time}</span>
                         {e.type === "in" ? (
                           <LogIn className="h-3 w-3 text-emerald-500" aria-hidden />
                         ) : (
                           <LogOut className="h-3 w-3 text-neutral-500" aria-hidden />
                         )}
                       </div>
-                      <div className="truncate text-[13px] text-neutral-600">{e.text}</div>
+                      <div className="truncate text-sm text-neutral-600">{e.text}</div>
                     </div>
                   </li>
                 ))}
@@ -329,7 +329,7 @@ export default function DashboardHome({ userName }: { userName?: string }) {
               <div className="text-[15px] font-semibold tabular text-neutral-900">
                 {o.completed} of {o.totalStaff} shifts completed
               </div>
-              <div className="text-[13px] text-neutral-500">Finished and clocked out today</div>
+              <div className="text-sm text-neutral-500">Finished and clocked out today</div>
             </div>
           </div>
           <Link href="/dashboard/reports">

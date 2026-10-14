@@ -174,7 +174,7 @@ export default function SettingsPage() {
                     onClick={() => setActive(s.key)}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-[13.5px] font-medium transition-colors",
+                      "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
                       isActive
                         ? "bg-brand-50 text-brand-700"
                         : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
@@ -185,7 +185,7 @@ export default function SettingsPage() {
                     />
                     <span className="whitespace-nowrap">{s.label}</span>
                   </button>
-                  <p className="hidden pl-9 pr-2 pt-0.5 text-[11.5px] leading-snug text-neutral-500 lg:block">
+                    <p className="hidden pl-9 pr-2 pt-0.5 text-[12.5px] leading-snug text-neutral-500 lg:block">
                     {s.desc}
                   </p>
                 </li>
@@ -340,7 +340,7 @@ export default function SettingsPage() {
                       className="mt-0.5 h-4 w-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-600"
                     />
                     <span>
-                      <span className="block text-[13.5px] font-medium text-neutral-800">Require clock-out</span>
+                      <span className="block text-sm font-medium text-neutral-800">Require clock-out</span>
                       <span className="block text-[12.5px] leading-relaxed text-neutral-500">
                         Shifts without a clock-out stay marked <strong>Incomplete</strong> until corrected.
                       </span>

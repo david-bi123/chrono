@@ -130,7 +130,7 @@ export default function OrgsPage() {
           </span>
           <div className="min-w-0">
             <div className="truncate font-medium text-neutral-900">{o.name}</div>
-            <div className="truncate text-[11.5px] text-neutral-500">{o.email}</div>
+            <div className="truncate text-[12.5px] text-neutral-500">{o.email}</div>
           </div>
         </div>
       ),
@@ -259,8 +259,8 @@ export default function OrgsPage() {
                             <Building2 className="h-4 w-4" />
                           </span>
                           <div className="min-w-0">
-                            <div className="truncate text-[13.5px] font-semibold text-neutral-900">{o.name}</div>
-                            <div className="truncate text-[11.5px] text-neutral-500">
+                            <div className="truncate text-sm font-semibold text-neutral-900">{o.name}</div>
+                            <div className="truncate text-[12.5px] text-neutral-500">
                               {o.email} · {o.staffCount} staff
                             </div>
                           </div>

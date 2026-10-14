@@ -64,7 +64,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           </div>
           <div className="mt-4 text-[17px] font-semibold tracking-tight text-neutral-900">QR unavailable</div>
           <p className="mt-1.5 text-[14px] leading-relaxed text-neutral-500">{error}</p>
-          <p className="mt-4 text-[12.5px] text-neutral-500">
+          <p className="mt-4 text-[13px] text-neutral-500">
             If this code was printed a while ago, ask your administrator for a fresh one.
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
             <LogIn className="h-5 w-5" />
           </div>
-          <div className="mt-4 flex items-center justify-center gap-1.5 text-[12.5px] font-medium text-neutral-500">
+          <div className="mt-4 flex items-center justify-center gap-1.5 text-[13px] font-medium text-neutral-500">
             <MapPin className="h-3.5 w-3.5" />
             {info.orgName} · {info.locationName}
           </div>
@@ -124,7 +124,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
             account can&apos;t access.
           </p>
           {info.sessionEmail && (
-            <p className="mt-2 text-[13px] text-neutral-500">
+            <p className="mt-2 text-sm text-neutral-500">
               You&apos;re signed in as <span className="font-medium text-neutral-700">{info.sessionEmail}</span>.
             </p>
           )}

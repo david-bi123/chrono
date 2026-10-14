@@ -197,7 +197,7 @@ export default function StaffPage() {
             <div className="truncate font-medium text-neutral-900">
               {s.firstName} {s.lastName}
             </div>
-            <div className="truncate text-[11.5px] text-neutral-500">{s.email}</div>
+            <div className="truncate text-[12.5px] text-neutral-500">{s.email}</div>
           </div>
         </div>
       ),
@@ -380,10 +380,10 @@ export default function StaffPage() {
                       >
                         <Avatar name={`${s.firstName} ${s.lastName}`} email={s.email} size="sm" />
                         <span className="min-w-0">
-                          <span className="block truncate text-[13.5px] font-semibold text-neutral-900">
+                          <span className="block truncate text-sm font-semibold text-neutral-900">
                             {s.firstName} {s.lastName}
                           </span>
-                          <span className="block truncate text-[11.5px] text-neutral-500">
+                          <span className="block truncate text-[12.5px] text-neutral-500">
                             {s.employeeId || s.email}
                           </span>
                         </span>

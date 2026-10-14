@@ -123,9 +123,9 @@ export function AuditFeed({
                     <conf.icon className="h-4 w-4" aria-hidden />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-[13.5px] font-medium text-neutral-900">{pretty(l.action)}</div>
+                    <div className="truncate text-sm font-medium text-neutral-900">{pretty(l.action)}</div>
                     {detail && <div className="truncate text-[12.5px] text-neutral-500">{detail}</div>}
-                    <div className="mt-0.5 text-[11.5px] text-neutral-500">
+                    <div className="mt-0.5 text-[12.5px] text-neutral-500">
                       {l.createdAt ? new Date(l.createdAt).toLocaleString() : ""}
                       {l.ipAddress ? ` · ${l.ipAddress}` : ""}
                     </div>

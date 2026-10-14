@@ -104,14 +104,14 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
                 <Clock3 className="h-[18px] w-[18px]" />
               </span>
               <div>
-                <div className="text-[13.5px] font-semibold text-neutral-900">Today&apos;s attendance</div>
+                <div className="text-sm font-semibold text-neutral-900">Today&apos;s attendance</div>
                 <div className="text-[12.5px] text-neutral-500">Times recorded by the server</div>
               </div>
             </div>
             {t ? (
               <StatusBadge value={t.status} pulse={!t.clockOut} />
             ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11.5px] font-medium text-neutral-500 ring-1 ring-neutral-200">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[12.5px] font-medium text-neutral-500 ring-1 ring-neutral-200">
                 Not clocked in
               </span>
             )}
@@ -125,7 +125,7 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
                 <div className="text-[15px] font-semibold text-neutral-900">
                   You haven&apos;t clocked in yet today.
                 </div>
-                <p className="mt-1 max-w-lg text-[13.5px] leading-relaxed text-neutral-500">
+                <p className="mt-1 max-w-lg text-sm leading-relaxed text-neutral-500">
                   Scan the ChronoSwift QR code posted at your entrance with your phone camera, then tap{" "}
                   <strong className="font-semibold text-neutral-700">Clock In</strong>.
                 </p>
@@ -159,7 +159,7 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
           <span className="block text-[14px] font-semibold text-neutral-900">
             {!t?.clockIn ? "Scan to clock in" : t?.clockOut ? "Shift complete — review today" : "Scan to clock out"}
           </span>
-          <span className="block truncate text-[12.5px] text-neutral-500">
+          <span className="block truncate text-[13px] text-neutral-500">
             Open the Clock In page for the steps and QR link opener
           </span>
         </span>
@@ -214,13 +214,13 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
               {data.recent.slice(0, 5).map((r) => (
                 <li key={r._id} className="flex items-center justify-between gap-3 py-3">
                   <div className="min-w-0">
-                    <div className="text-[13.5px] font-medium text-neutral-900">{r.date}</div>
-                    <div className="text-[12.5px] tabular text-neutral-500">
+                    <div className="text-sm font-medium text-neutral-900">{r.date}</div>
+                            <div className="text-[13px] tabular text-neutral-500">
                       {timeOf(r.clockIn)} → {timeOf(r.clockOut)}
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-3">
-                    <span className="text-[13px] tabular text-neutral-600">
+                    <span className="text-sm tabular text-neutral-600">
                       {r.totalMinutes ? formatMinutes(r.totalMinutes) : "—"}
                     </span>
                     <StatusBadge value={r.status} size="sm" />

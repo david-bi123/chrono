@@ -36,7 +36,7 @@ export default function Unauthorized() {
         </div>
       </div>
 
-      <p className="mt-6 text-[13px] text-neutral-500">Smart attendance. Simple management.</p>
+      <p className="mt-6 text-sm text-neutral-500">Smart attendance. Simple management.</p>
     </div>
   );
 }

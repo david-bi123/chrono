@@ -80,9 +80,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             >
               <Icon className={cn("mt-0.5 h-[18px] w-[18px] shrink-0", ICON_TONES[t.variant])} aria-hidden />
               <div className="min-w-0 flex-1">
-                <div className="text-[13.5px] font-semibold text-neutral-900">{t.title}</div>
+                <div className="text-sm font-semibold text-neutral-900">{t.title}</div>
                 {t.description && (
-                  <div className="mt-0.5 text-[13px] leading-snug text-neutral-500">{t.description}</div>
+                  <div className="mt-0.5 text-[13.5px] leading-snug text-neutral-500">{t.description}</div>
                 )}
               </div>
               <button
