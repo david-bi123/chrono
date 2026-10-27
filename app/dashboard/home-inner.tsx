@@ -132,7 +132,15 @@ export default function DashboardHome({ userName }: { userName?: string }) {
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Today&apos;s attendance</CardTitle>
+            <CardTitle className="flex items-center gap-2.5">Today&apos;s attendance
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-700">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-600" />
+                </span>
+                Live
+              </span>
+            </CardTitle>
             <CardDescription>
               {data.date} · timestamps in {data.timezone}
             </CardDescription>

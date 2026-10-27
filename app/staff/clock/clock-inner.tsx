@@ -332,11 +332,11 @@ function LocationClock({ token }: { token: string }) {
 
           {(justClockedIn || justClockedOut) && (
             <div className="animate-fade-up">
-              <div className="check-pop mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-                <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="check-pop relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-teal-500 shadow-lg shadow-brand-600/30">
+                <span className="absolute inset-0 animate-ping rounded-full bg-brand-400 opacity-20" aria-hidden />
+                <svg viewBox="0 0 24 24" className="h-8 w-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path
                     d="M5 13l4 4L19 7"
-                    className="text-emerald-600"
                     style={{ strokeDasharray: 32, animation: "draw-check 0.45s 0.1s ease-out both" }}
                   />
                 </svg>
@@ -344,7 +344,7 @@ function LocationClock({ token }: { token: string }) {
               <div className="mt-4 text-[22px] font-semibold tracking-[-0.02em] text-neutral-900">
                 {justClockedIn ? "Clocked in" : "Clocked out"}
               </div>
-              <div className="mt-1 text-[32px] font-semibold leading-none tracking-[-0.03em] tabular text-emerald-600">
+              <div className="mt-1 text-[32px] font-semibold leading-none tracking-[-0.03em] tabular text-brand-700">
                 {timeOf(justClockedIn ? att?.clockIn : att?.clockOut)}
               </div>
               <p className="mt-3 text-[14px] text-neutral-500">
@@ -355,7 +355,7 @@ function LocationClock({ token }: { token: string }) {
 
           {clockedOut && !justClockedIn && !justClockedOut && (
             <>
-              <div className="check-pop mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <div className="check-pop mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-teal-100 text-brand-700 ring-1 ring-brand-200">
                 <CheckCircle2 className="h-7 w-7" />
               </div>
               <div className="mt-3 text-[19px] font-semibold tracking-[-0.02em] text-neutral-900">
@@ -379,15 +379,26 @@ function LocationClock({ token }: { token: string }) {
           )}
         </div>
 
-        <div className="border-t border-neutral-100 bg-neutral-50/60 px-5 py-4 sm:px-6">
+        <div className="border-t border-neutral-100 bg-gradient-to-b from-neutral-50/80 to-brand-50/40 px-5 py-4 sm:px-6">
           {!clockedIn && (
-            <Button size="xl" className="w-full" loading={busy} onClick={() => clock("in")}>
-              <Clock3 className="h-[18px] w-[18px]" />
+            <Button
+              size="xl"
+              className="w-full bg-gradient-to-r from-brand-500 to-teal-500 shadow-lg shadow-brand-600/25 ring-1 ring-brand-700/40 transition-all hover:from-brand-600 hover:to-teal-600 hover:shadow-xl hover:shadow-brand-600/30 active:scale-[0.99] disabled:shadow-none"
+              loading={busy}
+              onClick={() => clock("in")}
+            >
+              <ScanLine className="h-[18px] w-[18px]" />
               {busy ? "Recording…" : "Clock In"}
             </Button>
           )}
           {clockedIn && !clockedOut && (
-            <Button size="xl" variant="success" className="w-full" loading={busy} onClick={() => clock("out")}>
+            <Button
+              size="xl"
+              variant="success"
+              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-600/25 ring-1 ring-emerald-700/30 transition-all hover:shadow-xl hover:shadow-emerald-600/30 active:scale-[0.99] disabled:shadow-none"
+              loading={busy}
+              onClick={() => clock("out")}
+            >
               {busy ? "Recording…" : "Clock Out"}
             </Button>
           )}

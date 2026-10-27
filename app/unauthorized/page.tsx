@@ -5,12 +5,16 @@ import { ShieldAlert, ArrowLeft, Home } from "lucide-react";
 
 export default function Unauthorized() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-[#F7F8FA] px-4 py-12">
-      <div className="mb-8">
+    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-neutral-50 px-4 py-12">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.045)_1px,transparent_1px)] bg-[length:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,black,transparent)]" />
+        <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(640px_240px_at_50%_-70px,rgba(16,185,129,0.10),transparent)]" />
+      </div>
+      <div className="relative mb-8">
         <Logo size="lg" />
       </div>
 
-      <div className="w-full max-w-[420px] rounded-2xl border border-neutral-200/80 bg-white p-7 text-center shadow-card sm:p-9">
+      <div className="relative w-full max-w-[420px] rounded-2xl border border-neutral-200/80 bg-white p-7 text-center shadow-card sm:p-9">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">
           <ShieldAlert className="h-7 w-7 text-amber-600" aria-hidden />
         </div>
@@ -36,7 +40,7 @@ export default function Unauthorized() {
         </div>
       </div>
 
-      <p className="mt-6 text-sm text-neutral-500">Smart attendance. Simple management.</p>
+      <p className="relative mt-6 text-sm text-neutral-500">Smart attendance. Simple management.</p>
     </div>
   );
 }

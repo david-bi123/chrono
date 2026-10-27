@@ -20,7 +20,7 @@ export function LogoMark({
   square?: boolean;
 }) {
   const stroke = tone === "light" ? "#0B0F19" : "#FFFFFF";
-  const dot = tone === "light" ? "#1F4FE0" : tone === "brand" ? "#FFFFFF" : "#6A87FF";
+  const dot = tone === "light" ? "#10B981" : tone === "brand" ? "#FFFFFF" : "#34D399";
   return (
     <svg
       viewBox="0 0 32 32"

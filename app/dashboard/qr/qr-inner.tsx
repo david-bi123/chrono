@@ -164,7 +164,7 @@ export default function QrPage({ orgName }: { orgName: string }) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {locs.map((l) => (
-            <Card key={l._id} className="flex flex-col p-5 transition-colors hover:border-neutral-300">
+            <Card key={l._id} className="flex flex-col p-5 transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
                   <span
@@ -348,15 +348,16 @@ function QrPanel({
             </span>
           </div>
         )}
-        <div className="print-sheet mx-auto w-full max-w-[520px] rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-lift sm:p-10">
-          <div className="flex flex-col items-center">
+        <div className="print-sheet relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-neutral-200 bg-white p-0 text-center shadow-lift sm:max-w-[560px]">
+          <div className="h-2 w-full bg-gradient-to-r from-brand-500 via-teal-500 to-brand-600" aria-hidden />
+          <div className="flex flex-col items-center px-8 pt-8 sm:px-10 sm:pt-10">
             <LogoMark className="h-11 w-11" />
             <div className="mt-3 text-[17px] font-semibold tracking-[-0.02em]">ChronoSwift</div>
             <div className="mt-0.5 text-sm text-neutral-500">{orgName}</div>
           </div>
 
           <div className="mt-7 border-t border-neutral-100 pt-7">
-            <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-500">Scan at</div>
+            <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-700">Scan at</div>
             <div className="mt-1.5 text-2xl font-semibold tracking-[-0.02em] text-neutral-900">{location.name}</div>
           </div>
 
@@ -368,11 +369,11 @@ function QrPanel({
           />
 
           <div className="mt-7 text-[15px] font-semibold text-neutral-900">Scan to record your attendance</div>
-          <p className="mx-auto mt-1.5 max-w-xs text-sm leading-relaxed text-neutral-500">
+          <p className="mx-auto mt-1.5 max-w-xs pb-8 text-sm leading-relaxed text-neutral-500 sm:pb-10">
             Open your phone camera, point it at the code, then tap Clock In.
           </p>
 
-          <div className="mt-7 break-all rounded-lg bg-neutral-50 px-3 py-2.5 font-mono text-xs text-neutral-500">
+          <div className="break-all border-t border-neutral-100 bg-neutral-50 px-3 py-2.5 font-mono text-xs text-neutral-500">
             {location.url}
           </div>
         </div>

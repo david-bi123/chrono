@@ -135,9 +135,9 @@ export function AppShell({
         onClick={() => setOpen(false)}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150",
+          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
           active
-            ? "bg-brand-50 text-brand-700 before:absolute before:-left-3 before:top-1/2 before:h-4 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand-600"
+            ? "bg-gradient-to-r from-brand-50 to-brand-50/40 text-brand-700 shadow-[inset_0_0_0_1px_rgba(16,185,129,0.14),0_1px_2px_rgba(16,24,40,0.04)] before:absolute before:-left-3 before:top-1/2 before:h-4 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-gradient-to-b before:from-brand-500 before:to-teal-500"
             : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
         )}
       >
@@ -175,7 +175,7 @@ export function AppShell({
 
   const sidebarFooter = (
     <div className="border-t border-neutral-100 p-3">
-      <div className="flex items-center gap-2.5 rounded-lg px-2 py-2">
+      <div className="flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-2 transition hover:border-neutral-200 hover:bg-neutral-50">
         <Avatar name={userName} email={userEmail} size="sm" />
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-neutral-900">{userName}</div>
@@ -184,7 +184,7 @@ export function AppShell({
         {settingsHref && (
           <Link
             href={settingsHref}
-            className="rounded-md p-1.5 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-700"
+            className="rounded-md p-1.5 text-neutral-400 transition hover:bg-white hover:text-brand-600 hover:shadow-xs"
             aria-label="Settings"
             title="Settings"
           >
@@ -193,7 +193,7 @@ export function AppShell({
         )}
         <button
           onClick={logout}
-          className="rounded-md p-1.5 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-700"
+          className="rounded-md p-1.5 text-neutral-400 transition hover:bg-red-50 hover:text-red-600"
           aria-label="Sign out"
           title="Sign out"
         >
@@ -246,10 +246,13 @@ export function AppShell({
     <div className="flex min-h-dvh bg-background">
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex no-print">
-        <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-neutral-100 px-5">
+        <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-neutral-100 bg-[linear-gradient(180deg,rgba(16,185,129,0.05),transparent)] px-5">
           <Logo size="md" />
           {orgName && (
-            <span className="ml-auto max-w-[112px] truncate text-[12.5px] font-medium text-neutral-500" title={orgName}>
+            <span
+              className="ml-auto max-w-[112px] truncate rounded-md bg-neutral-100 px-2 py-1 text-[11.5px] font-semibold text-neutral-600"
+              title={orgName}
+            >
               {orgName}
             </span>
           )}
@@ -328,9 +331,10 @@ export function AppShell({
             <div className="ml-auto flex items-center gap-2.5">
               {orgName && (
                 <span
-                  className="hidden max-w-[240px] truncate rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-1.5 text-[12.5px] font-medium text-neutral-600 lg:inline-flex"
+                  className="hidden max-w-[240px] truncate items-center gap-1.5 rounded-full border border-neutral-200 bg-gradient-to-b from-white to-neutral-50 px-3 py-1.5 text-[12.5px] font-semibold text-neutral-600 shadow-xs lg:inline-flex"
                   title={orgName}
                 >
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden />
                   {orgName}
                 </span>
               )}
@@ -360,13 +364,13 @@ export function AppShell({
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "flex flex-col items-center gap-1 rounded-lg px-1 py-2 text-[11px] font-semibold transition-colors",
-                      active ? "text-brand-600" : "text-neutral-500"
+                      active ? "text-brand-700" : "text-neutral-500"
                     )}
                   >
                     <span
                       className={cn(
-                        "flex h-7 w-12 items-center justify-center rounded-full transition-colors",
-                        active && "bg-brand-50"
+                        "flex h-7 w-12 items-center justify-center rounded-full transition-all",
+                        active && "bg-gradient-to-b from-brand-50 to-brand-100/60 shadow-[inset_0_0_0_1px_rgba(16,185,129,0.18)]"
                       )}
                     >
                       <Icon className="h-[17px] w-[17px]" strokeWidth={2} aria-hidden />

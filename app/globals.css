@@ -20,8 +20,8 @@
     --accent: 220 16% 96%;
     --accent-foreground: 222 30% 14%;
 
-    /* Brand — ChronoSwift blue: precision, signal, trust */
-    --primary: 217 84% 50%;
+    /* Brand — ChronoSwift emerald: fresh, trustworthy, alive */
+    --primary: 161 94% 28%;
     --primary-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
@@ -29,7 +29,7 @@
 
     --border: 220 16% 91%;
     --input: 220 14% 87%;
-    --ring: 217 84% 50%;
+    --ring: 161 94% 28%;
 
     --radius: 0.625rem;
 

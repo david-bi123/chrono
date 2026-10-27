@@ -102,7 +102,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           </p>
           <Link
             href={`/login?next=${encodeURIComponent(clockHref)}`}
-            className="mt-5 block rounded-xl bg-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-xs transition hover:bg-brand-700 active:translate-y-px"
+            className="mt-5 block rounded-xl bg-gradient-to-b from-brand-500 to-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-sm ring-1 ring-brand-700/40 transition hover:from-brand-600 hover:to-brand-700 active:translate-y-px"
           >
             Sign in
           </Link>
@@ -130,7 +130,7 @@ export default function ScanPage({ params }: { params: { token: string } }) {
           )}
           <Link
             href={`/login?next=${encodeURIComponent(clockHref)}`}
-            className="mt-5 block rounded-xl bg-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-xs transition hover:bg-brand-700 active:translate-y-px"
+            className="mt-5 block rounded-xl bg-gradient-to-b from-brand-500 to-brand-600 px-4 py-3.5 text-center text-[15px] font-semibold text-white shadow-sm ring-1 ring-brand-700/40 transition hover:from-brand-600 hover:to-brand-700 active:translate-y-px"
           >
             Switch account
           </Link>
@@ -159,12 +159,16 @@ export default function ScanPage({ params }: { params: { token: string } }) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-dvh flex-col items-center bg-[#F5F6F8] px-4 py-8 sm:py-12">
-      <div className="flex w-full max-w-md items-center justify-center gap-2.5">
+    <div className="relative flex min-h-dvh flex-col items-center overflow-hidden bg-neutral-50 px-4 py-8 sm:py-12">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.045)_1px,transparent_1px)] bg-[length:40px_40px] opacity-[0.55] [mask-image:radial-gradient(ellipse_70%_55%_at_50%_25%,black,transparent)]" />
+        <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(640px_240px_at_50%_-70px,rgba(16,185,129,0.12),transparent)]" />
+      </div>
+      <div className="relative flex w-full max-w-md items-center justify-center gap-2.5">
         <LogoMark className="h-8 w-8" />
         <span className="text-[17px] font-semibold tracking-[-0.02em] text-neutral-900">ChronoSwift</span>
       </div>
-      <div className="mt-8 flex w-full flex-col items-center">{children}</div>
+      <div className="relative mt-8 flex w-full flex-col items-center">{children}</div>
     </div>
   );
 }

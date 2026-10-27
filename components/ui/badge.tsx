@@ -18,7 +18,7 @@ const tones: Record<Tone, string> = {
   neutral: "bg-neutral-100 text-neutral-600 ring-neutral-500/20",
   violet: "bg-violet-50 text-violet-700 ring-violet-600/20",
   brand: "bg-brand-50 text-brand-700 ring-brand-600/20",
-  working: "bg-blue-50 text-blue-700 ring-blue-600/20",
+  working: "bg-sky-50 text-sky-700 ring-sky-600/20",
 };
 
 const dots: Record<Tone, string> = {
@@ -29,7 +29,7 @@ const dots: Record<Tone, string> = {
   neutral: "bg-neutral-400",
   violet: "bg-violet-500",
   brand: "bg-brand-500",
-  working: "bg-blue-500",
+  working: "bg-sky-500",
 };
 
 const STATUS_TONE: Record<string, Tone> = {
