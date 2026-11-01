@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Input, Field } from "@/components/ui/input";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { Input, Field, FormAlert } from "@/components/ui/input";
+import { Button, LinkButton } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SpamNotice, SetupLinkPanel } from "@/components/ui/spam-notice";
 import { CheckCircle2, ArrowLeft, Building2, Mail } from "lucide-react";
@@ -64,10 +63,10 @@ export default function NewOrgForm() {
       <Card className="max-w-2xl">
         <CardContent className="py-8">
           <div className="flex flex-col items-center text-center">
-            <div className="check-pop flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-              <CheckCircle2 className="h-7 w-7 text-emerald-600" />
+            <div className="check-pop flex h-14 w-14 items-center justify-center rounded-full bg-brand-100">
+              <CheckCircle2 className="h-7 w-7 text-brand-600" />
             </div>
-            <h2 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-neutral-900">Organization created</h2>
+            <h2 className="font-display mt-4 text-xl font-bold tracking-[-0.02em] text-neutral-900">Organization created</h2>
             <p className="mt-1.5 max-w-md text-[14px] leading-relaxed text-neutral-500">
               <span className="font-semibold text-neutral-800">{created.name}</span> is ready.{" "}
               {created.emailSent ? (
@@ -94,9 +93,9 @@ export default function NewOrgForm() {
               The setup link expires in 72 hours and can only be used once.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-              <ButtonLink href="/super-admin/organizations" variant="secondary">
+              <LinkButton href="/super-admin/organizations" variant="secondary">
                 <ArrowLeft className="h-4 w-4" /> Back to organizations
-              </ButtonLink>
+              </LinkButton>
               <Button
                 onClick={() => {
                   setCreated(null);
@@ -129,6 +128,7 @@ export default function NewOrgForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={submit} className="space-y-6">
+          <FormAlert message={error} />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Organization name" htmlFor="o-name" required className="md:col-span-2">
               <Input id="o-name" required minLength={2} value={form.name} onChange={set("name")} placeholder="Acme Technologies" />
@@ -167,21 +167,13 @@ export default function NewOrgForm() {
             </div>
           </div>
 
-          {error && (
-            <p className="text-[13px] font-medium text-red-600" role="alert">
-              {error}
-            </p>
-          )}
-
           <div className="flex flex-wrap gap-2.5">
             <Button type="submit" loading={loading}>
               <Building2 className="h-4 w-4" /> {loading ? "Creating…" : "Create organization"}
             </Button>
-            <Link href="/super-admin/organizations">
-              <Button type="button" variant="secondary">
-                Cancel
-              </Button>
-            </Link>
+            <LinkButton href="/super-admin/organizations" variant="secondary">
+              Cancel
+            </LinkButton>
           </div>
         </form>
       </CardContent>

@@ -19,8 +19,8 @@ export function LogoMark({
   /** Render the rounded-square backdrop. Use `false` for a bare glyph (e.g. next to a wordmark). */
   square?: boolean;
 }) {
-  const stroke = tone === "light" ? "#0B0F19" : "#FFFFFF";
-  const dot = tone === "light" ? "#10B981" : tone === "brand" ? "#FFFFFF" : "#34D399";
+  const stroke = tone === "light" ? "#151D19" : "#FFFFFF";
+  const dot = tone === "light" ? "#39765A" : tone === "brand" ? "#FFFFFF" : "#A2C7B2";
   return (
     <svg
       viewBox="0 0 32 32"

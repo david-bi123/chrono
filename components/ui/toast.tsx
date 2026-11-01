@@ -27,17 +27,17 @@ const ICONS: Record<ToastVariant, typeof CheckCircle2> = {
 };
 
 const ICON_TONES: Record<ToastVariant, string> = {
-  success: "text-emerald-600",
+  success: "text-brand-600",
   error: "text-red-600",
   warning: "text-amber-600",
-  info: "text-brand-600",
+  info: "text-sky-600",
 };
 
 const BORDER: Record<ToastVariant, string> = {
-  success: "border-l-emerald-500",
+  success: "border-l-brand-500",
   error: "border-l-red-500",
   warning: "border-l-amber-500",
-  info: "border-l-brand-500",
+  info: "border-l-sky-500",
 };
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {

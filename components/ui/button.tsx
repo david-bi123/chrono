@@ -1,4 +1,5 @@
 import * as React from "react";
+import NextLink from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +15,7 @@ const buttonVariants = cva(
         outline: "border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-50",
         ghost: "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900",
         destructive: "bg-red-600 text-white shadow-xs hover:bg-red-700",
-        success: "bg-emerald-600 text-white shadow-xs hover:bg-emerald-700",
+        success: "bg-brand-600 text-white shadow-xs hover:bg-brand-700",
         link: "text-brand-600 underline-offset-4 hover:underline",
       },
       size: {
@@ -66,5 +67,34 @@ export function ButtonLink({
   return <a className={cn(buttonVariants({ variant, size }), className)} {...props} />;
 }
 ButtonLink.displayName = "ButtonLink";
+
+/**
+ * Internal navigation styled as a button. Uses Next's client-side router so
+ * route changes stay instant — `ButtonLink` (a plain `<a>`) is reserved for
+ * file downloads and external links.
+ */
+export function LinkButton({
+  className,
+  variant,
+  size,
+  href,
+  ...props
+}: {
+  href: string;
+  className?: string;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
+  children?: React.ReactNode;
+  prefetch?: boolean;
+  target?: string;
+  rel?: string;
+  title?: string;
+  "aria-label"?: string;
+}) {
+  return (
+    <NextLink href={href} className={cn(buttonVariants({ variant, size }), className)} {...props} />
+  );
+}
+LinkButton.displayName = "LinkButton";
 
 export { buttonVariants };

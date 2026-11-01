@@ -70,7 +70,17 @@ export function DataTable<T>({
             {rows.map((row) => (
               <tr
                 key={rowKey(row)}
-                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                onClick={
+                  onRowClick
+                    ? (e) => {
+                        // Don't hijack clicks on nested controls (links, buttons,
+                        // menu items) — they handle their own activation.
+                        const t = e.target as HTMLElement;
+                        if (t.closest("a,button,input,select,textarea,[role='button'],[role='menuitem']")) return;
+                        onRowClick(row);
+                      }
+                    : undefined
+                }
                 className={cn(onRowClick && "cursor-pointer")}
               >
                 {columns.map((c) => (

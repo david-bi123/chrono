@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ScanLine, ArrowRight, Clock3, CheckCircle2, MapPin, AlertTriangle, LogIn } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, LinkButton } from "@/components/ui/button";
 import { Input, Label, FieldError, Hint } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/states";
@@ -81,7 +81,7 @@ function TodayStatus() {
       <div
         className={
           "border-b border-neutral-100 px-5 py-4 sm:px-6 " +
-          (!today ? "bg-neutral-50/70" : clockedOut ? "bg-emerald-50/50" : "bg-brand-50/50")
+          (!today ? "bg-neutral-50/70" : clockedOut ? "bg-brand-50/50" : "bg-brand-50/50")
         }
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -89,7 +89,7 @@ function TodayStatus() {
             <span
               className={
                 "flex h-9 w-9 items-center justify-center rounded-lg " +
-                (!today ? "bg-white text-neutral-500" : clockedOut ? "bg-white text-emerald-600" : "bg-white text-brand-600")
+                (!today ? "bg-white text-neutral-500" : clockedOut ? "bg-white text-brand-600" : "bg-white text-brand-600")
               }
             >
               {clockedOut ? <CheckCircle2 className="h-[18px] w-[18px]" /> : <Clock3 className="h-[18px] w-[18px]" />}
@@ -198,11 +198,9 @@ function LocationClock({ token }: { token: string }) {
             title="QR unavailable"
             description={error}
             action={
-              <Link href="/staff/clock">
-                <Button variant="secondary" size="sm">
-                  Back to Clock In
-                </Button>
-              </Link>
+              <LinkButton href="/staff/clock" variant="secondary" size="sm">
+                Back to Clock In
+              </LinkButton>
             }
           />
         </CardContent>
@@ -332,7 +330,7 @@ function LocationClock({ token }: { token: string }) {
 
           {(justClockedIn || justClockedOut) && (
             <div className="animate-fade-up">
-              <div className="check-pop relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-teal-500 shadow-lg shadow-brand-600/30">
+              <div className="check-pop relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-600 shadow-lg shadow-brand-900/30">
                 <span className="absolute inset-0 animate-ping rounded-full bg-brand-400 opacity-20" aria-hidden />
                 <svg viewBox="0 0 24 24" className="h-8 w-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path
@@ -355,7 +353,7 @@ function LocationClock({ token }: { token: string }) {
 
           {clockedOut && !justClockedIn && !justClockedOut && (
             <>
-              <div className="check-pop mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-teal-100 text-brand-700 ring-1 ring-brand-200">
+              <div className="check-pop mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-700 ring-1 ring-brand-200">
                 <CheckCircle2 className="h-7 w-7" />
               </div>
               <div className="mt-3 text-[19px] font-semibold tracking-[-0.02em] text-neutral-900">
@@ -379,11 +377,11 @@ function LocationClock({ token }: { token: string }) {
           )}
         </div>
 
-        <div className="border-t border-neutral-100 bg-gradient-to-b from-neutral-50/80 to-brand-50/40 px-5 py-4 sm:px-6">
+        <div className="border-t border-neutral-100 bg-gradient-to-b from-neutral-50/60 to-brand-50/40 px-5 py-4 sm:px-6">
           {!clockedIn && (
             <Button
               size="xl"
-              className="w-full bg-gradient-to-r from-brand-500 to-teal-500 shadow-lg shadow-brand-600/25 ring-1 ring-brand-700/40 transition-all hover:from-brand-600 hover:to-teal-600 hover:shadow-xl hover:shadow-brand-600/30 active:scale-[0.99] disabled:shadow-none"
+              className="w-full bg-brand-700 shadow-lg shadow-brand-900/25 ring-1 ring-brand-800/40 transition-all hover:bg-brand-600 hover:shadow-xl hover:shadow-brand-900/30 active:scale-[0.99] disabled:shadow-none"
               loading={busy}
               onClick={() => clock("in")}
             >
@@ -395,7 +393,7 @@ function LocationClock({ token }: { token: string }) {
             <Button
               size="xl"
               variant="success"
-              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-600/25 ring-1 ring-emerald-700/30 transition-all hover:shadow-xl hover:shadow-emerald-600/30 active:scale-[0.99] disabled:shadow-none"
+              className="w-full bg-brand-600 shadow-lg shadow-brand-900/20 ring-1 ring-brand-800/30 transition-all hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-900/25 active:scale-[0.99] disabled:shadow-none"
               loading={busy}
               onClick={() => clock("out")}
             >
@@ -473,7 +471,8 @@ function HowTo({ showOpener }: { showOpener: boolean }) {
                   if (linkError) setLinkError("");
                 }}
                 placeholder="…/attendance/scan/chr_…"
-                aria-describedby="clock-link-hint"
+                aria-describedby={linkError ? "clock-link-hint clock-link-error" : "clock-link-hint"}
+                aria-invalid={linkError ? true : undefined}
               />
               <Button type="submit" className="shrink-0">
                 Open <ArrowRight className="h-4 w-4" />
@@ -484,7 +483,7 @@ function HowTo({ showOpener }: { showOpener: boolean }) {
                 Paste the URL from the code your administrator shared — this opens the same clock-in screen as scanning.
               </span>
             </Hint>
-            <FieldError message={linkError} />
+            <FieldError id="clock-link-error" message={linkError} />
           </form>
         )}
       </CardContent>

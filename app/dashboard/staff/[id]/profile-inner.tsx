@@ -144,7 +144,7 @@ export default function StaffProfile({ id }: { id: string }) {
             <Avatar name={name} email={p.email} size="xl" />
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-xl font-semibold tracking-[-0.02em] text-neutral-900 sm:text-2xl">{name}</h1>
+                <h1 className="font-display text-xl font-bold tracking-[-0.02em] text-neutral-900 sm:text-2xl">{name}</h1>
                 <StatusBadge value={p.status} size="sm" />
               </div>
               <p className="mt-1 text-[14px] text-neutral-500">
@@ -226,16 +226,38 @@ export default function StaffProfile({ id }: { id: string }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-lg border border-neutral-200/80 bg-white p-1 w-fit" role="tablist" aria-label="Profile sections">
+      <div
+        className="flex w-fit gap-1 rounded-lg border border-neutral-200/80 bg-white p-1"
+        role="tablist"
+        aria-label="Profile sections"
+        onKeyDown={(e) => {
+          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+          e.preventDefault();
+          const i = TABS.indexOf(tab);
+          const next =
+            e.key === "Home"
+              ? 0
+              : e.key === "End"
+                ? TABS.length - 1
+                : (i + (e.key === "ArrowRight" ? 1 : TABS.length - 1)) % TABS.length;
+          setTab(TABS[next]);
+          document.getElementById(`profile-tab-${TABS[next]}`)?.focus();
+        }}
+      >
         {TABS.map((t) => (
           <button
             key={t}
+            id={`profile-tab-${t}`}
             role="tab"
             aria-selected={tab === t}
+            aria-controls={`profile-panel-${t}`}
+            tabIndex={tab === t ? 0 : -1}
             onClick={() => setTab(t)}
             className={
               "rounded-md px-3.5 py-1.5 text-sm font-semibold transition-colors " +
-              (tab === t ? "bg-neutral-900 text-white" : "text-neutral-500 hover:text-neutral-900")
+              (tab === t
+                ? "bg-brand-600 text-white shadow-xs"
+                : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900")
             }
           >
             {t}
@@ -244,7 +266,13 @@ export default function StaffProfile({ id }: { id: string }) {
       </div>
 
       {tab === "Overview" ? (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div
+          role="tabpanel"
+          id="profile-panel-Overview"
+          aria-labelledby="profile-tab-Overview"
+          tabIndex={0}
+          className="grid gap-4 lg:grid-cols-2"
+        >
           <Card>
             <CardHeader>
               <CardTitle>Personal information</CardTitle>
@@ -287,7 +315,12 @@ export default function StaffProfile({ id }: { id: string }) {
           </Card>
         </div>
       ) : (
-        <Card>
+        <Card
+          role="tabpanel"
+          id="profile-panel-Attendance"
+          aria-labelledby="profile-tab-Attendance"
+          tabIndex={0}
+        >
           <CardHeader>
             <CardTitle>Attendance history</CardTitle>
             <CardDescription>

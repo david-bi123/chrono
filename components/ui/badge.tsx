@@ -11,7 +11,7 @@ type Tone =
   | "working";
 
 const tones: Record<Tone, string> = {
-  success: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+  success: "bg-brand-50 text-brand-700 ring-brand-600/20",
   warning: "bg-amber-50 text-amber-800 ring-amber-600/25",
   danger: "bg-red-50 text-red-700 ring-red-600/20",
   info: "bg-sky-50 text-sky-700 ring-sky-600/20",
@@ -22,7 +22,7 @@ const tones: Record<Tone, string> = {
 };
 
 const dots: Record<Tone, string> = {
-  success: "bg-emerald-500",
+  success: "bg-brand-500",
   warning: "bg-amber-500",
   danger: "bg-red-500",
   info: "bg-sky-500",

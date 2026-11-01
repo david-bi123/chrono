@@ -7,7 +7,7 @@ export type StatTone = "brand" | "success" | "warning" | "danger" | "neutral" | 
 
 const TONES: Record<StatTone, { chip: string; bar: string; text: string }> = {
   brand: { chip: "bg-brand-50 text-brand-600", bar: "bg-brand-600", text: "text-brand-600" },
-  success: { chip: "bg-emerald-50 text-emerald-600", bar: "bg-emerald-500", text: "text-emerald-600" },
+  success: { chip: "bg-brand-50 text-brand-600", bar: "bg-brand-500", text: "text-brand-600" },
   warning: { chip: "bg-amber-50 text-amber-600", bar: "bg-amber-500", text: "text-amber-600" },
   danger: { chip: "bg-red-50 text-red-600", bar: "bg-red-500", text: "text-red-600" },
   neutral: { chip: "bg-neutral-100 text-neutral-600", bar: "bg-neutral-400", text: "text-neutral-600" },

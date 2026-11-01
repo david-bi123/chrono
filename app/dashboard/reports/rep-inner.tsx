@@ -87,7 +87,7 @@ export default function ReportsPage() {
 
   const distribution = summary
     ? [
-        { label: "Present", value: summary.present - summary.late, color: "bg-emerald-500" },
+        { label: "Present", value: summary.present - summary.late, color: "bg-brand-600" },
         { label: "Late", value: summary.late, color: "bg-amber-500" },
         { label: "Early leave", value: summary.earlyLeave, color: "bg-orange-400" },
       ]
@@ -253,7 +253,7 @@ export default function ReportsPage() {
                         <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
-                              d.pct >= 90 ? "bg-emerald-500" : d.pct >= 75 ? "bg-amber-500" : "bg-red-400"
+                              d.pct >= 90 ? "bg-brand-500" : d.pct >= 75 ? "bg-amber-500" : "bg-red-400"
                             }`}
                             style={{ width: `${d.pct}%` }}
                           />

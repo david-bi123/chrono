@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { AlertTriangle, Check, Copy } from "lucide-react";
+import { AlertTriangle, Check, Copy, Mail } from "lucide-react";
 
 export function SpamNotice({ email, compact }: { email?: string; compact?: boolean }) {
   return (
@@ -8,7 +8,10 @@ export function SpamNotice({ email, compact }: { email?: string; compact?: boole
       className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm leading-relaxed text-amber-900"
       role="status"
     >
-      <span className="font-semibold">📧 Email sent{email ? ` to ${email}` : ""}.</span>{" "}
+      <span className="inline-flex items-center gap-1.5 font-semibold">
+        <Mail className="h-3.5 w-3.5" aria-hidden />
+        Email sent{email ? ` to ${email}` : ""}.
+      </span>{" "}
       Can&apos;t find it? Check your <strong>Spam</strong> and <strong>Promotions</strong> folders
       {!compact && (
         <>
@@ -41,10 +44,7 @@ export function SetupLinkPanel({ link, email }: { link: string; email?: string }
   }
 
   return (
-    <div
-      role="status"
-      className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-left"
-    >
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-left">
       <div className="flex items-start gap-2.5">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden />
         <div>
@@ -63,10 +63,10 @@ export function SetupLinkPanel({ link, email }: { link: string; email?: string }
         <button
           type="button"
           onClick={copy}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-neutral-900 px-3 text-[13px] font-semibold text-white transition hover:bg-neutral-700 active:scale-[0.98]"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand-700 px-3 text-[13px] font-semibold text-white transition hover:bg-brand-800 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600/40 focus-visible:ring-offset-2"
         >
           {copied ? <Check className="h-3.5 w-3.5" aria-hidden /> : <Copy className="h-3.5 w-3.5" aria-hidden />}
-          {copied ? "Copied" : "Copy"}
+          <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
         </button>
       </div>
     </div>

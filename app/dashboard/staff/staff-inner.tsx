@@ -3,13 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { UserPlus, MoreHorizontal, Mail, Ban, RotateCcw, Eye, Users } from "lucide-react";
-import { Input, Select, Field } from "@/components/ui/input";
+import { Input, Select, Field, FormAlert } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
 import { PageHeader, FilterBar, SearchInput } from "@/components/ui/page-header";
-import { DataTable, type Column } from "@/components/ui/data-table";
+import { DataTable, TablePagination, type Column } from "@/components/ui/data-table";
 import { EmptyState, ErrorState } from "@/components/ui/states";
 import { Modal, ConfirmDialog } from "@/components/ui/dialog";
 import {
@@ -45,6 +45,8 @@ const EMPTY_FORM = {
   phone: "",
 };
 
+const PAGE_SIZE = 12;
+
 export default function StaffPage() {
   const router = useRouter();
   const { toast } = useToast();
@@ -56,6 +58,7 @@ export default function StaffPage() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   const [inviteOpen, setInviteOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -75,6 +78,7 @@ export default function StaffPage() {
   const load = useCallback(async (q: { search: string; dept: string; status: string }) => {
     setLoading(true);
     setError("");
+    setPage(1);
     try {
       const qs = new URLSearchParams();
       if (q.search) qs.set("search", q.search);
@@ -194,9 +198,13 @@ export default function StaffPage() {
         <div className="flex items-center gap-3">
           <Avatar name={`${s.firstName} ${s.lastName}`} email={s.email} size="sm" />
           <div className="min-w-0">
-            <div className="truncate font-medium text-neutral-900">
+            <Link
+              href={`/dashboard/staff/${s._id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="block truncate font-medium text-neutral-900 underline-offset-2 hover:text-brand-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2"
+            >
               {s.firstName} {s.lastName}
-            </div>
+            </Link>
             <div className="truncate text-[12.5px] text-neutral-500">{s.email}</div>
           </div>
         </div>
@@ -279,6 +287,9 @@ export default function StaffPage() {
     },
   ];
 
+  const paged = staff.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const pages = Math.max(1, Math.ceil(staff.length / PAGE_SIZE));
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -330,10 +341,11 @@ export default function StaffPage() {
               <ErrorState message={error} onRetry={() => load({ search, dept, status })} />
             </div>
           ) : (
+            <>
             <div className="px-5 sm:px-6">
               <DataTable
                 columns={columns}
-                rows={staff}
+                rows={paged}
                 rowKey={(s) => s._id}
                 loading={loading}
                 onRowClick={(s) => router.push(`/dashboard/staff/${s._id}`)}
@@ -374,9 +386,9 @@ export default function StaffPage() {
                 renderMobile={(s) => (
                   <div className="rounded-xl border border-neutral-200/80 bg-white p-3.5">
                     <div className="flex items-start justify-between gap-3">
-                      <button
-                        className="flex min-w-0 items-center gap-2.5 text-left"
-                        onClick={() => router.push(`/dashboard/staff/${s._id}`)}
+                      <Link
+                        href={`/dashboard/staff/${s._id}`}
+                        className="flex min-w-0 items-center gap-2.5 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2"
                       >
                         <Avatar name={`${s.firstName} ${s.lastName}`} email={s.email} size="sm" />
                         <span className="min-w-0">
@@ -387,7 +399,7 @@ export default function StaffPage() {
                             {s.employeeId || s.email}
                           </span>
                         </span>
-                      </button>
+                      </Link>
                       <StatusBadge value={s.status} size="sm" />
                     </div>
                     <div className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-100 pt-3">
@@ -414,6 +426,10 @@ export default function StaffPage() {
                 )}
               />
             </div>
+              {!loading && !error && (
+                <TablePagination page={page} pages={pages} total={staff.length} onPage={setPage} label="staff members" />
+              )}
+            </>
           )}
         </CardContent>
       </Card>
@@ -442,6 +458,7 @@ export default function StaffPage() {
         }
       >
         <form id="invite-form" onSubmit={invite} className="grid gap-4 sm:grid-cols-2">
+          <FormAlert message={formError} className="sm:col-span-2" />
           <Field label="First name" htmlFor="f-first" required>
             <Input
               id="f-first"
@@ -508,11 +525,6 @@ export default function StaffPage() {
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           </Field>
-          {formError && (
-            <p className="text-[13px] font-medium text-red-600 sm:col-span-2" role="alert">
-              {formError}
-            </p>
-          )}
         </form>
       </Modal>
 

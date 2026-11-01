@@ -1,8 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import { Plus, Building2, Ban, RotateCcw, SearchX, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, LinkButton } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { PageHeader, FilterBar, SearchInput } from "@/components/ui/page-header";
@@ -191,11 +190,9 @@ export default function OrgsPage() {
         title="Organizations"
         description="Provision, suspend and monitor every tenant on the platform."
         actions={
-          <Link href="/super-admin/organizations/new">
-            <Button>
-              <Plus className="h-4 w-4" /> Create organization
-            </Button>
-          </Link>
+          <LinkButton href="/super-admin/organizations/new">
+            <Plus className="h-4 w-4" /> Create organization
+          </LinkButton>
         }
       />
 
@@ -243,11 +240,9 @@ export default function OrgsPage() {
                           : "Create your first tenant to start onboarding administrators."
                       }
                       action={
-                        <Link href="/super-admin/organizations/new">
-                          <Button size="sm">
-                            <Plus className="h-4 w-4" /> Create organization
-                          </Button>
-                        </Link>
+                        <LinkButton href="/super-admin/organizations/new" size="sm">
+                          <Plus className="h-4 w-4" /> Create organization
+                        </LinkButton>
                       }
                     />
                   }

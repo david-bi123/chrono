@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CalendarDays, Clock3, QrCode, TrendingUp, AlarmClock, Hourglass, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/button";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatSkeleton } from "@/components/ui/stat-card";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/states";
@@ -90,7 +90,7 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
         <div
           className={
             "border-b border-neutral-100 px-5 py-4 sm:px-6 " +
-            (!t ? "bg-neutral-50/70" : t.clockOut ? "bg-emerald-50/50" : "bg-brand-50/50")
+            (!t ? "bg-neutral-50/70" : t.clockOut ? "bg-brand-50/50" : "bg-brand-50/50")
           }
         >
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -98,7 +98,7 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
               <span
                 className={
                   "flex h-9 w-9 items-center justify-center rounded-lg " +
-                  (!t ? "bg-white text-neutral-500" : t.clockOut ? "bg-white text-emerald-600" : "bg-white text-brand-600")
+                  (!t ? "bg-white text-neutral-500" : t.clockOut ? "bg-white text-brand-600" : "bg-white text-brand-600")
                 }
               >
                 <Clock3 className="h-[18px] w-[18px]" />
@@ -130,11 +130,9 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
                   <strong className="font-semibold text-neutral-700">Clock In</strong>.
                 </p>
               </div>
-              <Link href="/staff/history">
-                <Button variant="secondary">
-                  <CalendarDays className="h-4 w-4" /> View history
-                </Button>
-              </Link>
+              <LinkButton href="/staff/history" variant="secondary">
+                <CalendarDays className="h-4 w-4" /> View history
+              </LinkButton>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -194,11 +192,9 @@ export default function StaffHome({ firstName }: { firstName?: string }) {
             <CardTitle>Recent days</CardTitle>
             <CardDescription>Your last recorded shifts</CardDescription>
           </div>
-          <Link href="/staff/history">
-            <Button size="sm" variant="secondary">
-              View all
-            </Button>
-          </Link>
+          <LinkButton href="/staff/history" size="sm" variant="secondary">
+            View all
+          </LinkButton>
         </CardHeader>
         <CardContent className="px-0 pb-0 sm:px-0">
           {data.recent.length === 0 ? (

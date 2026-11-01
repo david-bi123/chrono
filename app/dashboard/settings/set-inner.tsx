@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Building2, Clock3, ShieldCheck, Check } from "lucide-react";
-import { Input, Select, Textarea, Field, Label, PasswordInput } from "@/components/ui/input";
+import { Input, Select, Textarea, Field, Label, PasswordInput, FormAlert } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
@@ -165,27 +165,50 @@ export default function SettingsPage() {
       <div className="grid gap-6 lg:grid-cols-[236px_minmax(0,1fr)]">
         {/* Settings nav */}
         <nav aria-label="Settings sections" className="lg:sticky lg:top-24 lg:self-start">
-          <ul className="flex gap-1.5 overflow-x-auto pb-1 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0">
+          <ul
+            role="tablist"
+            aria-orientation="vertical"
+            className="flex gap-1.5 overflow-x-auto pb-1 lg:flex-col lg:gap-1 lg:overflow-visible lg:pb-0"
+            onKeyDown={(e) => {
+              if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
+              e.preventDefault();
+              const i = SECTIONS.findIndex((x) => x.key === active);
+              const forward = e.key === "ArrowRight" || e.key === "ArrowDown";
+              const next =
+                e.key === "Home"
+                  ? 0
+                  : e.key === "End"
+                    ? SECTIONS.length - 1
+                    : (i + (forward ? 1 : SECTIONS.length - 1)) % SECTIONS.length;
+              setActive(SECTIONS[next].key);
+              document.getElementById(`settings-tab-${SECTIONS[next].key}`)?.focus();
+            }}
+          >
             {SECTIONS.map((s) => {
               const isActive = active === s.key;
               return (
                 <li key={s.key} className="shrink-0 lg:shrink">
                   <button
+                    id={`settings-tab-${s.key}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`settings-panel-${s.key}`}
+                    tabIndex={isActive ? 0 : -1}
                     onClick={() => setActive(s.key)}
-                    aria-current={isActive ? "true" : undefined}
                     className={cn(
                       "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
                       isActive
-                        ? "bg-brand-50 text-brand-700"
+                        ? "bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-200/70"
                         : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
                     )}
                   >
                     <s.icon
                       className={cn("h-[17px] w-[17px] shrink-0", isActive ? "text-brand-600" : "text-neutral-500")}
+                      aria-hidden
                     />
                     <span className="whitespace-nowrap">{s.label}</span>
                   </button>
-                    <p className="hidden pl-9 pr-2 pt-0.5 text-[12.5px] leading-snug text-neutral-500 lg:block">
+                  <p className="hidden pl-9 pr-2 pt-0.5 text-[12.5px] leading-snug text-neutral-500 lg:block">
                     {s.desc}
                   </p>
                 </li>
@@ -197,6 +220,12 @@ export default function SettingsPage() {
         {/* Section content */}
         <div className="min-w-0">
           {active === "organization" && (
+            <div
+              role="tabpanel"
+              id="settings-panel-organization"
+              aria-labelledby="settings-tab-organization"
+              tabIndex={0}
+            >
             <Card>
               <CardHeader>
                 <CardTitle>Organization</CardTitle>
@@ -204,6 +233,7 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={saveOrg} className="grid gap-4 sm:grid-cols-2">
+                  <FormAlert message={orgError} className="sm:col-span-2" />
                   <Field label="Organization name" htmlFor="s-name" required className="sm:col-span-2">
                     <Input id="s-name" required value={org.name} onChange={(e) => setOrg({ ...org, name: e.target.value })} />
                   </Field>
@@ -248,11 +278,6 @@ export default function SettingsPage() {
                       onChange={(e) => setOrg({ ...org, address: e.target.value })}
                     />
                   </Field>
-                  {orgError && (
-                    <p className="text-[13px] font-medium text-red-600 sm:col-span-2" role="alert">
-                      {orgError}
-                    </p>
-                  )}
                   <div className="sm:col-span-2">
                     <Button type="submit" loading={savingOrg}>
                       Save changes
@@ -261,9 +286,16 @@ export default function SettingsPage() {
                 </form>
               </CardContent>
             </Card>
+            </div>
           )}
 
           {active === "attendance" && (
+            <div
+              role="tabpanel"
+              id="settings-panel-attendance"
+              aria-labelledby="settings-tab-attendance"
+              tabIndex={0}
+            >
             <Card>
               <CardHeader>
                 <CardTitle>Attendance rules</CardTitle>
@@ -271,6 +303,7 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={saveAtt} className="space-y-6">
+                  <FormAlert message={attError} />
                   <div className="grid gap-4 sm:grid-cols-3">
                     <Field label="Work start" htmlFor="s-start" required hint="HH:MM, 24-hour">
                       <Input
@@ -347,21 +380,25 @@ export default function SettingsPage() {
                     </span>
                   </label>
 
-                  {attError && (
-                    <p className="text-[13px] font-medium text-red-600" role="alert">
-                      {attError}
-                    </p>
-                  )}
-
                   <Button type="submit" loading={savingAtt}>
                     Save attendance rules
                   </Button>
                 </form>
               </CardContent>
             </Card>
+            </div>
           )}
 
-          {active === "security" && <SecuritySection />}
+          {active === "security" && (
+            <div
+              role="tabpanel"
+              id="settings-panel-security"
+              aria-labelledby="settings-tab-security"
+              tabIndex={0}
+            >
+              <SecuritySection />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -373,14 +410,16 @@ function SecuritySection() {
   const [pw, setPw] = useState({ current: "", next: "", confirm: "" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [mismatch, setMismatch] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (pw.next !== pw.confirm) {
-      setError("New passwords don't match.");
+      setMismatch("New passwords don't match.");
       return;
     }
+    setMismatch("");
     setBusy(true);
     try {
       const r = await fetch("/api/staff/profile", {
@@ -410,6 +449,7 @@ function SecuritySection() {
       </CardHeader>
       <CardContent>
         <form onSubmit={submit} className="grid max-w-lg gap-4">
+          <FormAlert message={error} />
           <Field label="Current password" htmlFor="p-current" required>
             <PasswordInput
               id="p-current"
@@ -424,11 +464,17 @@ function SecuritySection() {
               id="p-new"
               autoComplete="new-password"
               required
+              minLength={8}
               value={pw.next}
               onChange={(e) => setPw({ ...pw, next: e.target.value })}
             />
           </Field>
-          <Field label="Confirm new password" htmlFor="p-confirm" required error={error}>
+          <Field
+            label="Confirm new password"
+            htmlFor="p-confirm"
+            required
+            error={mismatch || undefined}
+          >
             <PasswordInput
               id="p-confirm"
               autoComplete="new-password"

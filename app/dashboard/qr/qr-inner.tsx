@@ -189,6 +189,14 @@ export default function QrPage({ orgName }: { orgName: string }) {
                 <StatusBadge value={l.status} size="sm" />
               </div>
 
+              <div className="mt-5 rounded-lg bg-neutral-50/80 px-3.5 py-3 text-[13px] leading-relaxed text-neutral-600 ring-1 ring-inset ring-neutral-100">
+                {l.status === "ACTIVE" ? (
+                  <>Posted at {l.name} — staff open the link and tap Clock In.</>
+                ) : (
+                  <>Revoked — regenerate to print a new code and restore scanning.</>
+                )}
+              </div>
+
               <div className="mt-5 flex flex-wrap gap-2 border-t border-neutral-100 pt-4">
                 <Button
                   size="sm"
@@ -321,7 +329,7 @@ function QrPanel({
         {/* Controls — hidden on paper */}
         <div className="no-print flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-sm font-medium text-neutral-600">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+            <CheckCircle2 className="h-4 w-4 text-brand-600" />
             QR ready — download or print it now
           </div>
           <div className="flex gap-2">
@@ -349,16 +357,16 @@ function QrPanel({
           </div>
         )}
         <div className="print-sheet relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-neutral-200 bg-white p-0 text-center shadow-lift sm:max-w-[560px]">
-          <div className="h-2 w-full bg-gradient-to-r from-brand-500 via-teal-500 to-brand-600" aria-hidden />
+          <div className="h-2 w-full bg-brand-700" aria-hidden />
           <div className="flex flex-col items-center px-8 pt-8 sm:px-10 sm:pt-10">
             <LogoMark className="h-11 w-11" />
-            <div className="mt-3 text-[17px] font-semibold tracking-[-0.02em]">ChronoSwift</div>
+            <div className="font-display mt-3 text-[17px] font-bold tracking-[-0.02em]">ChronoSwift</div>
             <div className="mt-0.5 text-sm text-neutral-500">{orgName}</div>
           </div>
 
           <div className="mt-7 border-t border-neutral-100 pt-7">
             <div className="text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-700">Scan at</div>
-            <div className="mt-1.5 text-2xl font-semibold tracking-[-0.02em] text-neutral-900">{location.name}</div>
+            <div className="font-display mt-1.5 text-2xl font-bold tracking-[-0.02em] text-neutral-900">{location.name}</div>
           </div>
 
           {/* eslint-disable-next-line @next/next/no-img-element */}

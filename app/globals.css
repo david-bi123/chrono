@@ -4,39 +4,39 @@
 
 @layer base {
   :root {
-    /* Surfaces */
-    --background: 220 20% 97%;
-    --foreground: 222 45% 8%;
+    /* Surfaces — warm off-white with charcoal text */
+    --background: 42 20% 97%;
+    --foreground: 160 7% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 45% 8%;
+    --card-foreground: 160 7% 10%;
 
-    --secondary: 220 16% 96%;
-    --secondary-foreground: 222 30% 14%;
+    --secondary: 42 16% 95%;
+    --secondary-foreground: 160 7% 13%;
 
-    --muted: 220 16% 96%;
-    --muted-foreground: 218 11% 44%;
+    --muted: 42 16% 95%;
+    --muted-foreground: 30 7% 40%;
 
-    --accent: 220 16% 96%;
-    --accent-foreground: 222 30% 14%;
+    --accent: 42 16% 95%;
+    --accent-foreground: 160 7% 13%;
 
-    /* Brand — ChronoSwift emerald: fresh, trustworthy, alive */
-    --primary: 161 94% 28%;
+    /* Brand — ChronoSwift evergreen: deep forest green, precision + trust */
+    --primary: 151 32% 28%;
     --primary-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 68% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 16% 91%;
-    --input: 220 14% 87%;
-    --ring: 161 94% 28%;
+    --border: 42 12% 90%;
+    --input: 42 14% 86%;
+    --ring: 151 32% 30%;
 
     --radius: 0.625rem;
 
-    --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
-    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.07);
-    --shadow-md: 0 4px 8px -4px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
-    --shadow-lg: 0 16px 32px -12px rgba(16, 24, 40, 0.18), 0 4px 12px -6px rgba(16, 24, 40, 0.08);
+    --shadow-xs: 0 1px 2px rgba(24, 26, 24, 0.05);
+    --shadow-sm: 0 1px 2px rgba(24, 26, 24, 0.06), 0 1px 3px rgba(24, 26, 24, 0.07);
+    --shadow-md: 0 4px 8px -4px rgba(24, 26, 24, 0.08), 0 2px 4px -2px rgba(24, 26, 24, 0.04);
+    --shadow-lg: 0 16px 32px -12px rgba(24, 26, 24, 0.18), 0 4px 12px -6px rgba(24, 26, 24, 0.08);
   }
 
   * {
@@ -81,18 +81,18 @@
   /* Scrollbars */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-color: #d3cec5 transparent;
   }
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   *::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #d3cec5;
     border-radius: 8px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #b8b2a7;
   }
 }
 
@@ -121,8 +121,11 @@
   }
   .data-table tbody td {
     padding: 12px 14px;
-    border-bottom: 1px solid hsl(var(--background));
+    border-bottom: 1px solid hsl(42 18% 96%);
     vertical-align: middle;
+  }
+  .data-table tbody td:first-child {
+    color: hsl(160 7% 14%);
   }
   .data-table tbody tr:last-child td {
     border-bottom: 0;
@@ -131,14 +134,14 @@
     transition: background-color 0.15s ease;
   }
   .data-table tbody tr:hover {
-    background: hsl(220 20% 98%);
+    background: hsl(42 24% 97.5%);
   }
 
   /* ---------- Skeleton ---------- */
   .skeleton {
     position: relative;
     overflow: hidden;
-    background: #eceff4;
+    background: #eae7e0;
     border-radius: 0.5rem;
   }
   .skeleton::after {

@@ -43,25 +43,26 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        /* ChronoSwift brand emerald/teal — fresh, trustworthy, alive */
+        /* ChronoSwift evergreen — deep forest green, trustworthy & precise */
         brand: {
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          200: "#A7F3D0",
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981",
-          600: "#059669",
-          700: "#047857",
-          800: "#065F46",
-          900: "#064E3B",
-          950: "#022C22",
+          50: "#F2F7F4",
+          100: "#E1ECE6",
+          200: "#C8DCD1",
+          300: "#A2C7B2",
+          400: "#74AC91",
+          500: "#4D8F6F",
+          600: "#39765A",
+          700: "#2F6149",
+          800: "#27503D",
+          900: "#214234",
+          950: "#12251C",
         },
+        /* Evergreen-charcoal for dark brand surfaces (auth panels, hero) */
         ink: {
-          950: "#0B0F19",
-          900: "#111827",
-          700: "#374151",
-          500: "#6B7280",
+          950: "#0D1310",
+          900: "#151D19",
+          700: "#2B3A32",
+          500: "#68766E",
         },
       },
       borderRadius: {
@@ -73,6 +74,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
         xs: "var(--shadow-xs)",

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { AlertCircle, ChevronDown, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const inputBase =
@@ -72,7 +72,14 @@ export function Label({ className, required, ...props }: React.LabelHTMLAttribut
   return (
     <label className={cn("mb-1.5 block text-sm font-medium text-neutral-700", className)} {...props}>
       {props.children}
-      {required && <span className="ml-0.5 text-red-500" aria-hidden>*</span>}
+      {required && (
+        <>
+          <span className="ml-0.5 text-red-500" aria-hidden>
+            *
+          </span>
+          <span className="sr-only"> (required)</span>
+        </>
+      )}
     </label>
   );
 }
@@ -94,27 +101,89 @@ export function Field({
   className?: string;
   children: React.ReactNode;
 }) {
+  const uid = React.useId();
+  const errorId = `${uid}-error`;
+  const hintId = `${uid}-hint`;
+  const describedBy = error ? errorId : hint ? hintId : undefined;
+
+  // Wire the field's hint/error to the control so assistive tech announces it.
+  let control = children;
+  if (React.isValidElement(children)) {
+    const el = children as React.ReactElement<Record<string, unknown>>;
+    const existing = el.props["aria-describedby"];
+    control = React.cloneElement(el, {
+      "aria-describedby": describedBy
+        ? existing
+          ? `${String(existing)} ${describedBy}`
+          : describedBy
+        : existing,
+      "aria-invalid": error ? true : el.props["aria-invalid"],
+    });
+  }
+
   return (
     <div className={className}>
       <Label htmlFor={htmlFor} required={required}>
         {label}
       </Label>
-      {children}
-      {error ? <FieldError message={error} /> : hint ? <Hint>{hint}</Hint> : null}
+      {control}
+      {error ? <FieldError id={errorId} message={error} /> : hint ? <Hint id={hintId}>{hint}</Hint> : null}
     </div>
   );
 }
 
-export function FieldError({ message }: { message?: string }) {
+export function FieldError({ message, id }: { message?: string; id?: string }) {
   if (!message) return null;
   return (
-    <p className="mt-1.5 flex items-start gap-1.5 text-[13px] font-medium text-red-600" role="alert">
+    <p id={id} className="mt-1.5 flex items-start gap-1.5 text-[13px] font-medium text-red-600" role="alert">
       <span className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full bg-red-600" aria-hidden />
       {message}
     </p>
   );
 }
 
-export function Hint({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={cn("mt-1.5 text-[13px] leading-relaxed text-neutral-500", className)}>{children}</p>;
+export function Hint({
+  children,
+  className,
+  id,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+}) {
+  return (
+    <p id={id} className={cn("mt-1.5 text-[13px] leading-relaxed text-neutral-500", className)}>
+      {children}
+    </p>
+  );
+}
+
+/**
+ * Form-level error summary. Render it at the TOP of a form: it announces the
+ * failure via `role="alert"` and takes focus so keyboard and screen-reader
+ * users land on the problem rather than hunting for it.
+ */
+export function FormAlert({ message, className }: { message?: string; className?: string }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (message) ref.current?.focus();
+  }, [message]);
+
+  if (!message) return null;
+
+  return (
+    <div
+      ref={ref}
+      role="alert"
+      tabIndex={-1}
+      className={cn(
+        "flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-sm leading-snug text-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50",
+        className
+      )}
+    >
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+      <span>{message}</span>
+    </div>
+  );
 }

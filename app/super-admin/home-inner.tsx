@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Building2, Users, ShieldCheck, Activity, Plus, ArrowRight, CalendarCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatSkeleton } from "@/components/ui/stat-card";
@@ -61,11 +61,9 @@ export default function SuperAdminHome() {
         title="Platform overview"
         description="Everything provisioned on ChronoSwift, at a glance."
         actions={
-          <Link href="/super-admin/organizations/new">
-            <Button>
-              <Plus className="h-4 w-4" /> Create organization
-            </Button>
-          </Link>
+          <LinkButton href="/super-admin/organizations/new">
+            <Plus className="h-4 w-4" /> Create organization
+          </LinkButton>
         }
       />
 
@@ -104,11 +102,9 @@ export default function SuperAdminHome() {
                   title="No organizations yet"
                   description="Create your first tenant to start onboarding administrators."
                   action={
-                    <Link href="/super-admin/organizations/new">
-                      <Button size="sm">
-                        <Plus className="h-4 w-4" /> Create organization
-                      </Button>
-                    </Link>
+                    <LinkButton href="/super-admin/organizations/new" size="sm">
+                      <Plus className="h-4 w-4" /> Create organization
+                    </LinkButton>
                   }
                 />
               </div>
@@ -142,21 +138,15 @@ export default function SuperAdminHome() {
               <CardTitle>Quick actions</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
-              <Link href="/super-admin/organizations/new">
-                <Button className="w-full">
-                  <Plus className="h-4 w-4" /> Create organization
-                </Button>
-              </Link>
-              <Link href="/super-admin/organizations">
-                <Button variant="secondary" className="w-full">
-                  <Building2 className="h-4 w-4" /> Manage organizations
-                </Button>
-              </Link>
-              <Link href="/super-admin/audit">
-                <Button variant="secondary" className="w-full">
-                  <Activity className="h-4 w-4" /> Platform activity
-                </Button>
-              </Link>
+              <LinkButton href="/super-admin/organizations/new" className="w-full">
+                <Plus className="h-4 w-4" /> Create organization
+              </LinkButton>
+              <LinkButton href="/super-admin/organizations" variant="secondary" className="w-full">
+                <Building2 className="h-4 w-4" /> Manage organizations
+              </LinkButton>
+              <LinkButton href="/super-admin/audit" variant="secondary" className="w-full">
+                <Activity className="h-4 w-4" /> Platform activity
+              </LinkButton>
             </CardContent>
           </Card>
 

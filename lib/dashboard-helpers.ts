@@ -26,7 +26,7 @@ export const ORG_NAV: NavItem[] = [
   { href: "/dashboard", label: "Overview", icon: "Overview" },
   { href: "/dashboard/attendance", label: "Attendance", icon: "Attendance" },
   { href: "/dashboard/staff", label: "Staff", icon: "Staff" },
-  { href: "/dashboard/qr", label: "QR Codes", icon: "QR Codes" },
+  { href: "/dashboard/qr", label: "QR Locations", icon: "QR Locations" },
   { href: "/dashboard/reports", label: "Reports", icon: "Reports" },
   { href: "/dashboard/settings", label: "Settings", icon: "Settings", group: "admin" },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: "Audit Logs", group: "admin" },

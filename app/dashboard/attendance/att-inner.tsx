@@ -1,8 +1,9 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Download, Pencil, CalendarDays, RefreshCw, Eye } from "lucide-react";
-import { Input, Select, Textarea, Field } from "@/components/ui/input";
+import { Input, Select, Textarea, Field, FormAlert } from "@/components/ui/input";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -42,11 +43,11 @@ function toLocalInput(iso?: string | null) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-export default function AttendancePage() {
+export default function AttendancePage({ initialStatus }: { initialStatus?: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(initialStatus ?? "");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [rows, setRows] = useState<Row[]>([]);
@@ -154,9 +155,19 @@ export default function AttendancePage() {
             size="sm"
           />
           <div className="min-w-0">
-            <div className="truncate font-medium text-neutral-900">
-              {r.staffId?.firstName} {r.staffId?.lastName}
-            </div>
+            {r.staffId?._id ? (
+              <Link
+                href={`/dashboard/staff/${r.staffId._id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="block truncate font-medium text-neutral-900 underline-offset-2 hover:text-brand-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2"
+              >
+                {r.staffId?.firstName} {r.staffId?.lastName}
+              </Link>
+            ) : (
+              <div className="truncate font-medium text-neutral-900">
+                {r.staffId?.firstName} {r.staffId?.lastName}
+              </div>
+            )}
             <div className="truncate text-[12.5px] text-neutral-500">{r.staffId?.employeeId || "—"}</div>
           </div>
         </div>
@@ -401,6 +412,7 @@ export default function AttendancePage() {
         }
       >
         <form id="correction-form" onSubmit={saveCorrection} className="space-y-4">
+          <FormAlert message={saveError} />
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Clock in" htmlFor="c-in" required>
               <Input
@@ -435,7 +447,6 @@ export default function AttendancePage() {
               onChange={(e) => setForm({ ...form, reason: e.target.value })}
             />
           </Field>
-          {saveError && <p className="text-[13px] font-medium text-red-600">{saveError}</p>}
         </form>
       </Modal>
     </div>

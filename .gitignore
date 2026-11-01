@@ -6,3 +6,9 @@ env.local
 auth.md
 *.log
 tsconfig.tsbuildinfo
+media/
+
+/brag-output-2026-10-28-154834
+/brag-output
+/brag-output-2026-10-28-170011-walkthrough
+/scripts

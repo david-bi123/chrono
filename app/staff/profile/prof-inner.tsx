@@ -117,7 +117,7 @@ export default function ProfilePage() {
           <Avatar name={name} email={profile.email} size="xl" />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="text-lg font-semibold tracking-[-0.02em] text-neutral-900">{name}</div>
+              <div className="font-display text-lg font-bold tracking-[-0.02em] text-neutral-900">{name}</div>
               <StatusBadge value={profile.status} size="sm" />
             </div>
               <div className="mt-1 text-sm text-neutral-500">

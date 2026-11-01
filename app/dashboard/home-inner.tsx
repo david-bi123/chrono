@@ -19,8 +19,8 @@ import { Avatar } from "@/components/ui/avatar";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard, StatSkeleton } from "@/components/ui/stat-card";
 import { EmptyState, ErrorState, KpiSkeleton, Skeleton } from "@/components/ui/states";
-import { Button } from "@/components/ui/button";
-import { formatMinutes } from "@/lib/utils";
+import { LinkButton } from "@/components/ui/button";
+import { cn, formatMinutes } from "@/lib/utils";
 
 interface ActivityRow {
   _id: string;
@@ -84,6 +84,16 @@ export default function DashboardHome({ userName }: { userName?: string }) {
     return events.sort((a, b) => b.time.localeCompare(a.time)).slice(0, 8);
   }, [data]);
 
+  /** Names of staff who arrived after the grace period today — real records only. */
+  const lateNames = useMemo(
+    () =>
+      (data?.activity || [])
+        .filter((a) => a.status === "LATE")
+        .map((a) => `${a.staffId?.firstName ?? ""} ${a.staffId?.lastName ?? ""}`.trim())
+        .filter(Boolean),
+    [data]
+  );
+
   if (error) {
     return (
       <ErrorState
@@ -121,6 +131,57 @@ export default function DashboardHome({ userName }: { userName?: string }) {
   const rate = o.totalStaff > 0 ? Math.round((o.present / o.totalStaff) * 100) : 0;
   const pct = (n: number) => (o.totalStaff > 0 ? Math.round((n / o.totalStaff) * 100) : 0);
 
+  // Actionable items — every number below comes from today's records.
+  const attention: Array<{
+    key: string;
+    icon: typeof AlarmClock;
+    chip: string;
+    label: string;
+    value: number;
+    detail: string;
+    href: string;
+    cta: string;
+  }> = [];
+  if (o.late > 0) {
+    const names = lateNames.slice(0, 3).join(", ");
+    attention.push({
+      key: "late",
+      icon: AlarmClock,
+      chip: "bg-amber-50 text-amber-700 ring-amber-200",
+      label: "Late arrivals",
+      value: o.late,
+      detail: names
+        ? `${names}${lateNames.length > 3 ? ` +${lateNames.length - 3} more` : ""}`
+        : "Past the grace period",
+      href: "/dashboard/attendance?status=LATE",
+      cta: "Review late records",
+    });
+  }
+  if (o.absent > 0) {
+    attention.push({
+      key: "absent",
+      icon: UserX,
+      chip: "bg-red-50 text-red-700 ring-red-200",
+      label: "No clock-in today",
+      value: o.absent,
+      detail: "Active staff without a record today",
+      href: "/dashboard/attendance",
+      cta: "Open attendance",
+    });
+  }
+  if (o.working > 0) {
+    attention.push({
+      key: "working",
+      icon: Briefcase,
+      chip: "bg-brand-50 text-brand-700 ring-brand-200",
+      label: "Still on the clock",
+      value: o.working,
+      detail: "Clocked in, not clocked out yet",
+      href: "/dashboard/attendance",
+      cta: "View records",
+    });
+  }
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -155,14 +216,14 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                 <div className="mt-2 text-sm font-medium text-neutral-500">of {o.totalStaff} staff present</div>
               </div>
               <div className="flex flex-1 flex-wrap gap-x-6 gap-y-2 text-sm">
-                <Legend color="bg-emerald-500" label="Present" value={o.present} pct={pct(o.present)} />
+                <Legend color="bg-brand-600" label="Present" value={o.present} pct={pct(o.present)} />
                 <Legend color="bg-amber-500" label="Late" value={o.late} pct={pct(o.late)} />
                 <Legend color="bg-red-400" label="Absent" value={o.absent} pct={pct(o.absent)} />
               </div>
             </div>
 
             <div className="mt-5 flex h-2.5 w-full overflow-hidden rounded-full bg-neutral-100" role="img" aria-label={`${rate}% present`}>
-              <Bar width={pct(o.present)} className="bg-emerald-500 transition-all duration-700" />
+              <Bar width={pct(o.present)} className="bg-brand-600 transition-all duration-700" />
               <Bar width={pct(o.late)} className="bg-amber-500 transition-all duration-700" />
               <Bar width={pct(o.absent)} className="bg-red-300 transition-all duration-700" />
             </div>
@@ -199,11 +260,9 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                 title="No clock-ins yet today"
                 description="Activity appears here the moment a team member scans a location QR code."
                 action={
-                  <Link href="/dashboard/qr">
-                    <Button variant="secondary" size="sm">
-                      Manage QR codes
-                    </Button>
-                  </Link>
+                  <LinkButton href="/dashboard/qr" variant="secondary" size="sm">
+                    Manage QR codes
+                  </LinkButton>
                 }
               />
             ) : (
@@ -288,6 +347,7 @@ export default function DashboardHome({ userName }: { userName?: string }) {
           </CardContent>
         </Card>
 
+        <div className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Recent activity</CardTitle>
@@ -304,14 +364,14 @@ export default function DashboardHome({ userName }: { userName?: string }) {
                   <li key={e.id} className="relative flex gap-3.5 pl-0">
                     <span
                       className={`relative z-10 mt-0.5 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ring-4 ring-white ${
-                        e.type === "in" ? "bg-emerald-500" : "bg-neutral-400"
+                        e.type === "in" ? "bg-brand-500" : "bg-neutral-400"
                       }`}
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold tabular text-neutral-900">{e.time}</span>
                         {e.type === "in" ? (
-                          <LogIn className="h-3 w-3 text-emerald-500" aria-hidden />
+                          <LogIn className="h-3 w-3 text-brand-500" aria-hidden />
                         ) : (
                           <LogOut className="h-3 w-3 text-neutral-500" aria-hidden />
                         )}
@@ -324,13 +384,60 @@ export default function DashboardHome({ userName }: { userName?: string }) {
             )}
           </CardContent>
         </Card>
+
+        {/* Needs attention — live, actionable items for today */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Needs attention</CardTitle>
+            <CardDescription>What needs a decision today</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {attention.length === 0 ? (
+              <div className="flex items-center gap-3 rounded-xl bg-brand-50/70 px-3.5 py-3.5 ring-1 ring-inset ring-brand-100">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-brand-600">
+                  <CheckCircle2 className="h-[18px] w-[18px]" aria-hidden />
+                </span>
+                <p className="text-[13.5px] font-medium leading-relaxed text-brand-800">
+                  Everyone is present and on time today.
+                </p>
+              </div>
+            ) : (
+              <ul className="space-y-2.5">
+                {attention.map((a) => (
+                  <li key={a.key}>
+                    <Link
+                      href={a.href}
+                      className="group flex items-start gap-3 rounded-xl border border-neutral-200/80 bg-white px-3.5 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
+                    >
+                      <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset", a.chip)}>
+                        <a.icon className="h-[18px] w-[18px]" aria-hidden />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-baseline justify-between gap-2">
+                          <span className="text-sm font-semibold text-neutral-900">{a.label}</span>
+                          <span className="tabular text-sm font-bold text-neutral-900">{a.value}</span>
+                        </span>
+                        <span className="mt-0.5 block truncate text-[12.5px] text-neutral-500">{a.detail}</span>
+                        <span className="mt-1 inline-flex items-center gap-1 text-[12.5px] font-semibold text-brand-700">
+                          {a.cta}
+                          <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+        </div>
       </div>
 
       {/* Completed shifts */}
       <Card>
         <CardContent className="flex flex-wrap items-center justify-between gap-4 py-5">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
               <CheckCircle2 className="h-5 w-5" />
             </span>
             <div>
@@ -340,11 +447,9 @@ export default function DashboardHome({ userName }: { userName?: string }) {
               <div className="text-sm text-neutral-500">Finished and clocked out today</div>
             </div>
           </div>
-          <Link href="/dashboard/reports">
-            <Button variant="secondary" size="sm">
-              <UserCheck className="h-4 w-4" /> Open reports
-            </Button>
-          </Link>
+          <LinkButton href="/dashboard/reports" variant="secondary" size="sm">
+            <UserCheck className="h-4 w-4" /> Open reports
+          </LinkButton>
         </CardContent>
       </Card>
     </div>

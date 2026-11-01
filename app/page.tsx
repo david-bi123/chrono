@@ -100,54 +100,45 @@ const hrWins = [
 function HeroFlow() {
   return (
     <div className="relative mx-auto mt-14 w-full max-w-4xl sm:mt-16">
-      {/* Glow */}
-      <div className="pointer-events-none absolute -inset-x-6 -top-10 bottom-8 rounded-[32px] bg-gradient-to-b from-brand-200/40 via-teal-100/25 to-transparent blur-2xl" aria-hidden />
-
-      <div className="relative grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center sm:gap-2">
+      <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-stretch sm:gap-2">
         {/* Step 1 — scan */}
-        <div className="relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-5 text-center shadow-card transition hover:-translate-y-0.5 hover:shadow-lift">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-md shadow-brand-600/30">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/30 hover:bg-white/[0.06]">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm ring-1 ring-white/15">
             <QrCode className="h-6 w-6" aria-hidden />
           </span>
-          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-600">Step 1</div>
-          <div className="mt-1 text-[15px] font-semibold tracking-tight text-neutral-900">Scan the entrance code</div>
-          <p className="mt-1 text-[13px] leading-relaxed text-neutral-500">Any phone camera. No app, no hardware.</p>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 1</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">Scan the entrance code</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Any phone camera. No app, no hardware.</p>
         </div>
 
         {/* Connector */}
-        <div className="hidden sm:block" aria-hidden>
-          <ArrowRight className="mx-auto h-5 w-5 text-neutral-300" />
+        <div className="hidden sm:flex sm:items-center" aria-hidden>
+          <ArrowRight className="mx-auto h-5 w-5 text-neutral-600" />
         </div>
 
         {/* Step 2 — tap */}
-        <div className="relative overflow-hidden rounded-2xl border border-brand-200 bg-white p-5 text-center shadow-card ring-1 ring-brand-100 transition hover:-translate-y-0.5 hover:shadow-lift">
-          <span className="mx-auto block w-16 rounded-[12px] border-2 border-neutral-200 bg-white p-1.5 shadow-xs">
-            <span className="block rounded-full bg-gradient-to-r from-brand-500 to-teal-500 px-2 py-1.5 text-[9px] font-bold leading-tight text-white">Clock In</span>
+        <div className="rounded-2xl border border-brand-400/25 bg-brand-500/[0.08] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/40 hover:bg-brand-500/[0.12]">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-800 shadow-sm">
+            <ScanLine className="h-6 w-6" aria-hidden />
           </span>
-          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-600">Step 2</div>
-          <div className="mt-1 text-[15px] font-semibold tracking-tight text-neutral-900">One enormous tap</div>
-          <p className="mt-1 text-[13px] leading-relaxed text-neutral-500">Clock In, Clock Out — that&apos;s the whole app.</p>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 2</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">One simple tap</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Clock In, Clock Out — that&apos;s the whole app.</p>
         </div>
 
         {/* Connector */}
-        <div className="hidden sm:block" aria-hidden>
-          <ArrowRight className="mx-auto h-5 w-5 text-neutral-300" />
+        <div className="hidden sm:flex sm:items-center" aria-hidden>
+          <ArrowRight className="mx-auto h-5 w-5 text-neutral-600" />
         </div>
 
         {/* Step 3 — server */}
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-950 bg-emerald-950 p-5 text-center shadow-lift">
-          <div className="pointer-events-none absolute inset-0" aria-hidden>
-            <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-brand-600/30 blur-2xl" />
-            <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-teal-500/20 blur-2xl" />
-          </div>
-          <div className="relative">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
-              <ShieldCheck className="h-6 w-6 text-brand-300" aria-hidden />
-            </span>
-            <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 3</div>
-            <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">The server records it</div>
-            <p className="mt-1 text-[13px] leading-relaxed text-neutral-300/90">Phone clocks can&apos;t change a single digit.</p>
-          </div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/30 hover:bg-white/[0.06]">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.08] text-brand-300 ring-1 ring-white/15">
+            <ShieldCheck className="h-6 w-6" aria-hidden />
+          </span>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 3</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">The server records it</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Phone clocks can&apos;t change a single digit.</p>
         </div>
       </div>
     </div>
@@ -156,8 +147,8 @@ function HeroFlow() {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
-      <header className="sticky top-0 z-40 border-b border-neutral-200/60 bg-white/80 backdrop-blur-xl">
+    <div className="min-h-screen bg-background text-neutral-900">
+      <header className="sticky top-0 z-40 border-b border-neutral-200/60 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2.5">
             <Logo size="md" className="shrink-0 [&>span:last-child]:hidden min-[400px]:[&>span:last-child]:inline" />
@@ -172,7 +163,7 @@ export default function LandingPage() {
             <Link href="/login" className="hidden rounded-xl px-3.5 py-2 text-sm font-semibold text-neutral-600 transition hover:text-neutral-900 min-[420px]:block">
               Sign in
             </Link>
-            <Link href="/login" className="group inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-b from-brand-500 to-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-brand-700/50 transition hover:from-brand-600 hover:to-brand-700 active:scale-[0.98] sm:px-4 sm:py-2.5">
+            <Link href="/login" className="group inline-flex items-center gap-1.5 rounded-xl bg-brand-700 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-600 active:scale-[0.98] sm:px-4 sm:py-2.5">
               Get started
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
@@ -181,48 +172,49 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* Hero */}
-        <section className="relative overflow-hidden">
-          {/* Ambient background */}
+        {/* Hero — deep evergreen */}
+        <section className="relative overflow-hidden bg-ink-950 text-white">
           <div className="pointer-events-none absolute inset-0" aria-hidden>
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[length:56px_56px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_0%,black_35%,transparent_100%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(900px_420px_at_50%_-120px,rgba(16,185,129,0.14),transparent)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:56px_56px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_0%,black_35%,transparent_100%)]" />
+            <div className="absolute inset-x-0 top-[-220px] h-[540px] bg-[radial-gradient(860px_440px_at_50%_0%,rgba(45,110,84,0.38),transparent_70%)]" />
+            <div className="absolute -right-32 top-24 h-80 w-80 rounded-full bg-brand-700/25 blur-3xl" />
+            <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-brand-900/40 blur-3xl" />
           </div>
 
-          <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-14 text-center sm:px-6 sm:pb-24 sm:pt-20">
-            <div className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-brand-100 bg-brand-50 py-1.5 pl-2 pr-3.5 text-center text-xs font-semibold text-brand-700 shadow-xs">
+          <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 text-center sm:px-6 sm:pb-24 sm:pt-24">
+            <div className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-brand-400/25 bg-brand-500/10 py-1.5 pl-2 pr-3.5 text-center text-xs font-semibold text-brand-200">
               <span className="relative flex h-2 w-2" aria-hidden>
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-300" />
               </span>
               Real-time team attendance
             </div>
-            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
-              Making the work of HR{" "}
-              <span className="bg-gradient-to-r from-brand-600 via-brand-500 to-teal-500 bg-clip-text text-transparent">
-                easier and simpler.
+            <h1 className="font-display mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-[1.06] tracking-[-0.03em] sm:text-5xl md:text-[3.6rem]">
+              Clock in with a scan.{" "}
+              <span className="bg-gradient-to-r from-brand-200 via-brand-300 to-brand-400 bg-clip-text text-transparent">
+                Run attendance from one dashboard.
               </span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-neutral-500 sm:text-base">
+            <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-neutral-400 sm:text-base">
               ChronoSwift takes attendance off your plate — staff clock in with a QR scan while late arrivals, absences and payroll-ready reports take care of themselves.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/login" className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-brand-500 to-brand-600 px-7 py-3.5 text-sm font-semibold text-white shadow-md shadow-brand-600/25 ring-1 ring-brand-700/50 transition hover:from-brand-600 hover:to-brand-700 hover:shadow-lg hover:shadow-brand-600/30 active:scale-[0.98] sm:w-auto">
+              <Link href="/login" className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-semibold text-brand-900 shadow-lg shadow-black/30 transition hover:bg-brand-50 active:scale-[0.98] sm:w-auto">
                 Get started
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
-              <a href="#how" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white px-7 py-3.5 text-sm font-semibold text-neutral-700 shadow-soft transition hover:border-neutral-300 hover:bg-neutral-50 active:scale-[0.98] sm:w-auto">
+              <a href="#how" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.09] active:scale-[0.98] sm:w-auto">
                 See how it works
               </a>
             </div>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-neutral-500">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-neutral-400">
               {[
                 { icon: Smartphone, text: "No app installs" },
                 { icon: Zap, text: "Live from day one" },
                 { icon: ShieldCheck, text: "Isolated tenants" },
               ].map((t) => (
                 <span key={t.text} className="inline-flex items-center gap-1.5">
-                  <t.icon className="h-4 w-4 text-brand-600" aria-hidden />
+                  <t.icon className="h-4 w-4 text-brand-300" aria-hidden />
                   {t.text}
                 </span>
               ))}
@@ -230,15 +222,19 @@ export default function LandingPage() {
 
             {/* Scan → tap → recorded */}
             <HeroFlow />
+          </div>
+        </section>
 
-            {/* Why HR teams switch — realistic outcomes, no mock data */}
-            <div className="mx-auto mt-14 grid max-w-4xl gap-4 text-left sm:mt-16 md:grid-cols-3">
+        {/* Why HR teams switch — realistic outcomes, no mock data */}
+        <section className="border-b border-neutral-200/70">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+            <div className="grid gap-4 text-left md:grid-cols-3">
               {hrWins.map((w) => (
-                <div key={w.title} className="rounded-2xl border border-neutral-200/70 bg-white p-5 shadow-soft backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-50 to-teal-50 text-brand-600 ring-1 ring-brand-100">
+                <div key={w.title} className="rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                     <w.icon className="h-5 w-5" aria-hidden />
                   </div>
-                  <div className="mt-4 text-[15px] font-semibold tracking-tight">{w.title}</div>
+                  <div className="font-display mt-4 text-[15px] font-semibold tracking-tight">{w.title}</div>
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{w.desc}</p>
                 </div>
               ))}
@@ -247,27 +243,27 @@ export default function LandingPage() {
         </section>
 
         {/* Features */}
-        <section id="features" className="scroll-mt-20 border-t border-neutral-200/70 bg-neutral-50/80">
+        <section id="features" className="scroll-mt-20 border-b border-neutral-200/70 bg-secondary/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Features</p>
             <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
               <div>
-                <h2 className="max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">Everything you need to run attendance</h2>
+                <h2 className="font-display max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">Everything you need to run attendance</h2>
                 <p className="mt-2 text-[15px] text-neutral-500">Built for organization admins, effortless for staff.</p>
               </div>
-              <Link href="/login" className="group inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 shadow-xs transition hover:border-brand-200 hover:text-brand-700">
+              <Link href="/login" className="group inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-card px-4 py-2.5 text-sm font-semibold text-neutral-700 shadow-xs transition hover:border-brand-300 hover:text-brand-700">
                 Try it now
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
             </div>
             <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((f) => (
-                <div key={f.title} className="group relative overflow-hidden rounded-2xl border border-neutral-200/70 bg-white p-5 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
+                <div key={f.title} className="group relative overflow-hidden rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-brand-100/0 blur-2xl transition duration-300 group-hover:bg-brand-100/60" aria-hidden />
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-brand-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink-900 text-white shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-brand-600">
                     <f.icon className="h-5 w-5" />
                   </div>
-                  <div className="mt-4 text-[15px] font-semibold tracking-tight">{f.title}</div>
+                  <div className="font-display mt-4 text-[15px] font-semibold tracking-tight">{f.title}</div>
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{f.desc}</p>
                 </div>
               ))}
@@ -276,10 +272,10 @@ export default function LandingPage() {
         </section>
 
         {/* How */}
-        <section id="how" className="scroll-mt-20 border-t border-neutral-200/70">
+        <section id="how" className="scroll-mt-20 border-b border-neutral-200/70">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">How it works</p>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Live in three steps</h2>
+            <h2 className="font-display mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Live in three steps</h2>
             <div className="relative mt-10 grid gap-4 md:grid-cols-3">
               {/* Connector line */}
               <div className="pointer-events-none absolute left-0 right-0 top-7 hidden border-t border-dashed border-brand-200 md:block" aria-hidden />
@@ -290,12 +286,12 @@ export default function LandingPage() {
                   { title: "Scan, clock in, report", desc: "Staff scan with any phone camera and tap Clock In. Admins watch live dashboards and export reports.", icon: ScanLine },
                 ] as const
               ).map(({ title, desc, icon: StepIcon }, i) => (
-                <div key={title} className="relative rounded-2xl border border-neutral-200/70 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
+                <div key={title} className="relative rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-b from-brand-500 to-brand-700 text-sm font-bold text-white shadow-md shadow-brand-600/30">{i + 1}</div>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white shadow-md shadow-brand-800/30">{i + 1}</div>
                     <StepIcon className="h-5 w-5 text-brand-500" aria-hidden />
                   </div>
-                  <div className="mt-4 text-[15px] font-semibold">{title}</div>
+                  <div className="font-display mt-4 text-[15px] font-semibold">{title}</div>
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{desc}</p>
                 </div>
               ))}
@@ -304,23 +300,23 @@ export default function LandingPage() {
         </section>
 
         {/* Roles */}
-        <section id="roles" className="scroll-mt-20 border-t border-neutral-200/70 bg-neutral-50/80">
+        <section id="roles" className="scroll-mt-20 border-b border-neutral-200/70 bg-secondary/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Roles</p>
-            <h2 className="mt-2 max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">One platform, three workspaces</h2>
+            <h2 className="font-display mt-2 max-w-xl text-balance text-2xl font-bold tracking-tight sm:text-3xl">One platform, three workspaces</h2>
             <p className="mt-2 max-w-xl text-[15px] text-neutral-500">Everyone sees exactly what their role allows — enforced on the server, not just hidden in the UI.</p>
             <div className="mt-9 grid gap-4 md:grid-cols-3">
               {roles.map((r, i) => (
-                <div key={r.title} className={`relative flex flex-col rounded-2xl border p-5 transition sm:p-6 ${i === 1 ? "border-brand-200 bg-white shadow-card ring-1 ring-brand-100 hover:shadow-lift" : "border-neutral-200/70 bg-white shadow-soft hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card"}`}>
+                <div key={r.title} className={`relative flex flex-col rounded-2xl border p-5 transition sm:p-6 ${i === 1 ? "border-brand-300 bg-card shadow-card ring-1 ring-brand-200/60 hover:shadow-lift" : "border-neutral-200/70 bg-card shadow-soft hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card"}`}>
                   {i === 1 && (
-                    <span className="absolute -top-2.5 left-5 rounded-full bg-gradient-to-r from-brand-600 to-teal-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm" aria-hidden>
+                    <span className="absolute -top-2.5 left-5 rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm" aria-hidden>
                       Most used
                     </span>
                   )}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-50 to-teal-50 text-brand-600 ring-1 ring-brand-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                     <r.icon className="h-5 w-5" />
                   </div>
-                  <div className="mt-4 text-[15px] font-semibold tracking-tight">{r.title}</div>
+                  <div className="font-display mt-4 text-[15px] font-semibold tracking-tight">{r.title}</div>
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{r.desc}</p>
                   <ul className="mt-4 space-y-2 border-t border-neutral-100 pt-4 text-sm font-medium text-neutral-600">
                     {r.points.map((p) => (
@@ -334,34 +330,29 @@ export default function LandingPage() {
         </section>
 
         {/* Security */}
-        <section id="security" className="relative overflow-hidden bg-emerald-950 text-white">
-          <div className="pointer-events-none absolute inset-0" aria-hidden>
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[length:56px_56px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,black_30%,transparent_100%)]" />
-            <div className="absolute -left-32 top-0 h-80 w-80 rounded-full bg-brand-600/20 blur-3xl" />
-            <div className="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-teal-500/15 blur-3xl" />
-          </div>
-          <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+        <section id="security" className="border-b border-neutral-200/70">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-300">Security</p>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Secure by design, not by promise</h2>
-                <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-300/90">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Security</p>
+                <h2 className="font-display mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Secure by design, not by promise</h2>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-500">
                   HTTP-only sessions, hashed single-use tokens, server-side timestamps, tenant isolation on every query, rate limiting, and immutable audit logs.
                 </p>
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                  <Link href="/login" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-brand-50">
+                  <Link href="/login" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-600 active:scale-[0.98]">
                     Get started
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                   </Link>
-                  <a href="#faq" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10">
+                  <a href="#faq" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-card px-6 py-3 text-center text-sm font-semibold text-neutral-700 transition hover:border-brand-200 hover:text-brand-700">
                     Read the FAQ
                   </a>
                 </div>
               </div>
-              <ul className="grid gap-3 sm:grid-cols-2">
+              <ul className="grid gap-3 rounded-3xl border border-neutral-200/70 bg-secondary/50 p-5 shadow-soft sm:grid-cols-2 sm:p-6">
                 {["HTTP-only sessions", "Hashed invite tokens", "Server timestamps", "Tenant isolation", "Rate limiting", "Audit logs"].map((s) => (
-                  <li key={s} className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm font-medium shadow-sm backdrop-blur-sm transition hover:border-brand-400/40 hover:bg-white/[0.08]">
-                    <ShieldCheck className="h-4 w-4 shrink-0 text-brand-300" /> {s}
+                  <li key={s} className="flex items-center gap-2.5 rounded-xl border border-neutral-200/70 bg-card px-4 py-3 text-sm font-medium shadow-xs transition hover:border-brand-200">
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" /> {s}
                   </li>
                 ))}
               </ul>
@@ -373,14 +364,14 @@ export default function LandingPage() {
         <section id="faq" className="scroll-mt-20">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24">
             <p className="text-center text-xs font-bold uppercase tracking-[0.14em] text-brand-600">FAQ</p>
-            <h2 className="mt-2 text-center text-2xl font-bold tracking-tight sm:text-3xl">Honest answers</h2>
+            <h2 className="font-display mt-2 text-center text-2xl font-bold tracking-tight sm:text-3xl">Honest answers</h2>
             <div className="mt-9 space-y-3">
               {faqs.map((f) => (
-                <details key={f.q} className="group rounded-2xl border border-neutral-200/70 bg-white px-5 py-4 shadow-soft transition open:border-brand-200 open:shadow-card">
+                <details key={f.q} className="group rounded-2xl border border-neutral-200/70 bg-card px-5 py-4 shadow-soft transition open:border-brand-200 open:shadow-card">
                   <summary className="cursor-pointer list-none text-sm font-semibold tracking-tight [&::-webkit-details-marker]:hidden">
                     <span className="flex items-center justify-between gap-3">
                       {f.q}
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 transition duration-200 group-open:rotate-45 group-open:bg-brand-600 group-open:text-white">+</span>
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 transition duration-200 group-open:rotate-45 group-open:bg-brand-700 group-open:text-white">+</span>
                     </span>
                   </summary>
                   <p className="mt-2.5 border-t border-neutral-100 pt-2.5 text-sm leading-relaxed text-neutral-500">{f.a}</p>
@@ -391,30 +382,30 @@ export default function LandingPage() {
         </section>
 
         {/* CTA */}
-        <section className="border-t border-neutral-200/70 bg-neutral-50/80">
-          <div className="mx-auto max-w-6xl px-4 py-14 text-center sm:px-6 sm:py-20">
-            <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] bg-gradient-to-br from-brand-600 via-brand-700 to-teal-800 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
+        <section className="border-t border-neutral-200/70">
+          <div className="mx-auto max-w-6xl px-4 pb-16 pt-2 text-center sm:px-6 sm:pb-20">
+            <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] bg-ink-950 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
               <div className="pointer-events-none absolute inset-0" aria-hidden>
-                <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,black,transparent)]" />
-                <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-400/20 blur-3xl" />
-                <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-teal-400/20 blur-3xl" />
+                <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,black,transparent)]" />
+                <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-600/25 blur-3xl" />
+                <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-brand-800/40 blur-3xl" />
               </div>
               <div className="relative">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
-                  <QrCode className="h-6 w-6 text-brand-100" aria-hidden />
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.08] ring-1 ring-white/15">
+                  <QrCode className="h-6 w-6 text-brand-200" aria-hidden />
                 </span>
-                <h2 className="mx-auto mt-5 max-w-xl text-balance text-2xl font-bold tracking-tight text-white sm:text-3xl">Ready to ditch the paper register?</h2>
-                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-brand-100/90">Set up your organization today. Your team can be clocking in by tomorrow — no hardware, no app installs.</p>
+                <h2 className="font-display mx-auto mt-5 max-w-xl text-balance text-2xl font-bold tracking-tight text-white sm:text-3xl">Ready to ditch the paper register?</h2>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-400">Set up your organization today. Your team can be clocking in by tomorrow — no hardware, no app installs.</p>
                 <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  <Link href="/login" className="group inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-semibold text-brand-800 shadow-lift transition hover:bg-brand-50 active:scale-[0.98]">
+                  <Link href="/login" className="group inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-semibold text-brand-900 shadow-lift transition hover:bg-brand-50 active:scale-[0.98]">
                     Get started
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                   </Link>
-                  <a href="#faq" className="inline-flex items-center gap-2 rounded-2xl border border-white/25 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10">
+                  <a href="#faq" className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/[0.04] px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.09]">
                     Read the FAQ
                   </a>
                 </div>
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12.5px] font-medium text-brand-100/80">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12.5px] font-medium text-brand-200/80">
                   <span className="inline-flex items-center gap-1.5"><ScanLine className="h-3.5 w-3.5" /> Free to try</span>
                   <span className="inline-flex items-center gap-1.5"><UserRound className="h-3.5 w-3.5" /> Unlimited staff per organization</span>
                   <span className="inline-flex items-center gap-1.5"><LogOut className="h-3.5 w-3.5" /> No hardware to buy</span>
@@ -425,7 +416,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-neutral-200/70">
+      <footer className="border-t border-neutral-200/70 bg-card">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-neutral-500 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2">
             <Logo size="sm" />
