@@ -113,7 +113,7 @@ export async function sendOrgAdminInvitation(opts: {
     `<p style="margin:0 0 12px;">Your organization <strong>${esc(opts.orgName)}</strong> was created on <strong>ChronoSwift</strong>. You are the organization administrator.</p>` +
     `<p style="margin:0;">Click the button below to create your password and open your dashboard:</p>`;
   const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; This link is single-use. No password is included in this email — you will create it yourself on the secure setup page.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
-  const html = shell("Set up your admin account", opts.orgName, body, { label: "Create password &rarr;", href: opts.link }, footer, subject);
+  const html = shell("Set up your admin account", opts.orgName, body, { label: "Create password →", href: opts.link }, footer, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.adminName},\n\nYour organization ${opts.orgName} was created on ChronoSwift.\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
 }
 
@@ -139,7 +139,7 @@ export async function sendStaffInvitation(opts: {
     `<p style="margin:0 0 12px;">Welcome to <strong>${esc(opts.orgName)}</strong>! Your team uses <strong>ChronoSwift</strong> to record attendance — just scan the office QR code and tap Clock In.</p>` +
     `<p style="margin:0;">Click the button below to create your password and complete your profile:</p>`;
   const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; If you didn't expect this invitation, you can safely ignore this email.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
-  const html = shell("Complete your account setup", opts.orgName, body, { label: "Complete Account Setup &rarr;", href: opts.link }, footer, subject);
+  const html = shell("Complete your account setup", opts.orgName, body, { label: "Complete Account Setup →", href: opts.link }, footer, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.staffName},\n\nWelcome to ${opts.orgName}! Create your password and complete your profile here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
 }
 
@@ -149,7 +149,7 @@ export async function sendPasswordReset(opts: { to: string; name: string; link: 
     `<p style="margin:0 0 12px;">Hi ${esc(opts.name)},</p>` +
     `<p style="margin:0;">We received a request to reset your password. Click below — the link expires in 60 minutes:</p>`;
   const footer = `&#128274; If you didn't request this, you can safely ignore this email.<br><br>&#128229; Can&apos;t find it? Check Spam/Promotions.`;
-  const html = shell("Reset your password", "ChronoSwift", body, { label: "Reset password &rarr;", href: opts.link }, footer, subject);
+  const html = shell("Reset your password", "ChronoSwift", body, { label: "Reset password →", href: opts.link }, footer, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.name},\n\nReset your password here (expires in 60 minutes): ${opts.link}` });
 }
 
@@ -159,6 +159,6 @@ export async function sendWelcome(opts: { to: string; name: string; orgName: str
     `<p style="margin:0 0 12px;">Hi ${esc(opts.name)},</p>` +
     `<p style="margin:0;">Your account is active. You can now sign in and record attendance by scanning your organization's QR code at the entrance.</p>`;
   const appUrl = process.env.APP_URL || "";
-  const html = shell("Welcome aboard", opts.orgName, body, { label: "Sign in to ChronoSwift &rarr;", href: `${appUrl}/login` }, undefined, subject);
+  const html = shell("Welcome aboard", opts.orgName, body, { label: "Sign in to ChronoSwift →", href: `${appUrl}/login` }, undefined, subject);
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.name},\n\nYour account at ${opts.orgName} is active. Sign in: ${appUrl}/login` });
 }
