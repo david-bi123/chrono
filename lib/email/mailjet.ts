@@ -117,6 +117,19 @@ export async function sendOrgAdminInvitation(opts: {
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.adminName},\n\nYour organization ${opts.orgName} was created on ChronoSwift.\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
 }
 
+export async function sendSuperAdminInvitation(opts: {
+  to: string; ownerName: string; link: string; expiresNote: string;
+}) {
+  const subject = "Set up your ChronoSwift platform account";
+  const body =
+    `<p style="margin:0 0 12px;">Hi ${esc(opts.ownerName)},</p>` +
+    `<p style="margin:0 0 12px;">You have been invited to be the <strong>platform owner (super admin)</strong> of ChronoSwift. From there you can create organizations, manage administrators, and oversee the audit trail.</p>` +
+    `<p style="margin:0;">Click the button below to create your password and open the platform console:</p>`;
+  const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; This link is single-use. No password is included in this email — you will create it yourself on the secure setup page.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
+  const html = shell("Set up your platform account", "ChronoSwift", body, { label: "Create password &rarr;", href: opts.link }, footer, subject);
+  return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.ownerName},\n\nYou have been invited to be the platform owner (super admin) of ChronoSwift.\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
+}
+
 export async function sendStaffInvitation(opts: {
   to: string; orgName: string; staffName: string; link: string; expiresNote: string;
 }) {

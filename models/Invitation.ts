@@ -1,6 +1,6 @@
 import mongoose, { Schema, type Document } from "mongoose";
 
-export type InvitationType = "ORG_ADMIN" | "STAFF" | "PASSWORD_RESET";
+export type InvitationType = "ORG_ADMIN" | "STAFF" | "SUPER_ADMIN" | "PASSWORD_RESET";
 
 export interface IInvitation extends Document {
   organizationId: mongoose.Types.ObjectId | null;
@@ -20,7 +20,7 @@ const InvitationSchema = new Schema<IInvitation>(
     email: { type: String, required: true, lowercase: true, trim: true, index: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
     tokenHash: { type: String, required: true, unique: true, index: true },
-    type: { type: String, enum: ["ORG_ADMIN", "STAFF", "PASSWORD_RESET"], required: true, index: true },
+    type: { type: String, enum: ["ORG_ADMIN", "STAFF", "SUPER_ADMIN", "PASSWORD_RESET"], required: true, index: true },
     expiresAt: { type: Date, required: true },
     usedAt: { type: Date, default: null },
   },
