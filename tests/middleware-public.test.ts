@@ -25,6 +25,10 @@ describe("middleware public paths", () => {
     expect(isPublic("/")).toBe(true);
     expect(isPublic("/login")).toBe(true);
     expect(isPublic("/api/auth/login")).toBe(true);
+    // Legal documents must stay reachable without sign-in — staff and the
+    // public read them before any account exists.
+    expect(isPublic("/terms")).toBe(true);
+    expect(isPublic("/privacy")).toBe(true);
   });
 
   it("preserves the query string when bouncing to login", async () => {

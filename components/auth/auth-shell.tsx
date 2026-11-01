@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { QrCode, BarChart3, ShieldCheck, Check } from "lucide-react";
 
@@ -75,6 +76,12 @@ export function AuthShell({
           </div>
 
           {footer && <div className="mt-5 text-center text-sm text-neutral-500">{footer}</div>}
+
+          <p className="mt-4 text-center text-xs text-neutral-400">
+            <Link href="/terms" className="underline-offset-2 transition hover:text-neutral-600 hover:underline">Terms of Service</Link>
+            {" · "}
+            <Link href="/privacy" className="underline-offset-2 transition hover:text-neutral-600 hover:underline">Privacy Policy</Link>
+          </p>
         </div>
       </main>
     </div>

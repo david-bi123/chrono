@@ -345,6 +345,11 @@ export function AppShell({
 
         <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 pb-24 pt-6 sm:px-6 sm:pt-7 lg:px-8 md:pb-12">
           <div className="stagger">{children}</div>
+          <footer className="mt-10 hidden text-center text-xs text-neutral-400 md:block no-print">
+            <Link href="/terms" className="underline-offset-2 transition hover:text-neutral-600 hover:underline">Terms of Service</Link>
+            {" · "}
+            <Link href="/privacy" className="underline-offset-2 transition hover:text-neutral-600 hover:underline">Privacy Policy</Link>
+          </footer>
         </main>
 
         {/* Mobile bottom nav — only when the IA fits comfortably */}

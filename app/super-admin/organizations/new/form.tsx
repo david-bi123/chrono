@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Input, Field, FormAlert } from "@/components/ui/input";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -175,6 +176,14 @@ export default function NewOrgForm() {
               Cancel
             </LinkButton>
           </div>
+
+          <p className="text-[13px] leading-relaxed text-neutral-500">
+            By creating this organization you confirm you have the authority to do so, agree that its
+            administrator will invite staff whose attendance ChronoSwift records, and accept our{" "}
+            <Link href="/terms" target="_blank" className="font-medium text-brand-700 underline-offset-2 hover:underline">Terms of Service</Link>{" "}
+            and{" "}
+            <Link href="/privacy" target="_blank" className="font-medium text-brand-700 underline-offset-2 hover:underline">Privacy Policy</Link>.
+          </p>
         </form>
       </CardContent>
     </Card>

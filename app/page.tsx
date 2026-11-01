@@ -427,6 +427,8 @@ export default function LandingPage() {
             <a href="#how" className="transition hover:text-neutral-900">How it works</a>
             <a href="#security" className="transition hover:text-neutral-900">Security</a>
             <a href="#faq" className="transition hover:text-neutral-900">FAQ</a>
+            <Link href="/terms" className="transition hover:text-neutral-900">Terms</Link>
+            <Link href="/privacy" className="transition hover:text-neutral-900">Privacy</Link>
             <Link href="/login" className="transition hover:text-neutral-900">Sign in</Link>
           </nav>
           <div className="text-[13px]">© {new Date().getFullYear()} ChronoSwift. All rights reserved.</div>

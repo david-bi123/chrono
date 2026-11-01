@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifySessionToken } from "./lib/auth/session";
 
-const PUBLIC = ["/", "/login", "/forgot-password", "/reset-password", "/accept-invitation"];
+const PUBLIC = ["/", "/login", "/forgot-password", "/reset-password", "/accept-invitation", "/terms", "/privacy"];
 
 function isPublic(path: string): boolean {
   if (PUBLIC.some((p) => path === p || path.startsWith(p + "/"))) return true;

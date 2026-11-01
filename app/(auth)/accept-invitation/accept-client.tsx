@@ -128,6 +128,13 @@ export default function AcceptClient({ token }: { token: string }) {
             autoFocus
           />
         </div>
+        <p className="text-[13px] leading-relaxed text-neutral-500">
+          By activating your account you confirm your employer uses ChronoSwift to record your clock-in
+          and clock-out, and you accept our{" "}
+          <Link href="/terms" className="font-medium text-brand-700 underline-offset-2 hover:underline">Terms of Service</Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="font-medium text-brand-700 underline-offset-2 hover:underline">Privacy Policy</Link>.
+        </p>
         <Button className="w-full" size="lg" loading={loading} type="submit">
           {loading ? "Activating…" : "Activate account"}
         </Button>
