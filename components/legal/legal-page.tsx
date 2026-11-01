@@ -30,10 +30,23 @@ export function LegalPage({
         <div className="mt-8">{children}</div>
       </main>
       <footer className="border-t border-neutral-200/70 bg-white">
-        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-6 text-[13px] font-medium sm:px-6">
-          <Link href="/terms" className="text-neutral-500 transition hover:text-neutral-900">Terms of Service</Link>
-          <Link href="/privacy" className="text-neutral-500 transition hover:text-neutral-900">Privacy Policy</Link>
-          <Link href="/" className="text-neutral-500 transition hover:text-neutral-900">Home</Link>
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-2 px-4 py-6 text-[13px] sm:px-6">
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-medium" aria-label="Footer">
+            <Link href="/terms" className="text-neutral-500 transition hover:text-neutral-900">Terms of Service</Link>
+            <Link href="/privacy" className="text-neutral-500 transition hover:text-neutral-900">Privacy Policy</Link>
+            <Link href="/" className="text-neutral-500 transition hover:text-neutral-900">Home</Link>
+          </nav>
+          <p className="text-neutral-400">
+            Created by{" "}
+            <a
+              href="https://samtechlabs.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 transition hover:text-brand-600 hover:decoration-brand-500"
+            >
+              SamTech Labs
+            </a>
+          </p>
         </div>
       </footer>
     </div>

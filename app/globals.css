@@ -223,6 +223,22 @@
   to { stroke-dashoffset: 0; }
 }
 
+/* ---------- Scroll reveal (landing) ---------- */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+.reveal.is-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.reveal.is-hidden,
+.reveal.is-in {
+  transition:
+    opacity 0.55s ease,
+    transform 0.7s cubic-bezier(0.21, 0.9, 0.35, 1);
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,

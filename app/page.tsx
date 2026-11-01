@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { Reveal } from "@/components/landing/reveal";
 import {
   QrCode,
   Users,
@@ -228,7 +229,7 @@ export default function LandingPage() {
         {/* Why HR teams switch — realistic outcomes, no mock data */}
         <section className="border-b border-neutral-200/70">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-            <div className="grid gap-4 text-left md:grid-cols-3">
+            <Reveal className="grid gap-4 text-left md:grid-cols-3">
               {hrWins.map((w) => (
                 <div key={w.title} className="rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
@@ -238,7 +239,7 @@ export default function LandingPage() {
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{w.desc}</p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -256,7 +257,7 @@ export default function LandingPage() {
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
             </div>
-            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((f) => (
                 <div key={f.title} className="group relative overflow-hidden rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-brand-100/0 blur-2xl transition duration-300 group-hover:bg-brand-100/60" aria-hidden />
@@ -267,7 +268,7 @@ export default function LandingPage() {
                   <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{f.desc}</p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -286,14 +287,16 @@ export default function LandingPage() {
                   { title: "Scan, clock in, report", desc: "Staff scan with any phone camera and tap Clock In. Admins watch live dashboards and export reports.", icon: ScanLine },
                 ] as const
               ).map(({ title, desc, icon: StepIcon }, i) => (
-                <div key={title} className="relative rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white shadow-md shadow-brand-800/30">{i + 1}</div>
-                    <StepIcon className="h-5 w-5 text-brand-500" aria-hidden />
+                <Reveal key={title} delay={i * 90} className="h-full">
+                  <div className="relative h-full rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white shadow-md shadow-brand-800/30">{i + 1}</div>
+                      <StepIcon className="h-5 w-5 text-brand-500" aria-hidden />
+                    </div>
+                    <div className="font-display mt-4 text-[15px] font-semibold">{title}</div>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{desc}</p>
                   </div>
-                  <div className="font-display mt-4 text-[15px] font-semibold">{title}</div>
-                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{desc}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -307,7 +310,8 @@ export default function LandingPage() {
             <p className="mt-2 max-w-xl text-[15px] text-neutral-500">Everyone sees exactly what their role allows — enforced on the server, not just hidden in the UI.</p>
             <div className="mt-9 grid gap-4 md:grid-cols-3">
               {roles.map((r, i) => (
-                <div key={r.title} className={`relative flex flex-col rounded-2xl border p-5 transition sm:p-6 ${i === 1 ? "border-brand-300 bg-card shadow-card ring-1 ring-brand-200/60 hover:shadow-lift" : "border-neutral-200/70 bg-card shadow-soft hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card"}`}>
+                <Reveal key={r.title} delay={i * 90} className="h-full">
+                  <div className={`relative flex h-full flex-col rounded-2xl border p-5 transition sm:p-6 ${i === 1 ? "border-brand-300 bg-card shadow-card ring-1 ring-brand-200/60 hover:shadow-lift" : "border-neutral-200/70 bg-card shadow-soft hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card"}`}>
                   {i === 1 && (
                     <span className="absolute -top-2.5 left-5 rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm" aria-hidden>
                       Most used
@@ -322,8 +326,9 @@ export default function LandingPage() {
                     {r.points.map((p) => (
                       <li key={p} className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-brand-600" />{p}</li>
                     ))}
-                  </ul>
-                </div>
+                    </ul>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -349,13 +354,15 @@ export default function LandingPage() {
                   </a>
                 </div>
               </div>
-              <ul className="grid gap-3 rounded-3xl border border-neutral-200/70 bg-secondary/50 p-5 shadow-soft sm:grid-cols-2 sm:p-6">
-                {["HTTP-only sessions", "Hashed invite tokens", "Server timestamps", "Tenant isolation", "Rate limiting", "Audit logs"].map((s) => (
-                  <li key={s} className="flex items-center gap-2.5 rounded-xl border border-neutral-200/70 bg-card px-4 py-3 text-sm font-medium shadow-xs transition hover:border-brand-200">
-                    <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" /> {s}
-                  </li>
-                ))}
-              </ul>
+              <Reveal delay={120}>
+                <ul className="grid gap-3 rounded-3xl border border-neutral-200/70 bg-secondary/50 p-5 shadow-soft sm:grid-cols-2 sm:p-6">
+                  {["HTTP-only sessions", "Hashed invite tokens", "Server timestamps", "Tenant isolation", "Rate limiting", "Audit logs"].map((s) => (
+                    <li key={s} className="flex items-center gap-2.5 rounded-xl border border-neutral-200/70 bg-card px-4 py-3 text-sm font-medium shadow-xs transition hover:border-brand-200">
+                      <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" /> {s}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -366,16 +373,18 @@ export default function LandingPage() {
             <p className="text-center text-xs font-bold uppercase tracking-[0.14em] text-brand-600">FAQ</p>
             <h2 className="font-display mt-2 text-center text-2xl font-bold tracking-tight sm:text-3xl">Honest answers</h2>
             <div className="mt-9 space-y-3">
-              {faqs.map((f) => (
-                <details key={f.q} className="group rounded-2xl border border-neutral-200/70 bg-card px-5 py-4 shadow-soft transition open:border-brand-200 open:shadow-card">
-                  <summary className="cursor-pointer list-none text-sm font-semibold tracking-tight [&::-webkit-details-marker]:hidden">
-                    <span className="flex items-center justify-between gap-3">
-                      {f.q}
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 transition duration-200 group-open:rotate-45 group-open:bg-brand-700 group-open:text-white">+</span>
-                    </span>
-                  </summary>
-                  <p className="mt-2.5 border-t border-neutral-100 pt-2.5 text-sm leading-relaxed text-neutral-500">{f.a}</p>
-                </details>
+              {faqs.map((f, i) => (
+                <Reveal key={f.q} delay={i * 60}>
+                  <details className="group rounded-2xl border border-neutral-200/70 bg-card px-5 py-4 shadow-soft transition open:border-brand-200 open:shadow-card">
+                    <summary className="cursor-pointer list-none text-sm font-semibold tracking-tight [&::-webkit-details-marker]:hidden">
+                      <span className="flex items-center justify-between gap-3">
+                        {f.q}
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 transition duration-200 group-open:rotate-45 group-open:bg-brand-700 group-open:text-white">+</span>
+                      </span>
+                    </summary>
+                    <p className="mt-2.5 border-t border-neutral-100 pt-2.5 text-sm leading-relaxed text-neutral-500">{f.a}</p>
+                  </details>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -384,7 +393,8 @@ export default function LandingPage() {
         {/* CTA */}
         <section className="border-t border-neutral-200/70">
           <div className="mx-auto max-w-6xl px-4 pb-16 pt-2 text-center sm:px-6 sm:pb-20">
-            <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] border border-brand-100 bg-brand-50 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
+            <Reveal>
+              <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] border border-brand-100 bg-brand-50 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
               <div className="pointer-events-none absolute inset-0" aria-hidden>
                 <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(57,118,90,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(57,118,90,0.06)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,black,transparent)]" />
                 <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-100 blur-3xl" />
@@ -411,27 +421,45 @@ export default function LandingPage() {
                   <span className="inline-flex items-center gap-1.5"><LogOut className="h-3.5 w-3.5" /> No hardware to buy</span>
                 </div>
               </div>
-            </div>
+              </div>
+            </Reveal>
           </div>
         </section>
       </main>
 
       <footer className="border-t border-neutral-200/70 bg-card">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-neutral-500 sm:flex-row sm:px-6">
-          <div className="flex items-center gap-2">
-            <Logo size="sm" />
-            <span className="hidden sm:inline">· Smart attendance. Simple management.</span>
+        <div className="mx-auto flex max-w-6xl flex-col gap-7 px-4 py-10 sm:px-6">
+          {/* Top row — brand + navigation */}
+          <div className="flex flex-col items-center justify-between gap-5 sm:items-start md:flex-row">
+            <div className="flex flex-col items-center gap-1 sm:items-start">
+              <Logo size="md" />
+              <p className="text-[13px] text-neutral-500">Smart attendance. Simple management.</p>
+            </div>
+            <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium" aria-label="Footer">
+              <a href="#features" className="text-neutral-500 transition hover:text-neutral-900">Features</a>
+              <a href="#how" className="text-neutral-500 transition hover:text-neutral-900">How it works</a>
+              <a href="#security" className="text-neutral-500 transition hover:text-neutral-900">Security</a>
+              <a href="#faq" className="text-neutral-500 transition hover:text-neutral-900">FAQ</a>
+              <Link href="/terms" className="text-neutral-500 transition hover:text-neutral-900">Terms</Link>
+              <Link href="/privacy" className="text-neutral-500 transition hover:text-neutral-900">Privacy</Link>
+              <Link href="/login" className="text-neutral-500 transition hover:text-neutral-900">Sign in</Link>
+            </nav>
           </div>
-          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium" aria-label="Footer">
-            <a href="#features" className="transition hover:text-neutral-900">Features</a>
-            <a href="#how" className="transition hover:text-neutral-900">How it works</a>
-            <a href="#security" className="transition hover:text-neutral-900">Security</a>
-            <a href="#faq" className="transition hover:text-neutral-900">FAQ</a>
-            <Link href="/terms" className="transition hover:text-neutral-900">Terms</Link>
-            <Link href="/privacy" className="transition hover:text-neutral-900">Privacy</Link>
-            <Link href="/login" className="transition hover:text-neutral-900">Sign in</Link>
-          </nav>
-          <div className="text-[13px]">© {new Date().getFullYear()} ChronoSwift. All rights reserved.</div>
+          {/* Bottom row — copyright + credit */}
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-200/70 pt-6 text-[13px] text-neutral-500 md:flex-row">
+            <p>© {new Date().getFullYear()} ChronoSwift. All rights reserved.</p>
+            <p>
+              Created by{" "}
+              <a
+                href="https://samtechlabs.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 transition hover:text-brand-600 hover:decoration-brand-500"
+              >
+                SamTech Labs
+              </a>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
