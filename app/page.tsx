@@ -101,44 +101,44 @@ function HeroFlow() {
   return (
     <div className="relative mx-auto mt-14 w-full max-w-4xl sm:mt-16">
       <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-stretch sm:gap-2">
-        {/* Step 1 — scan */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/30 hover:bg-white/[0.06]">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm ring-1 ring-white/15">
+        {/* Step 1 - scan */}
+        <div className="rounded-2xl border border-neutral-200/80 bg-card p-5 text-center shadow-soft transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-card">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
             <QrCode className="h-6 w-6" aria-hidden />
           </span>
-          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 1</div>
-          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">Scan the entrance code</div>
-          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Any phone camera. No app, no hardware.</p>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-700">Step 1</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-neutral-900">Scan the entrance code</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-500">Any phone camera. No app, no hardware.</p>
         </div>
 
         {/* Connector */}
         <div className="hidden sm:flex sm:items-center" aria-hidden>
-          <ArrowRight className="mx-auto h-5 w-5 text-neutral-600" />
+          <ArrowRight className="mx-auto h-5 w-5 text-neutral-300" />
         </div>
 
-        {/* Step 2 — tap */}
-        <div className="rounded-2xl border border-brand-400/25 bg-brand-500/[0.08] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/40 hover:bg-brand-500/[0.12]">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-800 shadow-sm">
+        {/* Step 2 - tap */}
+        <div className="rounded-2xl border border-brand-300 bg-brand-50 p-5 text-center shadow-soft transition hover:-translate-y-0.5 hover:border-brand-400 hover:shadow-card">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-700 text-white shadow-sm">
             <ScanLine className="h-6 w-6" aria-hidden />
           </span>
-          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 2</div>
-          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">One simple tap</div>
-          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Clock In, Clock Out — that&apos;s the whole app.</p>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-700">Step 2</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-neutral-900">One simple tap</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">Clock In, Clock Out — that&apos;s the whole app.</p>
         </div>
 
         {/* Connector */}
         <div className="hidden sm:flex sm:items-center" aria-hidden>
-          <ArrowRight className="mx-auto h-5 w-5 text-neutral-600" />
+          <ArrowRight className="mx-auto h-5 w-5 text-neutral-300" />
         </div>
 
-        {/* Step 3 — server */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur-sm transition hover:border-brand-400/30 hover:bg-white/[0.06]">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.08] text-brand-300 ring-1 ring-white/15">
+        {/* Step 3 - server */}
+        <div className="rounded-2xl border border-neutral-200/80 bg-card p-5 text-center shadow-soft transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-card">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
             <ShieldCheck className="h-6 w-6" aria-hidden />
           </span>
-          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-300">Step 3</div>
-          <div className="mt-1 text-[15px] font-semibold tracking-tight text-white">The server records it</div>
-          <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">Phone clocks can&apos;t change a single digit.</p>
+          <div className="mt-3.5 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-700">Step 3</div>
+          <div className="mt-1 text-[15px] font-semibold tracking-tight text-neutral-900">The server records it</div>
+          <p className="mt-1 text-[13px] leading-relaxed text-neutral-500">Phone clocks can&apos;t change a single digit.</p>
         </div>
       </div>
     </div>
@@ -172,49 +172,49 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* Hero — deep evergreen */}
-        <section className="relative overflow-hidden bg-ink-950 text-white">
+        {/* Hero — green on white */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-brand-50/70 via-white to-white">
           <div className="pointer-events-none absolute inset-0" aria-hidden>
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:56px_56px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_0%,black_35%,transparent_100%)]" />
-            <div className="absolute inset-x-0 top-[-220px] h-[540px] bg-[radial-gradient(860px_440px_at_50%_0%,rgba(45,110,84,0.38),transparent_70%)]" />
-            <div className="absolute -right-32 top-24 h-80 w-80 rounded-full bg-brand-700/25 blur-3xl" />
-            <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-brand-900/40 blur-3xl" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(57,118,90,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(57,118,90,0.07)_1px,transparent_1px)] bg-[length:56px_56px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_0%,black_35%,transparent_100%)]" />
+            <div className="absolute inset-x-0 top-[-220px] h-[540px] bg-[radial-gradient(860px_440px_at_50%_0%,rgba(77,143,111,0.13),transparent_70%)]" />
+            <div className="absolute -right-32 top-24 h-80 w-80 rounded-full bg-brand-100/70 blur-3xl" />
+            <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-brand-50 blur-3xl" />
           </div>
 
           <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 text-center sm:px-6 sm:pb-24 sm:pt-24">
-            <div className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-brand-400/25 bg-brand-500/10 py-1.5 pl-2 pr-3.5 text-center text-xs font-semibold text-brand-200">
+            <div className="mx-auto inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-brand-200 bg-white py-1.5 pl-2 pr-3.5 text-center text-xs font-semibold text-brand-700 shadow-xs">
               <span className="relative flex h-2 w-2" aria-hidden>
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-300" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
               </span>
               Real-time team attendance
             </div>
-            <h1 className="font-display mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-[1.06] tracking-[-0.03em] sm:text-5xl md:text-[3.6rem]">
+            <h1 className="font-display mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-[1.06] tracking-[-0.03em] text-neutral-900 sm:text-5xl md:text-[3.6rem]">
               Clock in with a scan.{" "}
-              <span className="bg-gradient-to-r from-brand-200 via-brand-300 to-brand-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 bg-clip-text text-transparent">
                 Run attendance from one dashboard.
               </span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-neutral-600 sm:text-base">
               ChronoSwift takes attendance off your plate — staff clock in with a QR scan while late arrivals, absences and payroll-ready reports take care of themselves.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/login" className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-semibold text-brand-900 shadow-lg shadow-black/30 transition hover:bg-brand-50 active:scale-[0.98] sm:w-auto">
+              <Link href="/login" className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700 active:scale-[0.98] sm:w-auto">
                 Get started
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
-              <a href="#how" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.09] active:scale-[0.98] sm:w-auto">
+              <a href="#how" className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white px-7 py-3.5 text-sm font-semibold text-neutral-800 shadow-xs transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 active:scale-[0.98] sm:w-auto">
                 See how it works
               </a>
             </div>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-neutral-400">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-neutral-500">
               {[
                 { icon: Smartphone, text: "No app installs" },
                 { icon: Zap, text: "Live from day one" },
                 { icon: ShieldCheck, text: "Isolated tenants" },
               ].map((t) => (
                 <span key={t.text} className="inline-flex items-center gap-1.5">
-                  <t.icon className="h-4 w-4 text-brand-300" aria-hidden />
+                  <t.icon className="h-4 w-4 text-brand-600" aria-hidden />
                   {t.text}
                 </span>
               ))}
@@ -260,7 +260,7 @@ export default function LandingPage() {
               {features.map((f) => (
                 <div key={f.title} className="group relative overflow-hidden rounded-2xl border border-neutral-200/70 bg-card p-5 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-card sm:p-6">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-brand-100/0 blur-2xl transition duration-300 group-hover:bg-brand-100/60" aria-hidden />
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink-900 text-white shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-brand-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-brand-700">
                     <f.icon className="h-5 w-5" />
                   </div>
                   <div className="font-display mt-4 text-[15px] font-semibold tracking-tight">{f.title}</div>
@@ -384,28 +384,28 @@ export default function LandingPage() {
         {/* CTA */}
         <section className="border-t border-neutral-200/70">
           <div className="mx-auto max-w-6xl px-4 pb-16 pt-2 text-center sm:px-6 sm:pb-20">
-            <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] bg-ink-950 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
+            <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[28px] border border-brand-100 bg-brand-50 px-6 py-12 shadow-lift sm:px-12 sm:py-16">
               <div className="pointer-events-none absolute inset-0" aria-hidden>
-                <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,black,transparent)]" />
-                <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-600/25 blur-3xl" />
-                <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-brand-800/40 blur-3xl" />
+                <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(57,118,90,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(57,118,90,0.06)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,black,transparent)]" />
+                <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-100 blur-3xl" />
+                <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-white/70 blur-3xl" />
               </div>
               <div className="relative">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.08] ring-1 ring-white/15">
-                  <QrCode className="h-6 w-6 text-brand-200" aria-hidden />
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 shadow-sm">
+                  <QrCode className="h-6 w-6 text-white" aria-hidden />
                 </span>
-                <h2 className="font-display mx-auto mt-5 max-w-xl text-balance text-2xl font-bold tracking-tight text-white sm:text-3xl">Ready to ditch the paper register?</h2>
-                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-400">Set up your organization today. Your team can be clocking in by tomorrow — no hardware, no app installs.</p>
+                <h2 className="font-display mx-auto mt-5 max-w-xl text-balance text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">Ready to ditch the paper register?</h2>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-600">Set up your organization today. Your team can be clocking in by tomorrow — no hardware, no app installs.</p>
                 <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  <Link href="/login" className="group inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-semibold text-brand-900 shadow-lift transition hover:bg-brand-50 active:scale-[0.98]">
+                  <Link href="/login" className="group inline-flex items-center gap-2 rounded-2xl bg-brand-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lift transition hover:bg-brand-700 active:scale-[0.98]">
                     Get started
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                   </Link>
-                  <a href="#faq" className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/[0.04] px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.09]">
+                  <a href="#faq" className="inline-flex items-center gap-2 rounded-2xl border border-neutral-200 bg-white px-7 py-3.5 text-sm font-semibold text-neutral-800 shadow-xs transition hover:border-brand-300 hover:bg-white hover:text-brand-700">
                     Read the FAQ
                   </a>
                 </div>
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12.5px] font-medium text-brand-200/80">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[12.5px] font-medium text-brand-800">
                   <span className="inline-flex items-center gap-1.5"><ScanLine className="h-3.5 w-3.5" /> Free to try</span>
                   <span className="inline-flex items-center gap-1.5"><UserRound className="h-3.5 w-3.5" /> Unlimited staff per organization</span>
                   <span className="inline-flex items-center gap-1.5"><LogOut className="h-3.5 w-3.5" /> No hardware to buy</span>

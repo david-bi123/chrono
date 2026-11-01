@@ -450,7 +450,7 @@ function HowTo({ showOpener }: { showOpener: boolean }) {
             "Tap Clock In — attendance is recorded instantly.",
           ].map((s, i) => (
             <li key={s} className="flex items-start gap-3 text-sm leading-relaxed text-neutral-600">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-[11px] font-semibold tabular text-white">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-[11px] font-semibold tabular text-white">
                 {i + 1}
               </span>
               {s}
