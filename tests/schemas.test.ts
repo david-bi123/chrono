@@ -64,7 +64,7 @@ describe("invite + org + setup schemas", () => {
       inviteStaffSchema.safeParse({ firstName: "A", lastName: "B", email: "nope", employeeId: "E-1" }).success
     ).toBe(false);
   });
-  it("createOrgSchema requires org + admin fields", () => {
+  it("createOrgSchema requires admin fields; org email is optional but must be valid", () => {
     const good = {
       name: "Acme",
       email: "hi@acme.co",
@@ -74,6 +74,10 @@ describe("invite + org + setup schemas", () => {
     };
     expect(createOrgSchema.safeParse(good).success).toBe(true);
     expect(createOrgSchema.safeParse({ ...good, status: "ACTIVE" }).success).toBe(true);
+    expect(createOrgSchema.safeParse({ ...good, email: "" }).success).toBe(true);
+    expect(createOrgSchema.safeParse({ ...good, email: undefined }).success).toBe(true);
+    expect(createOrgSchema.safeParse({ ...good, email: "bad" }).success).toBe(false);
+    expect(createOrgSchema.safeParse({ ...good, adminEmail: "" }).success).toBe(false);
     expect(createOrgSchema.safeParse({ ...good, adminEmail: "bad" }).success).toBe(false);
   });
   it("setupAccountSchema enforces the password policy", () => {

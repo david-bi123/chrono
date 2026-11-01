@@ -37,7 +37,8 @@ function isParseableDate(s: string) {
 
 export const createOrgSchema = z.object({
   name: z.string().trim().min(2).max(120),
-  email: emailSchema,
+  // Optional: the invited administrator's email is the address that matters.
+  email: emailSchema.optional().or(z.literal("")),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   address: z.string().trim().max(300).optional().or(z.literal("")),
   industry: z.string().trim().max(100).optional().or(z.literal("")),

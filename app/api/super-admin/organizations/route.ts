@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     const org = await Organization.create({
       name: parsed.data.name,
       slug: generateSlug(parsed.data.name),
-      email: parsed.data.email.toLowerCase().trim(),
+      email: parsed.data.email?.toLowerCase().trim() || adminEmail,
       phone: parsed.data.phone || undefined,
       address: parsed.data.address || undefined,
       industry: parsed.data.industry || undefined,

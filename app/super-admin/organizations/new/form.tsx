@@ -133,8 +133,8 @@ export default function NewOrgForm() {
             <Field label="Organization name" htmlFor="o-name" required className="md:col-span-2">
               <Input id="o-name" required minLength={2} value={form.name} onChange={set("name")} placeholder="Acme Technologies" />
             </Field>
-            <Field label="Organization email" htmlFor="o-email" required>
-              <Input id="o-email" type="email" required value={form.email} onChange={set("email")} placeholder="hello@company.com" />
+            <Field label="Organization email (optional)" htmlFor="o-email">
+              <Input id="o-email" type="email" value={form.email} onChange={set("email")} placeholder="hello@company.com" />
             </Field>
             <Field label="Phone" htmlFor="o-phone">
               <Input id="o-phone" type="tel" value={form.phone} onChange={set("phone")} placeholder="+233 …" />
