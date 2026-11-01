@@ -40,6 +40,7 @@ let dbOk: boolean | null = null;
 export async function useDb(name: string): Promise<boolean> {
   const server = process.env.MONGODB_TEST_URI || "mongodb://127.0.0.1:27017";
   process.env.MONGODB_URI = `${server}/${name}`;
+  guardTestUri();
   if (dbOk !== null) return dbOk;
   try {
     await dbConnect();
@@ -71,6 +72,28 @@ export async function wipe() {
 }
 
 let ipSeq = 100;
+
+/**
+ * Production-database guard. Tests wipe whole collections between cases, so
+ * a misconfigured MONGODB_TEST_URI must never point at production data.
+ * Refuses the production host/database outright — including the case of an
+ * unset MONGODB_TEST_URI silently reusing MONGODB_URI from .env.local.
+ */
+export function guardTestUri(): void {
+  const uri = process.env.MONGODB_URI || "";
+  const m = uri.match(/^[a-z+]+:\/\/[^/]*@([^/?]+)\/([^?]*)/i);
+  const host = m?.[1]?.toLowerCase() ?? "";
+  const dbName = m?.[2]?.split("/")[0] ?? "";
+  const prodHost = "projects.pfyfg80.mongodb.net";
+  const isProdDb = dbName === "chrono" || dbName === "chronoswift";
+  if (isProdDb || (host === prodHost && dbName === "chrono")) {
+    throw new Error(
+      `SAFETY GUARD: refusing to run tests against "${dbName || "(empty)"}" on "${host}". ` +
+      "Tests wipe data, so they must target a throwaway database (mongodb://127.0.0.1:27017 or a dedicated MONGODB_TEST_URI)."
+    );
+  }
+}
+
 /** Unique fake client IP per test (rate-limiter isolation). */
 export function nextIp() {
   ipSeq = (ipSeq + 1) % 250;
