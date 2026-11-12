@@ -1,0 +1,222 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]:
+          - img "ChronoSwift" [ref=e7]
+          - generic [ref=e12]: ChronoSwift
+        - navigation "Primary" [ref=e13]:
+          - link "Features" [ref=e14] [cursor=pointer]:
+            - /url: "#features"
+          - link "How it works" [ref=e15] [cursor=pointer]:
+            - /url: "#how"
+          - link "Roles" [ref=e16] [cursor=pointer]:
+            - /url: "#roles"
+          - link "FAQ" [ref=e17] [cursor=pointer]:
+            - /url: "#faq"
+        - generic [ref=e18]:
+          - link "Sign in" [ref=e19] [cursor=pointer]:
+            - /url: /login
+          - link "Get started" [ref=e20] [cursor=pointer]:
+            - /url: /login
+    - main [ref=e23]:
+      - generic [ref=e25]:
+        - generic [ref=e26]: Real-time team attendance
+        - heading "Clock in with a scan. Run attendance from one dashboard." [level=1] [ref=e30]
+        - paragraph [ref=e31]: ChronoSwift takes attendance off your plate — staff clock in with a QR scan while late arrivals, absences and payroll-ready reports take care of themselves.
+        - generic [ref=e32]:
+          - link "Get started" [ref=e33] [cursor=pointer]:
+            - /url: /login
+          - link "See how it works" [ref=e36] [cursor=pointer]:
+            - /url: "#how"
+        - generic [ref=e37]:
+          - generic [ref=e38]: No app installs
+          - generic [ref=e41]: Live from day one
+          - generic [ref=e44]: Isolated tenants
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e58]: Step 1
+            - generic [ref=e59]: Scan the entrance code
+            - paragraph [ref=e60]: Any phone camera. No app, no hardware.
+          - generic [ref=e64]:
+            - generic [ref=e71]: Step 2
+            - generic [ref=e72]: One simple tap
+            - paragraph [ref=e73]: Clock In, Clock Out — that's the whole app.
+          - generic [ref=e77]:
+            - generic [ref=e82]: Step 3
+            - generic [ref=e83]: The server records it
+            - paragraph [ref=e84]: Phone clocks can't change a single digit.
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e94]: One dashboard, not paper
+          - paragraph [ref=e95]: Every clock-in lands in a live dashboard. Month-end means opening Reports — not chasing registers around the office.
+        - generic [ref=e96]:
+          - generic [ref=e101]: Payroll-ready exports
+          - paragraph [ref=e102]: Filter by date, staff or status and download CSV straight into payroll, with hours already computed.
+        - generic [ref=e103]:
+          - generic [ref=e112]: Fair lateness, automatically
+          - paragraph [ref=e113]: Start times and grace periods apply the same rules to everyone, backed by an audit trail on every record.
+      - generic [ref=e115]:
+        - paragraph [ref=e116]: Features
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - heading "Everything you need to run attendance" [level=2] [ref=e119]
+            - paragraph [ref=e120]: Built for organization admins, effortless for staff.
+          - link "Try it now" [ref=e121] [cursor=pointer]:
+            - /url: /login
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e133]: QR clock-in
+            - paragraph [ref=e134]: One QR per entrance. Staff scan, tap Clock In — timestamps are recorded server-side, never from the phone clock.
+          - generic [ref=e135]:
+            - generic [ref=e140]: Late & absence detection
+            - paragraph [ref=e141]: Per-organization start times, grace periods, working days and timezones. Defaults to Africa/Accra.
+          - generic [ref=e142]:
+            - generic [ref=e149]: Staff management
+            - paragraph [ref=e150]: Email invitations with single-use secure links, departments, disable/reactivate, and resend with throttling.
+          - generic [ref=e151]:
+            - generic [ref=e155]: Reports & exports
+            - paragraph [ref=e156]: Filter by date, status, staff or search. Server-generated CSV exports for payroll and audits.
+          - generic [ref=e157]:
+            - generic [ref=e162]: Tenant isolation
+            - paragraph [ref=e163]: Every record carries an organizationId enforced on the server. Org A can never see Org B — not just hidden in UI.
+          - generic [ref=e164]:
+            - generic [ref=e171]: Audit trail
+            - paragraph [ref=e172]: Invitations, QR rotations, corrections and settings changes are logged with actor, IP and timestamp.
+      - generic [ref=e174]:
+        - paragraph [ref=e175]: How it works
+        - heading "Live in three steps" [level=2] [ref=e176]
+        - generic [ref=e177]:
+          - generic [ref=e179]:
+            - generic [ref=e180]: "1"
+            - generic [ref=e186]: Create your organization
+            - paragraph [ref=e187]: Super admin provisions your tenant. Your admin gets a secure 72-hour setup link by email — no passwords in email, ever.
+          - generic [ref=e189]:
+            - generic [ref=e190]: "2"
+            - generic [ref=e198]: Invite staff & print QR
+            - paragraph [ref=e199]: Invite the team, create locations like Reception or Warehouse. Each gets its own revocable QR to print.
+          - generic [ref=e201]:
+            - generic [ref=e202]: "3"
+            - generic [ref=e209]: Scan, clock in, report
+            - paragraph [ref=e210]: Staff scan with any phone camera and tap Clock In. Admins watch live dashboards and export reports.
+      - generic [ref=e212]:
+        - paragraph [ref=e213]: Roles
+        - heading "One platform, three workspaces" [level=2] [ref=e214]
+        - paragraph [ref=e215]: Everyone sees exactly what their role allows — enforced on the server, not just hidden in the UI.
+        - generic [ref=e216]:
+          - generic [ref=e218]:
+            - generic [ref=e224]: Platform owner
+            - paragraph [ref=e225]: Provision tenants, suspend abusers, and watch platform activity — without touching tenant data.
+            - list [ref=e226]:
+              - listitem [ref=e227]: Create organizations
+              - listitem [ref=e230]: Suspend / reactivate tenants
+              - listitem [ref=e233]: Platform-wide audit
+          - generic [ref=e237]:
+            - generic [aria-hidden] [ref=e238]: Most used
+            - generic [ref=e252]: Organization admin
+            - paragraph [ref=e253]: Invite staff, print QR codes, watch the live dashboard and export payroll-ready reports.
+            - list [ref=e254]:
+              - listitem [ref=e255]: Invite & manage staff
+              - listitem [ref=e258]: QR locations & rotation
+              - listitem [ref=e261]: Reports & CSV export
+          - generic [ref=e265]:
+            - generic [ref=e272]: Staff
+            - paragraph [ref=e273]: Scan the entrance QR with any phone camera, tap once, and get on with the day.
+            - list [ref=e274]:
+              - listitem [ref=e275]: One-tap clock in/out
+              - listitem [ref=e278]: Today + history view
+              - listitem [ref=e281]: Profile & password control
+      - generic [ref=e286]:
+        - generic [ref=e287]:
+          - paragraph [ref=e288]: Security
+          - heading "Secure by design, not by promise" [level=2] [ref=e289]
+          - paragraph [ref=e290]: HTTP-only sessions, hashed single-use tokens, server-side timestamps, tenant isolation on every query, rate limiting, and immutable audit logs.
+          - generic [ref=e291]:
+            - link "Get started" [ref=e292] [cursor=pointer]:
+              - /url: /login
+            - link "Read the FAQ" [ref=e295] [cursor=pointer]:
+              - /url: "#faq"
+        - list [ref=e297]:
+          - listitem [ref=e298]: HTTP-only sessions
+          - listitem [ref=e302]: Hashed invite tokens
+          - listitem [ref=e306]: Server timestamps
+          - listitem [ref=e310]: Tenant isolation
+          - listitem [ref=e314]: Rate limiting
+          - listitem [ref=e318]: Audit logs
+      - generic [ref=e323]:
+        - paragraph [ref=e324]: FAQ
+        - heading "Honest answers" [level=2] [ref=e325]
+        - generic [ref=e326]:
+          - group [ref=e328]:
+            - generic "Do staff need to install an app? +" [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]:
+                - text: Do staff need to install an app?
+                - generic [ref=e331]: +
+          - group [ref=e333]:
+            - generic "Does the QR code prove someone is physically present? +" [ref=e334] [cursor=pointer]:
+              - generic [ref=e335]:
+                - text: Does the QR code prove someone is physically present?
+                - generic [ref=e336]: +
+          - group [ref=e338]:
+            - generic "Why did my invitation land in Spam? +" [ref=e339] [cursor=pointer]:
+              - generic [ref=e340]:
+                - text: Why did my invitation land in Spam?
+                - generic [ref=e341]: +
+          - group [ref=e343]:
+            - generic "What timezone is attendance recorded in? +" [ref=e344] [cursor=pointer]:
+              - generic [ref=e345]:
+                - text: What timezone is attendance recorded in?
+                - generic [ref=e346]: +
+          - group [ref=e348]:
+            - generic "Can staff clock in for each other? +" [ref=e349] [cursor=pointer]:
+              - generic [ref=e350]:
+                - text: Can staff clock in for each other?
+                - generic [ref=e351]: +
+          - group [ref=e353]:
+            - generic "What happens if someone forgets to clock out? +" [ref=e354] [cursor=pointer]:
+              - generic [ref=e355]:
+                - text: What happens if someone forgets to clock out?
+                - generic [ref=e356]: +
+      - generic [ref=e361]:
+        - heading "Ready to ditch the paper register?" [level=2] [ref=e369]
+        - paragraph [ref=e370]: Set up your organization today. Your team can be clocking in by tomorrow — no hardware, no app installs.
+        - generic [ref=e371]:
+          - link "Get started" [ref=e372] [cursor=pointer]:
+            - /url: /login
+          - link "Read the FAQ" [ref=e375] [cursor=pointer]:
+            - /url: "#faq"
+        - generic [ref=e376]:
+          - generic [ref=e377]: Free to try
+          - generic [ref=e383]: Unlimited staff per organization
+          - generic [ref=e387]: No hardware to buy
+    - contentinfo [ref=e391]:
+      - generic [ref=e392]:
+        - generic [ref=e393]:
+          - generic [ref=e394]:
+            - generic [ref=e395]:
+              - img "ChronoSwift" [ref=e396]
+              - generic [ref=e401]: ChronoSwift
+            - paragraph [ref=e402]: Smart attendance. Simple management.
+          - navigation "Footer" [ref=e403]:
+            - link "Features" [ref=e404] [cursor=pointer]:
+              - /url: "#features"
+            - link "How it works" [ref=e405] [cursor=pointer]:
+              - /url: "#how"
+            - link "Security" [ref=e406] [cursor=pointer]:
+              - /url: "#security"
+            - link "FAQ" [ref=e407] [cursor=pointer]:
+              - /url: "#faq"
+            - link "Terms" [ref=e408] [cursor=pointer]:
+              - /url: /terms
+            - link "Privacy" [ref=e409] [cursor=pointer]:
+              - /url: /privacy
+            - link "Sign in" [ref=e410] [cursor=pointer]:
+              - /url: /login
+        - generic [ref=e411]:
+          - paragraph [ref=e412]: © 2026 ChronoSwift. All rights reserved.
+          - paragraph [ref=e413]:
+            - text: Created by
+            - link "SamTech Labs" [ref=e414] [cursor=pointer]:
+              - /url: https://samtechlabs.vercel.app/
+  - region "Notifications"
+  - alert [ref=e415]

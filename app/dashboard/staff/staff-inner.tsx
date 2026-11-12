@@ -47,7 +47,7 @@ const EMPTY_FORM = {
 
 const PAGE_SIZE = 12;
 
-export default function StaffPage() {
+export default function StaffPage({ canManage = true }: { canManage?: boolean }) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -239,7 +239,7 @@ export default function StaffPage() {
       align: "right",
       render: (s) => (
         <div className="flex items-center justify-end gap-1">
-          {s.status === "PENDING" && (
+          {canManage && s.status === "PENDING" && (
             <Button size="sm" variant="outline" onClick={() => resend(s)}>
               <Mail className="h-3.5 w-3.5" /> Resend
             </Button>
@@ -254,32 +254,36 @@ export default function StaffPage() {
               <DropdownMenuItem onSelect={() => router.push(`/dashboard/staff/${s._id}`)}>
                 <Eye className="h-4 w-4 text-neutral-500" /> View profile
               </DropdownMenuItem>
-              {s.status === "PENDING" && (
+              {canManage && s.status === "PENDING" && (
                 <DropdownMenuItem onSelect={() => resend(s)}>
                   <Mail className="h-4 w-4 text-neutral-500" /> Resend invitation
                 </DropdownMenuItem>
               )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={() =>
-                  setConfirm({
-                    open: true,
-                    staff: s,
-                    next: s.status === "DISABLED" ? "ACTIVE" : "DISABLED",
-                  })
-                }
-                className={s.status === "DISABLED" ? "" : "text-red-600 focus:text-red-600"}
-              >
-                {s.status === "DISABLED" ? (
-                  <>
-                    <RotateCcw className="h-4 w-4" /> Reactivate
-                  </>
-                ) : (
-                  <>
-                    <Ban className="h-4 w-4" /> Deactivate
-                  </>
-                )}
-              </DropdownMenuItem>
+              {canManage && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() =>
+                      setConfirm({
+                        open: true,
+                        staff: s,
+                        next: s.status === "DISABLED" ? "ACTIVE" : "DISABLED",
+                      })
+                    }
+                    className={s.status === "DISABLED" ? "" : "text-red-600 focus:text-red-600"}
+                  >
+                    {s.status === "DISABLED" ? (
+                      <>
+                        <RotateCcw className="h-4 w-4" /> Reactivate
+                      </>
+                    ) : (
+                      <>
+                        <Ban className="h-4 w-4" /> Deactivate
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -296,9 +300,11 @@ export default function StaffPage() {
         title="Staff"
         description="Manage your organization's employees, invitations and access."
         actions={
-          <Button onClick={() => setInviteOpen(true)}>
-            <UserPlus className="h-4 w-4" /> Invite staff
-          </Button>
+          canManage ? (
+            <Button onClick={() => setInviteOpen(true)}>
+              <UserPlus className="h-4 w-4" /> Invite staff
+            </Button>
+          ) : undefined
         }
       />
 
@@ -376,9 +382,11 @@ export default function StaffPage() {
                       title="No staff members yet"
                       description="Invite your first team member to start managing attendance."
                       action={
-                        <Button onClick={() => setInviteOpen(true)}>
-                          <UserPlus className="h-4 w-4" /> Invite staff
-                        </Button>
+                        canManage ? (
+                          <Button onClick={() => setInviteOpen(true)}>
+                            <UserPlus className="h-4 w-4" /> Invite staff
+                          </Button>
+                        ) : undefined
                       }
                     />
                   )

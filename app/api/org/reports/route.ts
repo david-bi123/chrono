@@ -3,18 +3,34 @@ import { dbConnect } from "@/lib/db/mongoose";
 import { Attendance } from "@/models/Attendance";
 import { User } from "@/models/User";
 import { getSession } from "@/lib/auth/session";
+import { assertHistoryAccess, getEntitlements, planErrorPayload } from "@/lib/subscriptions/entitlements";
 
 export async function GET(req: Request) {
   const s = await getSession();
-  if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!s || !["ORGANIZATION_ADMIN", "MANAGER"].includes(s.role) || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const url = new URL(req.url);
   const from = url.searchParams.get("from") || "";
   const to = url.searchParams.get("to") || "";
   const format = url.searchParams.get("format") || "json";
   await dbConnect();
+
+  // Plan history window: an org may not read or export records older than its
+  // entitlement, and an unbounded request is capped at the window start.
+  const entitlements = await getEntitlements(s.orgId);
+  if (!entitlements) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+  let effectiveFrom = from;
+  try {
+    assertHistoryAccess(entitlements, from || null);
+    if (!from && entitlements.oldestHistoryDate) effectiveFrom = entitlements.oldestHistoryDate;
+  } catch (e) {
+    const planError = planErrorPayload(e);
+    if (planError) return NextResponse.json(planError.body, { status: planError.status });
+    throw e;
+  }
+
   const filter: Record<string, unknown> = { organizationId: s.orgId };
-  if (from && to) filter.date = { $gte: from, $lte: to };
-  else if (from) filter.date = { $gte: from };
+  if (effectiveFrom && to) filter.date = { $gte: effectiveFrom, $lte: to };
+  else if (effectiveFrom) filter.date = { $gte: effectiveFrom };
   else if (to) filter.date = { $lte: to };
 
   const rows = await Attendance.find(filter).populate("staffId", "firstName lastName employeeId department").sort({ date: 1 }).lean();

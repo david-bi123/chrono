@@ -62,7 +62,11 @@ export async function POST(req: Request) {
     ok: true,
     role: user.role,
     redirectTo:
-      user.role === "SUPER_ADMIN" ? "/super-admin" : user.role === "ORGANIZATION_ADMIN" ? "/dashboard" : "/staff",
+      user.role === "SUPER_ADMIN"
+        ? "/super-admin"
+        : user.role === "ORGANIZATION_ADMIN" || user.role === "MANAGER"
+          ? "/dashboard"
+          : "/staff",
   });
   res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions());
   return res;

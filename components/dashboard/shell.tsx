@@ -18,6 +18,7 @@ import {
   History,
   ScanLine,
   ChevronDown,
+  CreditCard,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -62,6 +63,13 @@ const ICONS: Record<string, LucideIcon> = {
   "Clock In": ScanLine,
   History: History,
   Profile: UserRound,
+  Managers: Users,
+  managers: Users,
+  Branches: Building2,
+  branches: Building2,
+  Subscription: CreditCard,
+  subscription: CreditCard,
+  Billing: CreditCard,
 };
 
 const GROUP_LABELS: Record<string, string> = {
@@ -104,7 +112,12 @@ export function AppShell({
     router.refresh();
   }
 
-  const isActive = (href: string) => path === href || path.startsWith(href + "/");
+  // Index routes (/dashboard, /super-admin) must match exactly, otherwise
+  // every child page would light up the parent *and* its own nav item.
+  const isActive = (href: string) => {
+    const isIndex = href.split("/").filter(Boolean).length === 1;
+    return isIndex ? path === href : path === href || path.startsWith(href + "/");
+  };
   const firstName = userName.split(" ")[0] || userName;
   const initials = userName
     .split(" ")
@@ -116,7 +129,6 @@ export function AppShell({
 
   const mainNav = nav.filter((n) => n.group !== "admin");
   const adminNav = nav.filter((n) => n.group === "admin");
-  const activeItem = nav.find((n) => isActive(n.href));
 
   const settingsHref =
     role === "ORGANIZATION_ADMIN"
@@ -177,20 +189,10 @@ export function AppShell({
     <div className="border-t border-neutral-100 p-3">
       <div className="flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-2 transition hover:border-neutral-200 hover:bg-neutral-50">
         <Avatar name={userName} email={userEmail} size="sm" />
-        <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 flex-col">
           <div className="truncate text-sm font-semibold text-neutral-900">{userName}</div>
-          <div className="truncate text-[12.5px] capitalize text-neutral-500">{roleLabel}</div>
+          <div className="truncate text-[12px] capitalize text-neutral-500">{roleLabel}</div>
         </div>
-        {settingsHref && (
-          <Link
-            href={settingsHref}
-            className="rounded-md p-1.5 text-neutral-400 transition hover:bg-white hover:text-brand-600 hover:shadow-xs"
-            aria-label="Settings"
-            title="Settings"
-          >
-            <Settings className="h-4 w-4" />
-          </Link>
-        )}
         <button
           onClick={logout}
           className="rounded-md p-1.5 text-neutral-400 transition hover:bg-red-50 hover:text-red-600"
@@ -246,16 +248,8 @@ export function AppShell({
     <div className="flex min-h-dvh bg-background">
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-neutral-200/80 bg-white md:flex no-print">
-        <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-neutral-100 bg-[linear-gradient(180deg,rgba(57,118,90,0.05),transparent)] px-5">
+        <div className="flex h-16 shrink-0 items-center border-b border-neutral-100 bg-[linear-gradient(180deg,rgba(57,118,90,0.05),transparent)] px-5">
           <Logo size="md" />
-          {orgName && (
-            <span
-              className="ml-auto max-w-[112px] truncate rounded-md bg-brand-50 px-2 py-1 text-[11.5px] font-semibold text-brand-700 ring-1 ring-inset ring-brand-100"
-              title={orgName}
-            >
-              {orgName}
-            </span>
-          )}
         </div>
         {navList}
         {sidebarFooter}
@@ -311,21 +305,13 @@ export function AppShell({
                 /
               </span>
               <span className="truncate font-medium text-neutral-700" aria-current="page">
-                {activeItem?.label ?? title}
+                {title}
               </span>
-              {activeItem && activeItem.label !== title && (
-                <>
-                  <span className="text-neutral-300" aria-hidden>
-                    /
-                  </span>
-                  <span className="truncate font-medium text-neutral-700">{title}</span>
-                </>
-              )}
             </div>
 
-            {/* Mobile brand */}
-            <div className="flex items-center gap-2 md:hidden">
-              <span className="text-[15px] font-semibold tracking-tight">ChronoSwift</span>
+            {/* Mobile brand / workspace context */}
+            <div className="flex min-w-0 items-center gap-2 md:hidden">
+              <span className="truncate text-[15px] font-semibold tracking-tight">{orgName || "ChronoSwift"}</span>
             </div>
 
             <div className="ml-auto flex items-center gap-2.5">

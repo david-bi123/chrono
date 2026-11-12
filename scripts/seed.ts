@@ -30,6 +30,27 @@ import { generateRawToken, hashToken, generateSlug } from "../lib/auth/tokens";
 import { orgTodayKey } from "../lib/attendance/rules";
 
 async function main() {
+  // Safety guard: the seed writes DEMO data (Acme org, fake staff). It must
+  // never land in the production database. Refuse by default; an explicit
+  // override env is required to even consider it.
+  const uri = process.env.MONGODB_URI || "";
+  const m = uri.match(/^[a-z+]+:\/\/[^/]*@([^/?]+)\/([^?]*)/i);
+  const host = m?.[1]?.toLowerCase() ?? "";
+  const dbName = m?.[2]?.split("/")[0] ?? "";
+  const prodHost = "projects.pfyfg80.mongodb.net";
+  const isProdDb = dbName === "chrono" || dbName === "chronoswift";
+  if (isProdDb || (host === prodHost && dbName === "chrono")) {
+    if (process.env.CHRONO_ALLOW_DEMO_SEED === "1") {
+      console.error("WARNING: CHRONO_ALLOW_DEMO_SEED=1 — writing DEMO data into the production database knowingly.");
+    } else {
+      console.error(
+        `SAFETY GUARD: refusing to seed "${dbName || "(empty)"}" on "${host}" (production-like target).\n` +
+        "Demo data does not belong in production. Point MONGODB_URI at a dev/login DB or set CHRONO_ALLOW_DEMO_SEED=1 to deliberately override."
+      );
+      process.exit(1);
+    }
+  }
+
   await dbConnect();
   console.log("Seeding (dev only)…");
 

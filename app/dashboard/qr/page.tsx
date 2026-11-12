@@ -1,19 +1,20 @@
-import { orgAdminContext, ORG_NAV } from "@/lib/dashboard-helpers";
+import { navForRole, orgWorkspaceContext } from "@/lib/dashboard-helpers";
 import { AppShell } from "@/components/dashboard/shell";
 import QrPage from "./qr-inner";
 
 export default async function Page() {
-  const ctx = await orgAdminContext();
+  const ctx = await orgWorkspaceContext();
   return (
     <AppShell
-      title="QR Codes"
+      title="Branches"
       subtitle="Attendance locations and printable QR codes"
       userName={ctx.userName}
+      userEmail={ctx.userEmail}
       orgName={ctx.orgName}
-      role="ORGANIZATION_ADMIN"
-      nav={ORG_NAV}
+      role={ctx.role}
+      nav={navForRole(ctx.role)}
     >
-      <QrPage orgName={ctx.orgName} />
+      <QrPage orgName={ctx.orgName} canManage={ctx.isAdmin} />
     </AppShell>
   );
 }

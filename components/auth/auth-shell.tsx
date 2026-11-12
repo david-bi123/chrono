@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { ClockCard } from "@/components/auth/clock-card";
 import { QrCode, BarChart3, ShieldCheck, Check } from "lucide-react";
 
 const POINTS = [
@@ -30,8 +31,9 @@ export function AuthShell({
           <div className="absolute -right-20 bottom-1/3 h-64 w-64 rounded-full bg-brand-50 blur-3xl" />
         </div>
 
-        <div className="relative">
+        <div className="relative flex items-start justify-between gap-6">
           <Logo size="lg" />
+          <ClockCard className="w-[122px] shrink-0 xl:w-[136px]" />
         </div>
 
         <div className="relative max-w-md">
@@ -64,8 +66,9 @@ export function AuthShell({
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(45,110,84,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(45,110,84,0.05)_1px,transparent_1px)] bg-[length:40px_40px] opacity-[0.6] [mask-image:radial-gradient(ellipse_60%_55%_at_50%_28%,black,transparent)]" aria-hidden />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(640px_240px_at_50%_-70px,rgba(77,143,111,0.13),transparent)]" aria-hidden />
         <div className="relative w-full max-w-[420px]">
-          <div className="mb-7 flex items-center justify-center lg:hidden">
+          <div className="mb-7 flex items-center justify-between gap-4 lg:hidden">
             <Logo size="lg" />
+            <ClockCard className="w-[100px] shrink-0" />
           </div>
 
           <div className="relative rounded-2xl border border-neutral-200/80 bg-card p-6 shadow-card sm:p-8">

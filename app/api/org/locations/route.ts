@@ -7,6 +7,7 @@ import { getSession } from "@/lib/auth/session";
 import { generateRawToken, hashToken } from "@/lib/auth/tokens";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
 import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
+import { assertActiveSubscription, assertCanAdd, getEntitlements, planErrorPayload } from "@/lib/subscriptions/entitlements";
 
 function appUrl() {
   return (process.env.APP_URL || "").replace(/\/$/, "");
@@ -14,7 +15,7 @@ function appUrl() {
 
 export async function GET() {
   const s = await getSession();
-  if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!s || !["ORGANIZATION_ADMIN", "MANAGER"].includes(s.role) || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   await dbConnect();
   // We cannot return raw tokens (only hashes stored). Return metadata; QR image
   // is fetched per-location via /qr endpoint which... can't recover raw token either.
@@ -40,6 +41,16 @@ export async function POST(req: Request) {
   const parsed = z.object({ name: z.string().trim().min(1).max(100) }).safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Name is required" }, { status: 400 });
   await dbConnect();
+  try {
+    const entitlements = await getEntitlements(s.orgId);
+    if (!entitlements) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+    assertActiveSubscription(entitlements);
+    assertCanAdd(entitlements, "branches");
+  } catch (e) {
+    const planError = planErrorPayload(e);
+    if (planError) return NextResponse.json(planError.body, { status: planError.status });
+    throw e;
+  }
   const raw = `chr_${generateRawToken(24)}`;
   const loc = await AttendanceLocation.create({
     organizationId: s.orgId,

@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     tokenHash: hashToken(token),
     usedAt: null,
     expiresAt: { $gt: new Date() },
-    type: { $in: ["ORG_ADMIN", "STAFF", "SUPER_ADMIN"] },
+    type: { $in: ["ORG_ADMIN", "MANAGER", "STAFF", "SUPER_ADMIN"] },
   }).lean();
   if (!inv) return NextResponse.json({ error: "Invitation is invalid or expired" }, { status: 400 });
   const org = inv.organizationId ? await Organization.findById(inv.organizationId).select("name").lean() : null;
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     tokenHash: hashToken(parsed.data.token),
     usedAt: null,
     expiresAt: { $gt: new Date() },
-    type: { $in: ["ORG_ADMIN", "STAFF", "SUPER_ADMIN"] },
+    type: { $in: ["ORG_ADMIN", "MANAGER", "STAFF", "SUPER_ADMIN"] },
   });
   if (!inv) return NextResponse.json({ error: "Invitation is invalid or expired" }, { status: 400 });
   const user = await User.findById(inv.userId);

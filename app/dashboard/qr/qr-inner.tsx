@@ -27,7 +27,7 @@ import { LogoMark } from "@/components/brand/logo";
 type Location = { _id: string; name: string; status: string; createdAt?: string };
 type Fresh = { url: string; qrDataUrl: string; name: string };
 
-export default function QrPage({ orgName }: { orgName: string }) {
+export default function QrPage({ orgName, canManage = true }: { orgName: string; canManage?: boolean }) {
   const { toast } = useToast();
   const [locs, setLocs] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
@@ -121,9 +121,11 @@ export default function QrPage({ orgName }: { orgName: string }) {
         title="QR locations"
         description="Each location gets its own revocable QR code. Staff scan it with any camera to clock in or out."
         actions={
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus className="h-4 w-4" /> New location
-          </Button>
+          canManage ? (
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus className="h-4 w-4" /> New location
+            </Button>
+          ) : undefined
         }
       />
 
@@ -156,9 +158,11 @@ export default function QrPage({ orgName }: { orgName: string }) {
           title="No QR locations yet"
           description="Create your first location — reception, head office, warehouse — and print its QR code at the entrance."
           action={
-            <Button onClick={() => setCreateOpen(true)}>
-              <Plus className="h-4 w-4" /> Create location
-            </Button>
+            canManage ? (
+              <Button onClick={() => setCreateOpen(true)}>
+                <Plus className="h-4 w-4" /> Create location
+              </Button>
+            ) : undefined
           }
         />
       ) : (
@@ -198,26 +202,34 @@ export default function QrPage({ orgName }: { orgName: string }) {
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2 border-t border-neutral-100 pt-4">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setConfirm({ open: true, loc: l, action: "rotate" })}
-                  disabled={l.status === "REVOKED"}
-                >
-                  <RefreshCw className="h-3.5 w-3.5" /> Regenerate
-                </Button>
-                {l.status === "ACTIVE" ? (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                    onClick={() => setConfirm({ open: true, loc: l, action: "revoke" })}
-                  >
-                    <Ban className="h-3.5 w-3.5" /> Revoke
-                  </Button>
+                {canManage ? (
+                  <>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setConfirm({ open: true, loc: l, action: "rotate" })}
+                      disabled={l.status === "REVOKED"}
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" /> Regenerate
+                    </Button>
+                    {l.status === "ACTIVE" ? (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                        onClick={() => setConfirm({ open: true, loc: l, action: "revoke" })}
+                      >
+                        <Ban className="h-3.5 w-3.5" /> Revoke
+                      </Button>
+                    ) : (
+                      <span className="inline-flex items-center px-2 text-[12.5px] text-neutral-500">
+                        Revoked — regenerate to restore
+                      </span>
+                    )}
+                  </>
                 ) : (
                   <span className="inline-flex items-center px-2 text-[12.5px] text-neutral-500">
-                    Revoked — regenerate to restore
+                    {l.status === "ACTIVE" ? "Active branch" : "Revoked branch"}
                   </span>
                 )}
               </div>

@@ -1,9 +1,9 @@
-import { orgAdminContext, ORG_NAV } from "@/lib/dashboard-helpers";
+import { navForRole, orgWorkspaceContext } from "@/lib/dashboard-helpers";
 import { AppShell } from "@/components/dashboard/shell";
 import AttendancePage from "./att-inner";
 
 export default async function Page({ searchParams }: { searchParams?: { status?: string } }) {
-  const ctx = await orgAdminContext();
+  const ctx = await orgWorkspaceContext();
   // Deep links from the dashboard (e.g. ?status=LATE) open the table pre-filtered.
   const allowed = ["PRESENT", "LATE", "EARLY_LEAVE", "HALF_DAY", "INCOMPLETE"];
   const requested = searchParams?.status;
@@ -13,11 +13,12 @@ export default async function Page({ searchParams }: { searchParams?: { status?:
       title="Attendance"
       subtitle="Track and manage your team's attendance"
       userName={ctx.userName}
+      userEmail={ctx.userEmail}
       orgName={ctx.orgName}
-      role="ORGANIZATION_ADMIN"
-      nav={ORG_NAV}
+      role={ctx.role}
+      nav={navForRole(ctx.role)}
     >
-      <AttendancePage initialStatus={initialStatus} />
+      <AttendancePage initialStatus={initialStatus} canManage={ctx.isAdmin} />
     </AppShell>
   );
 }

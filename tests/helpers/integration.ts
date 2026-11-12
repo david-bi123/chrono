@@ -15,6 +15,8 @@ import "../../models/Attendance";
 import "../../models/AttendanceLocation";
 import "../../models/Invitation";
 import "../../models/AuditLog";
+import "../../models/SubscriptionEvent";
+import "../../models/Payment";
 import { User } from "../../models/User";
 import { Organization } from "../../models/Organization";
 import { createSession } from "../../lib/auth/session";
@@ -61,6 +63,8 @@ export async function wipe() {
   const { AttendanceLocation } = await import("../../models/AttendanceLocation");
   const { Invitation } = await import("../../models/Invitation");
   const { AuditLog } = await import("../../models/AuditLog");
+  const { SubscriptionEvent } = await import("../../models/SubscriptionEvent");
+  const { Payment } = await import("../../models/Payment");
   await Promise.all([
     User.deleteMany({}),
     Organization.deleteMany({}),
@@ -68,6 +72,8 @@ export async function wipe() {
     AttendanceLocation.deleteMany({}),
     Invitation.deleteMany({}),
     AuditLog.deleteMany({}),
+    SubscriptionEvent.deleteMany({}),
+    Payment.deleteMany({}),
   ]);
 }
 
@@ -205,6 +211,25 @@ export async function makeStaff(
     status: active ? "ACTIVE" : "PENDING",
   });
   return staff;
+}
+
+/** Active manager with a session — for read-only permission boundary tests. */
+export async function makeManager(orgId: unknown, email = "manager@test.co") {
+  const manager = await User.create({
+    organizationId: orgId as never,
+    role: "MANAGER",
+    firstName: "Mona",
+    lastName: "Manager",
+    email,
+    passwordHash: await fixtureHash(),
+    status: "ACTIVE",
+  });
+  const token = await createSession({
+    sub: String(manager._id),
+    orgId: String(orgId),
+    role: "MANAGER",
+  });
+  return { manager, token };
 }
 
 export async function makeLocation(orgId: unknown, raw: string, name = "Gate") {

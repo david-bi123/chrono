@@ -14,6 +14,7 @@ function isPublic(path: string): boolean {
   // here would turn into HTML that breaks fetch().json() callers.
   if (path.startsWith("/api/attendance/scan/")) return true;
   if (path === "/api/attendance/clock") return true;
+  if (path === "/api/payments/paystack/webhook") return true; // verified by signature
   if (path === "/unauthorized") return true;
   return false;
 }
@@ -49,12 +50,12 @@ export async function middleware(req: NextRequest) {
     url.pathname = "/unauthorized";
     return NextResponse.redirect(url);
   }
-  if (pathname.startsWith("/dashboard") && !["ORGANIZATION_ADMIN", "SUPER_ADMIN"].includes(session.role)) {
+  if (pathname.startsWith("/dashboard") && !["ORGANIZATION_ADMIN", "MANAGER", "SUPER_ADMIN"].includes(session.role)) {
     const url = req.nextUrl.clone();
     url.pathname = "/unauthorized";
     return NextResponse.redirect(url);
   }
-  if (pathname.startsWith("/staff") && !["STAFF", "ORGANIZATION_ADMIN", "SUPER_ADMIN"].includes(session.role)) {
+  if (pathname.startsWith("/staff") && !["STAFF", "ORGANIZATION_ADMIN", "MANAGER", "SUPER_ADMIN"].includes(session.role)) {
     const url = req.nextUrl.clone();
     url.pathname = "/unauthorized";
     return NextResponse.redirect(url);

@@ -5,6 +5,8 @@ import { Organization } from "@/models/Organization";
 import { User } from "@/models/User";
 import { Invitation } from "@/models/Invitation";
 import { Attendance } from "@/models/Attendance";
+import { AttendanceLocation } from "@/models/AttendanceLocation";
+import { SubscriptionEvent } from "@/models/SubscriptionEvent";
 import { getSession } from "@/lib/auth/session";
 import { generateRawToken, hashToken, generateSlug } from "@/lib/auth/tokens";
 import { createOrgSchema } from "@/lib/validation/schemas";
@@ -34,10 +36,20 @@ export async function GET(req: Request) {
   // staff counts
   const ids = orgs.map((o) => (o as { _id: unknown })._id);
   const counts = await User.aggregate([
-    { $match: { organizationId: { $in: ids }, role: "STAFF" } },
+    { $match: { organizationId: { $in: ids }, role: "STAFF", status: { $ne: "DISABLED" } } },
+    { $group: { _id: "$organizationId", n: { $sum: 1 } } },
+  ]);
+  const managerCounts = await User.aggregate([
+    { $match: { organizationId: { $in: ids }, role: "MANAGER", status: { $ne: "DISABLED" } } },
+    { $group: { _id: "$organizationId", n: { $sum: 1 } } },
+  ]);
+  const branchCounts = await AttendanceLocation.aggregate([
+    { $match: { organizationId: { $in: ids }, status: "ACTIVE" } },
     { $group: { _id: "$organizationId", n: { $sum: 1 } } },
   ]);
   const map = new Map(counts.map((c) => [String(c._id), c.n]));
+  const managerMap = new Map(managerCounts.map((c) => [String(c._id), c.n]));
+  const branchMap = new Map(branchCounts.map((c) => [String(c._id), c.n]));
   // Pending administrators — drives the "resend setup link" action for orgs
   // whose admin never completed setup (e.g. invitation email never arrived).
   const pending = await User.find({
@@ -56,7 +68,14 @@ export async function GET(req: Request) {
   return NextResponse.json({
     orgs: orgs.map((o) => {
       const r = o as Record<string, unknown>;
-      return { ...r, _id: String(r._id), staffCount: map.get(String(r._id)) || 0, pendingAdminEmail: pmap.get(String(r._id)) || null };
+      return {
+        ...r,
+        _id: String(r._id),
+        staffCount: map.get(String(r._id)) || 0,
+        managerCount: managerMap.get(String(r._id)) || 0,
+        branchCount: branchMap.get(String(r._id)) || 0,
+        pendingAdminEmail: pmap.get(String(r._id)) || null,
+      };
     }),
     total,
     page,
@@ -95,6 +114,11 @@ export async function POST(req: Request) {
       address: parsed.data.address || undefined,
       industry: parsed.data.industry || undefined,
       status: parsed.data.status,
+      plan: parsed.data.plan,
+      subscriptionStatus: "ACTIVE",
+      planStartedAt: new Date(),
+      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      billingExempt: parsed.data.billingExempt,
     });
     orgId = String(org._id);
 
@@ -159,12 +183,28 @@ export async function POST(req: Request) {
     action: "ORGANIZATION_CREATED",
     targetType: "Organization",
     targetId: String(orgId),
-    metadata: { name: parsed.data.name, adminEmail, emailSent },
+    metadata: { name: parsed.data.name, adminEmail, emailSent, plan: parsed.data.plan },
     ...auditContextFrom(req),
   });
 
+  await SubscriptionEvent.create({
+    organizationId: orgId,
+    type: "PLAN_ASSIGNED",
+    toPlan: parsed.data.plan,
+    toStatus: "ACTIVE",
+    actorId: s.sub,
+    note: parsed.data.billingExempt ? "Billing-exempt workspace created" : "Plan assigned at organisation creation",
+    metadata: { billingExempt: parsed.data.billingExempt },
+  }).catch((e) => console.error("subscription event failed", e));
+
   return NextResponse.json(
-    { ok: true, id: String(orgId), emailSent, setupLink: emailSent ? undefined : setupLink },
+    {
+      ok: true,
+      id: String(orgId),
+      plan: parsed.data.plan,
+      emailSent,
+      setupLink: emailSent ? undefined : setupLink,
+    },
     { status: 201 }
   );
 }

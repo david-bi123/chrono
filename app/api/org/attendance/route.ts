@@ -7,19 +7,32 @@ import { Attendance } from "@/models/Attendance";
 import "@/models/User";
 import "@/models/AttendanceLocation";
 import { getSession } from "@/lib/auth/session";
+import { orgTodayKey } from "@/lib/attendance/rules";
+import { assertHistoryAccess, getEntitlements, planErrorPayload } from "@/lib/subscriptions/entitlements";
 
 export async function GET(req: Request) {
   const s = await getSession();
-  if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!s || !["ORGANIZATION_ADMIN", "MANAGER"].includes(s.role) || !s.orgId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const url = new URL(req.url);
-  const date = url.searchParams.get("date") || new Date().toISOString().slice(0, 10);
+  const dateParam = url.searchParams.get("date") || "";
   const status = url.searchParams.get("status") || "";
   const search = (url.searchParams.get("search") || "").trim();
   const page = Math.max(1, Number(url.searchParams.get("page") || 1));
   const limit = 50;
   await dbConnect();
-  const filter: Record<string, unknown> = { organizationId: s.orgId };
-  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) filter.date = date;
+  const entitlements = await getEntitlements(s.orgId);
+  if (!entitlements) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : orgTodayKey(new Date(), entitlements.timezone);
+  try {
+    assertHistoryAccess(entitlements, date);
+  } catch (e) {
+    const planError = planErrorPayload(e);
+    if (planError) return NextResponse.json(planError.body, { status: planError.status });
+    throw e;
+  }
+
+  const filter: Record<string, unknown> = { organizationId: s.orgId, date };
   if (status) filter.status = status;
   // Join staff for search: fetch matching staff ids first if needed
   let staffIds: string[] | null = null;

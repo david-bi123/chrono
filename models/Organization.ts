@@ -19,6 +19,13 @@ export interface IOrganization extends Document {
   logoUrl?: string;
   timezone: string;
   status: "ACTIVE" | "SUSPENDED";
+  /** Commercial plan. Missing values resolve to STARTER in the entitlement layer. */
+  plan: "STARTER" | "GROWTH" | "BUSINESS";
+  subscriptionStatus: "ACTIVE" | "PAST_DUE" | "SUSPENDED" | "CANCELLED";
+  planStartedAt?: Date | null;
+  currentPeriodEnd?: Date | null;
+  /** Internal/test workspaces are billed manually and should read as active. */
+  billingExempt: boolean;
   attendanceSettings: IAttendanceSettings;
   createdAt: Date;
   updatedAt: Date;
@@ -47,6 +54,16 @@ const OrganizationSchema = new Schema<IOrganization>(
     logoUrl: { type: String, maxlength: 500 },
     timezone: { type: String, default: "Africa/Accra" },
     status: { type: String, enum: ["ACTIVE", "SUSPENDED"], default: "ACTIVE", index: true },
+    plan: { type: String, enum: ["STARTER", "GROWTH", "BUSINESS"], default: "STARTER", index: true },
+    subscriptionStatus: {
+      type: String,
+      enum: ["ACTIVE", "PAST_DUE", "SUSPENDED", "CANCELLED"],
+      default: "ACTIVE",
+      index: true,
+    },
+    planStartedAt: { type: Date, default: null },
+    currentPeriodEnd: { type: Date, default: null },
+    billingExempt: { type: Boolean, default: false },
     attendanceSettings: { type: AttendanceSettingsSchema, default: () => ({}) },
   },
   { timestamps: true }

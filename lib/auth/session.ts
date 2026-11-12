@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export const SESSION_COOKIE = "chrono_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
-export type SessionRole = "SUPER_ADMIN" | "ORGANIZATION_ADMIN" | "STAFF";
+export type SessionRole = "SUPER_ADMIN" | "ORGANIZATION_ADMIN" | "MANAGER" | "STAFF";
 
 export interface SessionPayload {
   sub: string; // user id
@@ -35,7 +35,7 @@ export async function verifySessionToken(token: string): Promise<SessionPayload 
     const role = (payload as Record<string, unknown>).role as SessionRole;
     const orgId = ((payload as Record<string, unknown>).orgId as string | null) ?? null;
     if (!sub || !role) return null;
-    if (!["SUPER_ADMIN", "ORGANIZATION_ADMIN", "STAFF"].includes(role)) return null;
+    if (!["SUPER_ADMIN", "ORGANIZATION_ADMIN", "MANAGER", "STAFF"].includes(role)) return null;
     return { sub, orgId, role };
   } catch {
     return null;

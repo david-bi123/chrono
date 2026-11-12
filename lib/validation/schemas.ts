@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PLAN_IDS } from "@/lib/subscriptions/plans";
 
 export const emailSchema = z.string().email("Enter a valid email").max(254);
 export const passwordSchema = z
@@ -43,6 +44,8 @@ export const createOrgSchema = z.object({
   address: z.string().trim().max(300).optional().or(z.literal("")),
   industry: z.string().trim().max(100).optional().or(z.literal("")),
   status: z.enum(["ACTIVE", "SUSPENDED"]).default("ACTIVE"),
+  plan: z.enum(PLAN_IDS).default("STARTER"),
+  billingExempt: z.boolean().default(false),
   adminFirstName: z.string().trim().min(1).max(80),
   adminLastName: z.string().trim().min(1).max(80),
   adminEmail: emailSchema,
@@ -57,6 +60,29 @@ export const inviteStaffSchema = z.object({
   position: z.string().trim().max(80).optional().or(z.literal("")),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
 });
+
+export const inviteManagerSchema = z.object({
+  firstName: z.string().trim().min(1).max(80),
+  lastName: z.string().trim().min(1).max(80),
+  email: emailSchema,
+  phone: z.string().trim().max(40).optional().or(z.literal("")),
+  locationId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Choose a branch").nullable().optional(),
+});
+
+export const subscriptionUpdateSchema = z
+  .object({
+    plan: z.enum(PLAN_IDS).optional(),
+    subscriptionStatus: z.enum(["ACTIVE", "PAST_DUE", "SUSPENDED", "CANCELLED"]).optional(),
+    status: z.enum(["ACTIVE", "SUSPENDED"]).optional(),
+    billingExempt: z.boolean().optional(),
+    currentPeriodEnd: z
+      .string()
+      .refine((s) => s === "" || !Number.isNaN(Date.parse(s)), "Enter a valid date")
+      .optional(),
+    extendDays: z.coerce.number().int().min(1).max(730).optional(),
+    note: z.string().trim().max(500).optional(),
+  })
+  .refine((d) => Object.values(d).some((v) => v !== undefined), { message: "Nothing to update" });
 
 export const setupAccountSchema = z.object({
   token: z.string().min(10),

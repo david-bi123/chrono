@@ -43,7 +43,7 @@ function toLocalInput(iso?: string | null) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-export default function AttendancePage({ initialStatus }: { initialStatus?: string }) {
+export default function AttendancePage({ initialStatus, canManage = true }: { initialStatus?: string; canManage?: boolean }) {
   const router = useRouter();
   const { toast } = useToast();
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
@@ -221,20 +221,21 @@ export default function AttendancePage({ initialStatus }: { initialStatus?: stri
       key: "actions",
       header: "",
       align: "right",
-      render: (r) => (
-        <Button
-          size="icon-sm"
-          variant="ghost"
-          aria-label={`Edit record for ${r.staffId?.firstName ?? "employee"}`}
-          title="Correct record"
-          onClick={(e) => {
-            e.stopPropagation();
-            openEdit(r);
-          }}
-        >
-          <Pencil className="h-4 w-4" />
-        </Button>
-      ),
+      render: (r) =>
+        canManage ? (
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label={`Edit record for ${r.staffId?.firstName ?? "employee"}`}
+            title="Correct record"
+            onClick={(e) => {
+              e.stopPropagation();
+              openEdit(r);
+            }}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        ) : null,
     },
   ];
 
@@ -373,9 +374,11 @@ export default function AttendancePage({ initialStatus }: { initialStatus?: stri
                             <Eye className="h-3.5 w-3.5" /> View profile
                           </Button>
                         )}
-                        <Button size="sm" variant="outline" onClick={() => openEdit(r)}>
-                          <Pencil className="h-3.5 w-3.5" /> Correct record
-                        </Button>
+                        {canManage && (
+                          <Button size="sm" variant="outline" onClick={() => openEdit(r)}>
+                            <Pencil className="h-3.5 w-3.5" /> Correct record
+                          </Button>
+                        )}
                       </div>
                     </div>
                   )}

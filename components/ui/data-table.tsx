@@ -135,6 +135,11 @@ export function DataTable<T>({
   );
 }
 
+/** "1 record" instead of "1 records"; leaves words like "staff" untouched. */
+function countLabel(total: number, label: string) {
+  return total === 1 && /[^s]s$/.test(label) ? label.slice(0, -1) : label;
+}
+
 export function TablePagination({
   page,
   pages,
@@ -152,7 +157,7 @@ export function TablePagination({
     return (
       <div className="flex items-center justify-between border-t border-neutral-100 px-5 py-3 text-[12.5px] text-neutral-500">
         <span>
-          {total} {label}
+          {total} {countLabel(total, label)}
         </span>
       </div>
     );
@@ -160,7 +165,7 @@ export function TablePagination({
   return (
     <div className="flex flex-col gap-3 border-t border-neutral-100 px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between">
       <span className="text-[12.5px] text-neutral-500">
-        Page {page} of {pages} · {total} {label}
+        Page {page} of {pages} · {total} {countLabel(total, label)}
       </span>
       <div className="flex items-center gap-2">
         <Button

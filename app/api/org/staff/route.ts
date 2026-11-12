@@ -9,6 +9,7 @@ import { sendStaffInvitation } from "@/lib/email/mailjet";
 import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
 import { Organization } from "@/models/Organization";
+import { assertActiveSubscription, assertCanAdd, getEntitlements, planErrorPayload } from "@/lib/subscriptions/entitlements";
 
 async function orgSession() {
   const s = await getSession();
@@ -16,8 +17,14 @@ async function orgSession() {
   return s;
 }
 
+async function readSession() {
+  const s = await getSession();
+  if (!s || !["ORGANIZATION_ADMIN", "MANAGER"].includes(s.role) || !s.orgId) return null;
+  return s;
+}
+
 export async function GET(req: Request) {
-  const s = await orgSession();
+  const s = await readSession();
   if (!s) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const url = new URL(req.url);
   const search = (url.searchParams.get("search") || "").trim();
@@ -53,6 +60,20 @@ export async function POST(req: Request) {
   await dbConnect();
   const org = await Organization.findById(s.orgId);
   if (!org || org.status !== "ACTIVE") return NextResponse.json({ error: "Organization suspended" }, { status: 403 });
+
+  // Seat limits are enforced here, not in the browser. Pending invitations
+  // count because they already hold a pending user record.
+  try {
+    const entitlements = await getEntitlements(String(s.orgId));
+    if (!entitlements) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+    assertActiveSubscription(entitlements);
+    assertCanAdd(entitlements, "staff");
+  } catch (e) {
+    const planError = planErrorPayload(e);
+    if (planError) return NextResponse.json(planError.body, { status: planError.status });
+    throw e;
+  }
+
   const email = parsed.data.email.toLowerCase().trim();
   if (await User.findOne({ email })) return NextResponse.json({ error: "Email already in use" }, { status: 409 });
   if (await User.findOne({ organizationId: s.orgId, employeeId: parsed.data.employeeId })) {

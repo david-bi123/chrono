@@ -45,7 +45,7 @@ export function StatCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="truncate text-[13px] font-medium text-neutral-500">{label}</div>
+          <div className="text-[12.5px] font-medium leading-snug text-neutral-500 sm:text-[13px]">{label}</div>
           <div className="mt-1.5 truncate text-[28px] font-semibold leading-none tracking-[-0.03em] tabular text-neutral-900">
             {value}
           </div>
@@ -72,9 +72,9 @@ export function StatCard({
       )}
 
       {(sub || hint) && (
-        <div className="mt-2 flex items-center gap-1.5 text-[13px] text-neutral-500">
+        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[12.5px] leading-snug text-neutral-500 sm:text-[13px]">
           {hint}
-          {sub && <span className="truncate">{sub}</span>}
+          {sub && <span>{sub}</span>}
         </div>
       )}
     </Card>

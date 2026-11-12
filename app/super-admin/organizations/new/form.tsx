@@ -6,7 +6,26 @@ import { Input, Field, FormAlert } from "@/components/ui/input";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SpamNotice, SetupLinkPanel } from "@/components/ui/spam-notice";
-import { CheckCircle2, ArrowLeft, Building2, Mail } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Building2, Mail, CreditCard, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type PlanId = "STARTER" | "GROWTH" | "BUSINESS";
+
+const PLANS: Array<{
+  id: PlanId;
+  name: string;
+  priceGhs: number;
+  staff: string;
+  managers: string;
+  branches: string;
+  history: string;
+}> = [
+  { id: "STARTER", name: "Starter", priceGhs: 500, staff: "30 staff", managers: "2 managers", branches: "1 branch", history: "6 months history" },
+  { id: "GROWTH", name: "Growth", priceGhs: 750, staff: "70 staff", managers: "5 managers", branches: "3 branches", history: "12 months history" },
+  { id: "BUSINESS", name: "Business", priceGhs: 1000, staff: "Unlimited staff", managers: "Unlimited managers", branches: "Unlimited branches", history: "Unlimited history" },
+];
+
+const ghs = (n: number) => `GH₵${n.toLocaleString("en-GH")}`;
 
 export default function NewOrgForm() {
   const router = useRouter();
@@ -20,6 +39,8 @@ export default function NewOrgForm() {
     adminLastName: "",
     adminEmail: "",
   });
+  const [plan, setPlan] = useState<PlanId>("STARTER");
+  const [billingExempt, setBillingExempt] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState<{
@@ -39,7 +60,7 @@ export default function NewOrgForm() {
       const res = await fetch("/api/super-admin/organizations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, status: "ACTIVE" }),
+        body: JSON.stringify({ ...form, status: "ACTIVE", plan, billingExempt }),
       });
       const d = await res.json();
       if (!res.ok) {
@@ -100,6 +121,8 @@ export default function NewOrgForm() {
               <Button
                 onClick={() => {
                   setCreated(null);
+                  setPlan("STARTER");
+                  setBillingExempt(false);
                   setForm({
                     name: "",
                     email: "",
@@ -146,6 +169,65 @@ export default function NewOrgForm() {
             <Field label="Address" htmlFor="o-address">
               <Input id="o-address" value={form.address} onChange={set("address")} placeholder="City, Country" />
             </Field>
+          </div>
+
+          <div className="border-t border-neutral-100 pt-5">
+            <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
+              <CreditCard className="h-4 w-4 text-neutral-500" /> Subscription plan
+            </div>
+            <p className="mt-1 text-sm text-neutral-500">
+              The organisation gets this plan&apos;s limits immediately. You can change it later from the
+              organizations list.
+            </p>
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              {PLANS.map((p) => {
+                const active = plan === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setPlan(p.id)}
+                    aria-pressed={active}
+                    className={cn(
+                      "relative rounded-xl border p-4 text-left transition",
+                      active
+                        ? "border-brand-500 bg-brand-50/60 ring-1 ring-brand-500/30"
+                        : "border-neutral-200 hover:border-neutral-300"
+                    )}
+                  >
+                    {active && (
+                      <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-white">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                    <div className="text-[14px] font-semibold text-neutral-900">{p.name}</div>
+                    <div className="mt-0.5 text-[15px] font-semibold tabular text-neutral-900">
+                      {ghs(p.priceGhs)}
+                      <span className="text-[11.5px] font-normal text-neutral-500">/mo</span>
+                    </div>
+                    <ul className="mt-2.5 space-y-1 text-[12px] text-neutral-600">
+                      <li>{p.staff}</li>
+                      <li>{p.managers}</li>
+                      <li>{p.branches}</li>
+                      <li>{p.history}</li>
+                    </ul>
+                  </button>
+                );
+              })}
+            </div>
+
+            <label className="mt-4 flex items-start gap-2.5 rounded-xl border border-neutral-200/80 p-3.5">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-600"
+                checked={billingExempt}
+                onChange={(e) => setBillingExempt(e.target.checked)}
+              />
+              <span className="text-[13px] leading-relaxed text-neutral-600">
+                <span className="font-semibold text-neutral-900">Billing exempt.</span>{" "}
+                Internal or test workspace — assign the plan without charging through Paystack.
+              </span>
+            </label>
           </div>
 
           <div className="border-t border-neutral-100 pt-5">

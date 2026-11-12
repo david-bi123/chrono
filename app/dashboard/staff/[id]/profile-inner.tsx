@@ -54,7 +54,7 @@ type Detail = {
 
 const TABS = ["Overview", "Attendance"] as const;
 
-export default function StaffProfile({ id }: { id: string }) {
+export default function StaffProfile({ id, canManage = true }: { id: string; canManage?: boolean }) {
   const router = useRouter();
   const { toast } = useToast();
   const [data, setData] = useState<Detail | null>(null);
@@ -167,7 +167,7 @@ export default function StaffProfile({ id }: { id: string }) {
             </div>
           </div>
           <div className="flex shrink-0 gap-2">
-            {p.status === "PENDING" && (
+            {canManage && p.status === "PENDING" && (
               <Button
                 variant="secondary"
                 onClick={async () => {
@@ -193,20 +193,22 @@ export default function StaffProfile({ id }: { id: string }) {
                 <Mail className="h-4 w-4" /> Resend invite
               </Button>
             )}
-            <Button
-              variant={p.status === "DISABLED" ? "default" : "outline"}
-              onClick={() => setConfirm({ open: true, next: p.status === "DISABLED" ? "ACTIVE" : "DISABLED" })}
-            >
-              {p.status === "DISABLED" ? (
-                <>
-                  <RotateCcw className="h-4 w-4" /> Reactivate
-                </>
-              ) : (
-                <>
-                  <Ban className="h-4 w-4" /> Deactivate
-                </>
-              )}
-            </Button>
+            {canManage && (
+              <Button
+                variant={p.status === "DISABLED" ? "default" : "outline"}
+                onClick={() => setConfirm({ open: true, next: p.status === "DISABLED" ? "ACTIVE" : "DISABLED" })}
+              >
+                {p.status === "DISABLED" ? (
+                  <>
+                    <RotateCcw className="h-4 w-4" /> Reactivate
+                  </>
+                ) : (
+                  <>
+                    <Ban className="h-4 w-4" /> Deactivate
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

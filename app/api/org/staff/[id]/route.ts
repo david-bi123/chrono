@@ -12,6 +12,7 @@ import "@/models/AttendanceLocation";
 import { getSession } from "@/lib/auth/session";
 import { orgTodayKey } from "@/lib/attendance/rules";
 import { writeAudit, auditContextFrom } from "@/lib/audit";
+import { getEntitlements } from "@/lib/subscriptions/entitlements";
 
 const schema = z.object({
   firstName: z.string().trim().min(1).max(80).optional(),
@@ -25,7 +26,7 @@ const schema = z.object({
 /** Read-only detail + attendance history for the admin staff profile screen. */
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const s = await getSession();
-  if (!s || s.role !== "ORGANIZATION_ADMIN" || !s.orgId)
+  if (!s || !["ORGANIZATION_ADMIN", "MANAGER"].includes(s.role) || !s.orgId)
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   if (!/^[a-fA-F0-9]{24}$/.test(params.id))
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -43,7 +44,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     } | null;
     const tz = org?.attendanceSettings?.timezone || "Africa/Accra";
     const to = orgTodayKey(new Date(), tz);
-    const from = orgTodayKey(new Date(Date.now() - (days - 1) * 86400000), tz);
+    let from = orgTodayKey(new Date(Date.now() - (days - 1) * 86400000), tz);
+
+    // Profiles are capped at the plan's history window instead of failing —
+    // the summary stays useful while older rows remain stored and untouched.
+    const entitlements = await getEntitlements(s.orgId);
+    const historyStart = entitlements?.oldestHistoryDate ?? null;
+    if (historyStart && from < historyStart) from = historyStart;
 
     const rows = await Attendance.find({
       organizationId: s.orgId,
@@ -66,7 +73,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     return NextResponse.json({
       staff: { ...staffJson, _id: String(staffJson._id), passwordHash: undefined },
-      range: { from, to, days },
+      range: { from, to, days, historyStart },
       attendance: rows.map((r) => {
         const o = r as unknown as Record<string, unknown>;
         return { ...o, _id: String(o._id) };

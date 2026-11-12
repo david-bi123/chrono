@@ -143,6 +143,27 @@ export async function sendStaffInvitation(opts: {
   return sendEmail({ to: opts.to, subject, html, text: `Hi ${opts.staffName},\n\nWelcome to ${opts.orgName}! Create your password and complete your profile here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}` });
 }
 
+export async function sendManagerInvitation(opts: {
+  to: string; orgName: string; managerName: string; branchName?: string; link: string; expiresNote: string;
+}) {
+  const subject = `You're invited to manage attendance at ${opts.orgName}`;
+  const scope = opts.branchName
+    ? ` You'll have read-only oversight of <strong>${esc(opts.branchName)}</strong> and its attendance.`
+    : ` You'll have read-only oversight of attendance across <strong>${esc(opts.orgName)}</strong>.`;
+  const body =
+    `<p style="margin:0 0 12px;">Hi ${esc(opts.managerName)},</p>` +
+    `<p style="margin:0 0 12px;"><strong>${esc(opts.orgName)}</strong> has added you as a <strong>manager</strong> on <strong>ChronoSwift</strong>.${scope}</p>` +
+    `<p style="margin:0;">Click the button below to create your password and open your dashboard:</p>`;
+  const footer = `&#9201; ${esc(opts.expiresNote)}<br><br>&#128274; This link is single-use. No password is included in this email — you will create it yourself on the secure setup page.<br><br>&#128229; Can&apos;t find our emails? Check Spam/Promotions and mark them &quot;Not spam&quot;.`;
+  const html = shell("Set up your manager account", opts.orgName, body, { label: "Create password →", href: opts.link }, footer, subject);
+  return sendEmail({
+    to: opts.to,
+    subject,
+    html,
+    text: `Hi ${opts.managerName},\n\n${opts.orgName} has added you as a manager on ChronoSwift.${opts.branchName ? ` You'll have read-only oversight of ${opts.branchName}.` : ""}\n\nCreate your password here (single-use, expires): ${opts.link}\n\n${opts.expiresNote}`,
+  });
+}
+
 export async function sendPasswordReset(opts: { to: string; name: string; link: string }) {
   const subject = "Reset your ChronoSwift password";
   const body =
