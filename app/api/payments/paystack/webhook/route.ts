@@ -7,6 +7,7 @@ import { writeAudit, auditContextFrom } from "@/lib/audit";
 import { PLANS } from "@/lib/subscriptions/plans";
 import {
   PaystackNotConfiguredError,
+  paystackKeySource,
   verifyTransaction,
   verifyWebhookSignature,
   type PaystackWebhookEvent,
@@ -42,6 +43,12 @@ export async function POST(req: Request) {
     throw e;
   }
   if (!signatureValid) {
+    // Names only, never values: tells support whether a stale
+    // PAYSTACK_SECRET_KEY is shadowing the key the dashboard is signing with.
+    console.warn("paystack webhook signature rejected", {
+      hasSignature: Boolean(signature),
+      keySource: paystackKeySource(),
+    });
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 

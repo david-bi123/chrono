@@ -25,12 +25,26 @@ export class PaystackRequestError extends Error {
   }
 }
 
+/**
+ * Which env var supplied the secret key. Names only — never the value — so a
+ * misconfigured deployment is diagnosable from server logs. Order matters:
+ * PAYSTACK_SECRET_KEY wins, so a stale value there silently shadows a freshly
+ * added PAYSTACK_LIVE_SECRET_KEY.
+ */
+export function paystackKeySource():
+  | "PAYSTACK_SECRET_KEY"
+  | "PAYSTACK_LIVE_SECRET_KEY"
+  | "PAYSTACK_TEST_SECRET_KEY"
+  | null {
+  if (process.env.PAYSTACK_SECRET_KEY) return "PAYSTACK_SECRET_KEY";
+  if (process.env.PAYSTACK_LIVE_SECRET_KEY) return "PAYSTACK_LIVE_SECRET_KEY";
+  if (process.env.PAYSTACK_TEST_SECRET_KEY) return "PAYSTACK_TEST_SECRET_KEY";
+  return null;
+}
+
 function secretKey(): string {
-  const key =
-    process.env.PAYSTACK_SECRET_KEY ||
-    process.env.PAYSTACK_LIVE_SECRET_KEY ||
-    process.env.PAYSTACK_TEST_SECRET_KEY ||
-    "";
+  const source = paystackKeySource();
+  const key = source ? process.env[source] || "" : "";
   if (!key) throw new PaystackNotConfiguredError();
   return key;
 }
@@ -45,11 +59,7 @@ export function paystackPublicKey(): string {
 }
 
 export function isPaystackConfigured(): boolean {
-  return Boolean(
-    process.env.PAYSTACK_SECRET_KEY ||
-      process.env.PAYSTACK_LIVE_SECRET_KEY ||
-      process.env.PAYSTACK_TEST_SECRET_KEY
-  );
+  return paystackKeySource() !== null;
 }
 
 /** GHS -> pesewas. Paystack works in the smallest currency unit. */

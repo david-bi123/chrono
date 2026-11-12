@@ -48,6 +48,18 @@ export async function POST(req: Request) {
   const amountPesewas = amountToPesewas(plan.priceGhs);
   const reference = newReference(String(s.orgId));
 
+  // Without a public base URL Paystack would be handed a relative callback and
+  // the customer would land on a broken page after paying. Fail before the
+  // Payment row exists so nothing is left half-created.
+  const baseUrl = appBaseUrl();
+  if (!baseUrl) {
+    console.error("checkout blocked: APP_URL / NEXT_PUBLIC_APP_URL is not set");
+    return NextResponse.json(
+      { error: "Card payments are not configured yet. Contact SamTech Labs." },
+      { status: 503 }
+    );
+  }
+
   await Payment.create({
     organizationId: s.orgId,
     provider: "PAYSTACK",
@@ -66,7 +78,7 @@ export async function POST(req: Request) {
       email: (admin as { email?: string } | null)?.email || org.email,
       amountPesewas,
       reference,
-      callbackUrl: `${appBaseUrl()}/dashboard/subscription?reference=${encodeURIComponent(reference)}`,
+      callbackUrl: `${baseUrl}/dashboard/subscription?reference=${encodeURIComponent(reference)}`,
       metadata: {
         organizationId: String(s.orgId),
         plan: plan.id,
