@@ -1,18 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Building2, Clock3, ShieldCheck, Check } from "lucide-react";
+import { Building2, Clock3, ShieldCheck, Check, Smartphone } from "lucide-react";
 import { Input, Select, Textarea, Field, Label, PasswordInput, FormAlert } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { Skeleton } from "@/components/ui/states";
 import { useToast } from "@/components/ui/toast";
+import { InstallCard } from "@/components/pwa/install-card";
 import { cn } from "@/lib/utils";
 
 const SECTIONS = [
   { key: "organization", label: "Organization", icon: Building2, desc: "Name, contact details and timezone" },
   { key: "attendance", label: "Attendance", icon: Clock3, desc: "Work hours, grace period and working days" },
   { key: "security", label: "Security", icon: ShieldCheck, desc: "Change your password" },
+  { key: "app", label: "App", icon: Smartphone, desc: "Install ChronoSwift on this device" },
 ] as const;
 
 type SectionKey = (typeof SECTIONS)[number]["key"];
@@ -397,6 +399,12 @@ export default function SettingsPage() {
               tabIndex={0}
             >
               <SecuritySection />
+            </div>
+          )}
+
+          {active === "app" && (
+            <div role="tabpanel" id="settings-panel-app" aria-labelledby="settings-tab-app" tabIndex={0}>
+              <InstallCard />
             </div>
           )}
         </div>

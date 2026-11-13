@@ -2,7 +2,19 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifySessionToken } from "./lib/auth/session";
 
-const PUBLIC = ["/", "/login", "/forgot-password", "/reset-password", "/accept-invitation", "/terms", "/privacy"];
+const PUBLIC = [
+  "/",
+  "/login",
+  "/forgot-password",
+  "/reset-password",
+  "/accept-invitation",
+  "/terms",
+  "/privacy",
+  // PWA launch target and the service worker's offline fallback: both must be
+  // reachable without a session or an installed app shows a login redirect.
+  "/start",
+  "/offline",
+];
 
 function isPublic(path: string): boolean {
   if (PUBLIC.some((p) => path === p || path.startsWith(p + "/"))) return true;

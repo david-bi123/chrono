@@ -173,3 +173,33 @@ No fabricated metrics, charts, testimonials or dead controls anywhere.
    components, `tests/{subscriptions,paystack}.test.ts`,
    `tests/integration/subscriptions.test.ts`, plus art artifacts in `output/`, `marketing/` and
    `public/marketing/`. Confirm which of the artifacts should be committed.
+
+---
+
+## 8. Installable app (PWA)
+
+Added 2026-11-13. No store accounts, no review, no second codebase.
+
+- `app/manifest.ts` serves `/manifest.webmanifest`: standalone display, evergreen theme
+  (`#39765A`), 192/512 icons plus a maskable 512, and `start_url: /start`.
+- `app/start/route.ts` resolves the launch by role — super admin → `/super-admin`, admin or
+  manager → `/dashboard`, staff → `/staff`, no session → `/login`. A fixed `/dashboard`
+  start_url would have sent staff to `/unauthorized`.
+- `public/sw.js` caches hashed static assets and precaches `/offline`; navigations are
+  network-first and are **never** cached, and `/api/*` never enters a cache. That rule is what
+  keeps one organisation's data off another user's shared phone.
+- `components/pwa/pwa-provider.tsx` registers the worker in production only and shows a
+  "new version ready → Reload" bar, using `skipWaiting` only after the user chooses.
+- `components/pwa/install-card.tsx` in Settings → App: one-tap install where Chromium fires
+  `beforeinstallprompt`, step-by-step Share → Add to Home Screen for iOS, and an installed
+  state with confirmation.
+- Icons are generated from the clock mark by `scripts/generate-pwa-icons.mjs` (Playwright),
+  so they stay crisp at any size instead of being upscaled favicons.
+
+Verified against a production build (`output/pwa-check.mjs`, `output/pwa-offline-check.mjs`):
+19/19 installability checks pass, the worker controls the page after reload, a real offline
+navigation shows the branded page, no `/api/` response is ever cached, `/start` redirects
+correctly for signed-out and signed-in users, and the synthetic `beforeinstallprompt` path
+invokes `prompt()`. No offline clock-in queue exists by design: attendance is verified
+server-side, so writes are not queued locally.
+
