@@ -49,9 +49,20 @@ export const viewport: Viewport = {
   themeColor: "#39765A",
 };
 
+/**
+ * Chrome fires beforeinstallprompt once, and often before React hydrates. If we
+ * only listened in a component the event would be lost and the install button
+ * would fall back to manual instructions for no reason. This runs in <head>,
+ * stashes the event, and pings any button that mounts later.
+ */
+const INSTALL_PROMPT_CAPTURE = `window.__chronoInstallPrompt=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__chronoInstallPrompt=e;window.dispatchEvent(new Event("chrono:install-available"));});`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INSTALL_PROMPT_CAPTURE }} />
+      </head>
       <body className="min-h-screen bg-background font-sans text-neutral-900 antialiased">
         <ToastProvider>
           {children}

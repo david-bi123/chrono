@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/avatar";
+import { InstallAppButton } from "@/components/pwa/install-app-button";
 import { Logo, LogoMark } from "@/components/brand/logo";
 import {
   DropdownMenu,
@@ -315,6 +316,7 @@ export function AppShell({
             </div>
 
             <div className="ml-auto flex items-center gap-2.5">
+              <InstallAppButton variant="outline" iconOnly label="Install app" className="h-9 w-9" />
               {orgName && (
                 <span
                   className="hidden max-w-[240px] truncate items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[12.5px] font-semibold text-neutral-600 shadow-xs lg:inline-flex"

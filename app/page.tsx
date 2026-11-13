@@ -30,6 +30,7 @@ import { Logo, LogoMark } from "@/components/brand/logo";
 import { HeroTimeChip } from "@/components/landing/hero-time-chip";
 import { MobileNav } from "@/components/landing/mobile-nav";
 import { ProductTour } from "@/components/landing/product-tour";
+import { InstallAppButton } from "@/components/pwa/install-app-button";
 import { Reveal } from "@/components/landing/reveal";
 import { StatusBadge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -342,6 +343,8 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <InstallAppButton variant="outline" iconOnly label="Install app" className="hidden h-9 w-9 lg:inline-flex xl:hidden" />
+            <InstallAppButton variant="outline" label="Get the app" className="hidden xl:inline-flex" />
             <Link
               href="/login"
               className="hidden rounded-xl px-3.5 py-2 text-sm font-semibold text-neutral-600 transition hover:text-neutral-900 sm:block"
@@ -947,6 +950,7 @@ export default function LandingPage() {
                     >
                       Sign in
                     </Link>
+                    <InstallAppButton variant="outline" label="Install the app" />
                   </div>
                   <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12.5px] font-medium text-brand-800">
                     <li className="inline-flex items-center gap-1.5">

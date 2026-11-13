@@ -140,14 +140,15 @@ No fabricated metrics, charts, testimonials or dead controls anywhere.
 
 - `npx tsc --noEmit` — clean.
 - `npm run lint` — clean, no warnings.
-- `npx vitest run` — **82 tests / 14 files passing**, including 11 subscription integration
+- `npx vitest run` — **85 tests / 14 files passing**, including 11 subscription integration
   tests (plan assignment, 31st-seat block counting pending invites, manager seat limit, manager
   read-only boundary, second-branch block, history clamp + unlock after upgrade, usage reporting,
   suspension) and unit suites for entitlements and Paystack signature/idempotency.
-- Visual QA: Playwright script (`output/qa-shots.mjs`) against the real production database at
-  1440 / 820 / 390 px. Screens captured in `output/qa/`: landing pricing, dashboard,
+- Visual QA: Playwright scripts (`output/qa-shots.mjs`, `output/install-buttons-check.mjs`,
+  `output/pwa-check.mjs`, `output/pwa-offline-check.mjs`) against the real production database at
+  1440 / 1100 / 390 px. Screens captured in `output/qa/`: landing pricing, dashboard,
   subscription, managers, staff, attendance, reports, settings, super-admin home, organisations,
-  new organisation, audit, plan modal, manager invite modal.
+  new organisation, audit, plan modal, manager invite modal, install button + dialog.
 - Defects found and fixed in the loop: double-highlighted nav item, breadcrumb showing the nav
   group instead of the page, stale sidebar org chip, truncated stat labels, unlabelled empty
   charts, ambiguous plan-history lines (`STATUS_CHANGED` vs plan change), badge wrapping on
@@ -164,15 +165,12 @@ No fabricated metrics, charts, testimonials or dead controls anywhere.
    `{APP_URL}/api/payments/paystack/webhook`.
 3. **Manager screens were not visually QA'd** — production has no manager account. Behaviour is
    covered by integration tests only; create a manager on a test workspace to eyeball the nav.
-4. **`scripts/` is gitignored** (`.gitignore:14`), so `scripts/set-org-plan.mjs` and
-   `scripts/migrate-user-employee-index.mjs` — the two scripts that mutated production — are not
-   in version control. Decide whether to un-ignore `scripts/` (or track these two) before commit.
-5. **All work is uncommitted.** Untracked additions include `app/dashboard/subscription/`,
-   `app/dashboard/managers/`, `app/api/org/{managers,subscription}/`, `app/api/payments/`,
-   `lib/{subscriptions,payments}/`, `models/{Payment,SubscriptionEvent}.ts`, the new landing
-   components, `tests/{subscriptions,paystack}.test.ts`,
-   `tests/integration/subscriptions.test.ts`, plus art artifacts in `output/`, `marketing/` and
-   `public/marketing/`. Confirm which of the artifacts should be committed.
+4. **`scripts/` is now tracked** — `scripts/set-org-plan.mjs` (the confirm-gated production plan
+   change) and `scripts/migrate-user-employee-index.mjs` (the index migration) are in version
+   control alongside the read-only audit/probe scripts and the PWA icon generator.
+5. **Committed and pushed** — everything is on `origin/main` (`9d2154f`, `06507b8`, `a897923`,
+   plus the install-button commit). Screenshots and verification scripts under `output/qa/` are
+   committed too, so the QA evidence travels with the code.
 
 ---
 
@@ -202,4 +200,50 @@ navigation shows the branded page, no `/api/` response is ever cached, `/start` 
 correctly for signed-out and signed-in users, and the synthetic `beforeinstallprompt` path
 invokes `prompt()`. No offline clock-in queue exists by design: attendance is verified
 server-side, so writes are not queued locally.
+
+---
+
+## 9. Download / install button
+
+Added 2026-11-13. The app was installable before this, but only from the browser's own menu —
+which most staff never open. There is now a visible button in four places, so "get the app" is
+one tap, not a hunt.
+
+Where it appears:
+
+| Location | Form | Notes |
+| --- | --- | --- |
+| Landing header (`app/page.tsx`) | labelled "Get the app" at ≥1280 px, icon-only 1024–1279 px | always visible, never hidden behind a menu |
+| Landing mobile menu (`components/landing/mobile-nav.tsx`) | full-width "Install the app" row | closes the menu, then opens the dialog |
+| Landing closing CTA | outline "Install the app" next to *Sign in* | catches visitors who read to the end |
+| Dashboard topbar (`components/dashboard/shell.tsx`) | icon button for every role | admin, manager and staff all get it |
+| Settings → App (`components/pwa/install-card.tsx`) | full card with steps | the place to look when the button confuses someone |
+
+Behaviour, deliberately not a dead button:
+
+- Chromium (Android Chrome, desktop Chrome/Edge) fires `beforeinstallprompt` → the button calls
+  `prompt()` and the OS install sheet appears. One tap, real install.
+- iOS Safari and Firefox never fire it. Rather than hide the button, it opens a dialog with the
+  exact steps (Share → Add to Home Screen on iOS, browser-menu install elsewhere). iOS Chrome is
+  called out as unable to install, instead of letting someone tap a button that cannot work.
+- Inside the installed app the buttons render `null`, so nobody is told to install what they are
+  already running.
+
+`components/pwa/install-app-button.tsx` speaks in four variants (solid / outline / ghost / menu)
+so the same control fits a header, a CTA and a list row. `components/pwa/use-install-prompt.ts`
+is the single source of install state; `components/pwa/install-instructions.tsx` holds the
+platform detection and step copy shared by the button and the settings card.
+
+One non-obvious fix: Chrome fires `beforeinstallprompt` once and often **before React hydrates**,
+so a component-level listener alone silently misses it and falls back to instructions for no
+reason. `app/layout.tsx` now stashes the event in an inline `<head>` script
+(`window.__chronoInstallPrompt`) and broadcasts `chrono:install-available`; the hook picks up the
+stashed event on mount. That is why the native-prompt test passes against a cold page load.
+
+Verified (`output/install-buttons-check.mjs`, 13/13 against a production build): labelled header
+button at 1440, icon button at 1100, mobile menu row opens the dialog and the menu closes behind
+it, closing CTA present, dialog explains the browser-menu path, synthetic
+`beforeinstallprompt` is used and suppresses the dialog, buttons disappear under
+`display-mode: standalone`, and the dashboard topbar button opens the dialog when signed in.
+
 

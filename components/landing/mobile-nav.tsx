@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
+import { InstallAppButton } from "@/components/pwa/install-app-button";
 
 /**
  * Small-screen navigation. The desktop nav is hidden below `lg`, so without
@@ -74,6 +75,9 @@ export function MobileNav({
                 </a>
               </li>
             ))}
+            <li>
+              <InstallAppButton variant="menu" label="Install the app" onAction={() => setOpen(false)} />
+            </li>
             <li>
               <Link
                 href="/login"
