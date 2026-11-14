@@ -122,19 +122,36 @@ const browser = await chromium.launch();
 if (EMAIL && PASSWORD) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
-  await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded" });
-  await page.fill("#email", EMAIL);
-  await page.fill("#password", PASSWORD);
-  await Promise.all([
-    page.waitForURL(/\/dashboard/, { waitUntil: "commit" }),
-    page.getByRole("button", { name: /sign in/i }).click(),
-  ]);
-  await page.waitForLoadState("networkidle");
-  const shellBtn = page.getByRole("button", { name: "Install app", exact: true }).first();
-  check("dashboard topbar has an install button", await shellBtn.isVisible());
-  await page.screenshot({ path: `${OUT}/desktop-shell-install-button.png`, clip: { x: 0, y: 0, width: 1440, height: 70 } });
-  await shellBtn.click();
-  check("dashboard install opens the dialog", await page.getByRole("dialog").isVisible());
+
+  // The sign-in form is a client component, so clicking before hydration is a
+  // no-op. Wait for the network to settle and retry once if the click was cold.
+  let signedIn = false;
+  for (let attempt = 1; attempt <= 3 && !signedIn; attempt++) {
+    await page.goto(`${BASE}/login`, { waitUntil: "networkidle" });
+    await page.fill("#email", EMAIL);
+    await page.fill("#password", PASSWORD);
+    await page.getByRole("button", { name: /sign in/i }).click();
+    signedIn = await page
+      .waitForURL(/\/dashboard/, { timeout: 20000 })
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  check("dashboard reached with the QA account", signedIn, page.url());
+  if (signedIn) {
+    await page.waitForLoadState("networkidle");
+    const shellBtn = page.getByRole("button", { name: "Install app", exact: true }).first();
+    // The shell streams in behind the route's loading skeleton, so give the
+    // topbar a moment before asserting visibility.
+    const visible = await shellBtn
+      .waitFor({ state: "visible", timeout: 20000 })
+      .then(() => true)
+      .catch(() => false);
+    check("dashboard topbar has an install button", visible);
+    await page.screenshot({ path: `${OUT}/desktop-shell-install-button.png`, clip: { x: 0, y: 0, width: 1440, height: 70 } });
+    await shellBtn.click();
+    check("dashboard install opens the dialog", await page.getByRole("dialog").isVisible());
+  }
   await ctx.close();
 }
 

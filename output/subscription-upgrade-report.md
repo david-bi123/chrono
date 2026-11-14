@@ -240,10 +240,11 @@ reason. `app/layout.tsx` now stashes the event in an inline `<head>` script
 (`window.__chronoInstallPrompt`) and broadcasts `chrono:install-available`; the hook picks up the
 stashed event on mount. That is why the native-prompt test passes against a cold page load.
 
-Verified (`output/install-buttons-check.mjs`, 13/13 against a production build): labelled header
-button at 1440, icon button at 1100, mobile menu row opens the dialog and the menu closes behind
-it, closing CTA present, dialog explains the browser-menu path, synthetic
+Verified (`output/install-buttons-check.mjs`, 14/14 against a production build **and** against
+the deployed site at `https://chronoswift.vercel.app`): dashboard login reaches `/dashboard`,
+labelled header button at 1440, icon button at 1100, mobile menu row opens the dialog and the
+menu closes behind it, closing CTA present, dialog explains the browser-menu path, synthetic
 `beforeinstallprompt` is used and suppresses the dialog, buttons disappear under
-`display-mode: standalone`, and the dashboard topbar button opens the dialog when signed in.
+`display-mode: standalone`, and the dashboard topbar button opens the dialog.
 
 
