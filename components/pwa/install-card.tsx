@@ -74,8 +74,8 @@ export function InstallCard() {
         {note ? <p className="text-[13px] text-neutral-600">{note}</p> : null}
 
         <p className="border-t border-neutral-100 pt-4 text-[12.5px] leading-relaxed text-neutral-500">
-          Installing keeps the same login — there is nothing extra to set up. Attendance still needs a connection to
-          record a clock-in.
+          The app stays signed in once you sign in — on iPhone the installed app starts with its own storage, so
+          one sign-in there is expected. Attendance still needs a connection to record a clock-in.
         </p>
       </CardContent>
     </Card>

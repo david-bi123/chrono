@@ -99,7 +99,8 @@ export function InstallAppButton({
             <div className="min-w-0">
               <p className="text-[14px] font-semibold text-neutral-900">ChronoSwift</p>
               <p className="text-[13px] leading-relaxed text-neutral-500">
-                Opens full screen with your session intact. Attendance still needs a connection to record.
+                Opens full screen instead of a browser tab. Sign in once inside the app — after that it
+                launches straight to your workspace. Attendance still needs a connection to record.
               </p>
             </div>
           </div>

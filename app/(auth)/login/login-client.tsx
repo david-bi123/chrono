@@ -5,14 +5,16 @@ import Link from "next/link";
 import { Input, Label, PasswordInput, FormAlert } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthShell } from "@/components/auth/auth-shell";
-import { CheckCircle2, X } from "lucide-react";
+import { CheckCircle2, Smartphone, X } from "lucide-react";
 
 export default function LoginClient({
   next,
+  appLaunch,
   invited,
   reset,
 }: {
   next: string;
+  appLaunch: boolean;
   invited: boolean;
   reset: boolean;
 }) {
@@ -80,6 +82,19 @@ export default function LoginClient({
           >
             <X className="h-4 w-4" aria-hidden />
           </button>
+        </div>
+      )}
+
+      {appLaunch && !banner && (
+        <div
+          role="status"
+          className="mt-5 flex items-start gap-2.5 rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 py-3 text-sm text-neutral-700"
+        >
+          <Smartphone className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden />
+          <p className="leading-snug">
+            You opened the installed app. Sign in once and it will launch straight to your workspace from
+            then on.
+          </p>
         </div>
       )}
 

@@ -140,7 +140,7 @@ No fabricated metrics, charts, testimonials or dead controls anywhere.
 
 - `npx tsc --noEmit` — clean.
 - `npm run lint` — clean, no warnings.
-- `npx vitest run` — **85 tests / 14 files passing**, including 11 subscription integration
+- `npx vitest run` — **87 tests / 15 files passing**, including 11 subscription integration
   tests (plan assignment, 31st-seat block counting pending invites, manager seat limit, manager
   read-only boundary, second-branch block, history clamp + unlock after upgrade, usage reporting,
   suspension) and unit suites for entitlements and Paystack signature/idempotency.
@@ -240,11 +240,37 @@ reason. `app/layout.tsx` now stashes the event in an inline `<head>` script
 (`window.__chronoInstallPrompt`) and broadcasts `chrono:install-available`; the hook picks up the
 stashed event on mount. That is why the native-prompt test passes against a cold page load.
 
-Verified (`output/install-buttons-check.mjs`, 14/14 against a production build **and** against
+Verified (`output/install-buttons-check.mjs`, 16/16 against a production build **and** against
 the deployed site at `https://chronoswift.vercel.app`): dashboard login reaches `/dashboard`,
 labelled header button at 1440, icon button at 1100, mobile menu row opens the dialog and the
 menu closes behind it, closing CTA present, dialog explains the browser-menu path, synthetic
 `beforeinstallprompt` is used and suppresses the dialog, buttons disappear under
-`display-mode: standalone`, and the dashboard topbar button opens the dialog.
+`display-mode: standalone`, the dashboard topbar button opens the dialog, a signed-out launch
+lands on `/login?next=%2Fstart`, and that sign-in explains the one-time app sign-in.
+
+### What is not possible
+
+The install cannot skip the browser's own confirmation, and no amount of code changes that: a
+web app may only install from a `beforeinstallprompt` event the **browser** controls, and
+`prompt()` always shows the browser's install sheet. Silent installation is exactly the hole
+browsers closed years ago — otherwise any site could drop software on a device unasked. On iOS
+there is not even an API; Safari only offers Share → Add to Home Screen. So "one tap + one
+confirm" on Chromium and "two taps in Safari" is the ceiling, not an implementation gap.
+
+### Opening on the home screen instead of sign-in
+
+`/start` resolves the session and sends each role to its own shell, so an already signed-in
+launch never sees `/login`. It falls back to sign-in only when there is genuinely no session
+cookie, which is the normal case when the app was installed from the public landing page —
+installing does not copy a login. Two things were added here:
+
+- A signed-out launch now goes to `/login?next=%2Fstart`, so the one sign-in returns to the
+  launcher and still resolves the right role (the helper is covered by
+  `tests/start-target.test.ts`).
+- That sign-in screen says so: "You opened the installed app. Sign in once and it will launch
+  straight to your workspace from then on." The session lasts 7 days, so daily users stay signed
+  in; iOS standalone apps start with their own storage, where a first sign-in is expected and
+  documented rather than surprising.
+
 
 

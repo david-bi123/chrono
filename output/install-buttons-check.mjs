@@ -155,6 +155,20 @@ if (EMAIL && PASSWORD) {
   await ctx.close();
 }
 
+// --- installed-app launch, signed out --------------------------------------
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await page.goto(`${BASE}/start`, { waitUntil: "networkidle" });
+  check("signed-out launch lands on sign-in", page.url().includes("/login"), page.url().replace(BASE, ""));
+  check(
+    "sign-in explains the one-time app sign-in",
+    await page.getByText(/you opened the installed app/i).isVisible()
+  );
+  await page.screenshot({ path: `${OUT}/mobile-app-launch-signin.png` });
+  await ctx.close();
+}
+
 await browser.close();
 console.log(`\n${pass} passed, ${fail} failed`);
 if (fail) process.exitCode = 1;

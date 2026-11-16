@@ -77,7 +77,12 @@ const cachedOffline = await page.evaluate(async () => {
 check("offline page is precached", cachedOffline);
 
 const started = await page.request.get(`${BASE}/start`, { maxRedirects: 0 });
-check("start redirects a signed-out launch to /login", started.status() === 307 && (started.headers()["location"] || "").includes("/login"), started.headers()["location"] || "");
+const startLocation = started.headers()["location"] || "";
+check(
+  "start sends a signed-out launch to sign-in and back",
+  started.status() === 307 && startLocation.includes("/login?next=%2Fstart"),
+  startLocation
+);
 
 // --- authenticated surfaces ----------------------------------------------
 if (EMAIL && PASSWORD) {

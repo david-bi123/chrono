@@ -19,9 +19,11 @@ export default async function Page({
   searchParams?: { next?: string; invited?: string; reset?: string };
 }) {
   const sp = searchParams ?? {};
+  const next = safeNextPath(sp.next);
   return (
     <LoginClient
-      next={safeNextPath(sp.next)}
+      next={next}
+      appLaunch={next === "/start"}
       invited={Boolean(sp.invited)}
       reset={Boolean(sp.reset)}
     />
